@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yamanalie — Brand &amp; Logo Projects</title>
+  <meta name="description" content="Logo & Brand Identity projects by Yaman Ali — 25 works." />
+
+  <style>
+    /* ── FONTS ── */
+    @font-face { font-family:'MikhakBold';    src:url('../fonts/MikhakBold.ttf') format('truetype');            font-weight:700; font-display:swap; }
+    @font-face { font-family:'ThmanyahSerif'; src:url('../fonts/thmanyahseriftext-Bold.otf') format('opentype');font-weight:700; font-display:swap; }
+    @font-face { font-family:'Amin';          src:url('../fonts/Amin.otf') format('opentype');                  font-weight:400; font-display:swap; }
+    @font-face { font-family:'SimplySerif';   src:url('../fonts/SimplySerif-Bold.ttf') format('truetype');      font-weight:700; font-display:swap; }
+    @font-face { font-family:'COOPBL';        src:url('../fonts/COOPBL.ttf') format('truetype');                font-weight:700; font-display:swap; }
+
+    /* ── TOKENS ── */
+    :root {
+      --bg:        #1a3a12;
+      --bg-2:      #1f4516;
+      --bg-card:   rgba(26,58,18,0.60);
+      --surface:   rgba(212,232,165,0.05);
+      --surface-2: rgba(212,232,165,0.10);
+      --border:    rgba(212,232,165,0.14);
+      --border-2:  rgba(212,232,165,0.07);
+      --fg:        #F0F5E8;
+      --fg-2:      rgba(240,245,232,0.65);
+      --fg-3:      rgba(240,245,232,0.35);
+      --accent:    #D4E8A5;
+      --accent-dim:rgba(212,232,165,0.18);
+      --sage:      #5B8C3E;
+      --orange:    #E57A34;
+
+      --font-display:'COOPBL','SimplySerif',Georgia,serif;
+      --font-body:   'MikhakBold',system-ui,sans-serif;
+      --font-mono:   'Courier New',monospace;
+      --font-ar:     'ThmanyahSerif','Amin','Cairo',sans-serif;
+
+      --ease-out:  cubic-bezier(0.22,1,0.36,1);
+      --t-fast:.18s; --t-med:.36s; --t-slow:.55s;
+      --r-sm:6px; --r-md:12px; --r-lg:20px; --r-xl:28px; --r-full:9999px;
+      --header-h:64px;
+      --pad:clamp(16px,5vw,64px);
+    }
+
+    [data-theme="light"] {
+      --bg:        #F0F5E8;
+      --bg-2:      #E6EDD9;
+      --bg-card:   rgba(240,245,232,0.72);
+      --surface:   rgba(46,90,34,0.05);
+      --surface-2: rgba(46,90,34,0.10);
+      --border:    rgba(46,90,34,0.18);
+      --border-2:  rgba(46,90,34,0.09);
+      --fg:        #1a3a12;
+      --fg-2:      rgba(26,58,18,0.70);
+      --fg-3:      rgba(26,58,18,0.42);
+      --accent:    #2E5A22;
+      --accent-dim:rgba(46,90,34,0.15);
+      --sage:      #4a7a30;
+    }
+
+    [data-lang="ar"] {
+      direction:rtl;
+      --font-display: var(--font-ar);
+      --font-body:    var(--font-ar);
+    }
+
+    /* ── RESET ── */
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { font-size:16px; -webkit-font-smoothing:antialiased; overflow-x:hidden; scroll-behavior:smooth; }
+    body {
+      background:var(--bg);
+      color:var(--fg);
+      font-family:var(--font-body);
+      overflow-x:hidden;
+      cursor:none;
+      transition:background var(--t-med), color var(--t-med);
+    }
+    @media(hover:none){ body{ cursor:auto; } }
+    img  { max-width:100%; display:block; }
+    a    { color:inherit; text-decoration:none; }
+    ul   { list-style:none; }
+    button { cursor:none; background:none; border:none; font-family:inherit; color:inherit; }
+    :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:var(--r-sm); }
+    ::selection { background:var(--accent); color:#000; }
+    [data-theme="light"] ::selection { color:#fff; }
+
+    /* ── GRAIN ── */
+    .grain-overlay {
+      position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:180px; mix-blend-mode:overlay;
+    }
+
+    /* ── SCROLL PROGRESS ── */
+    .scroll-progress {
+      position:fixed; top:0; left:0; width:0%; height:2px;
+      background:var(--accent); z-index:10000;
+      box-shadow:0 0 10px var(--accent); transition:width .08s linear;
+    }
+
+    /* ── CURSOR ── */
+    .cursor { position:fixed; top:0; left:0; z-index:9998; pointer-events:none; transform:translate(-50%,-50%); }
+    .cursor-dot {
+      width:10px; height:10px; border-radius:50%; background:var(--accent);
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      transition:width var(--t-fast), height var(--t-fast), background var(--t-fast);
+    }
+    .cursor-ring {
+      width:38px; height:38px; border-radius:50%; border:1.5px solid rgba(212,232,165,.4);
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      transition:width .20s var(--ease-out), height .20s var(--ease-out), border-color var(--t-fast);
+    }
+    body.cur-card .cursor-dot { width:7px; height:7px; background:var(--orange); }
+    body.cur-card .cursor-ring { width:52px; height:52px; border-color:var(--accent); }
+    body.cur-link .cursor-dot  { width:6px; height:6px; }
+    body.cur-link .cursor-ring { width:30px; height:30px; }
+    @media(hover:none){ .cursor{ display:none !important; } }
+
+    /* ── HEADER ── */
+    .site-header {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      height:var(--header-h);
+      background:rgba(26,58,18,.55);
+      backdrop-filter:blur(10px) saturate(1.4);
+      -webkit-backdrop-filter:blur(10px) saturate(1.4);
+      border-bottom:1px solid var(--border-2);
+      transition:background var(--t-med), border-color var(--t-med);
+    }
+    [data-theme="light"] .site-header { background:rgba(240,245,232,.72); }
+    .site-header.scrolled { background:rgba(26,58,18,.86); border-bottom-color:var(--border); }
+    [data-theme="light"] .site-header.scrolled { background:rgba(240,245,232,.94); }
+
+    .header-inner {
+      max-width:1400px; margin-inline:auto;
+      padding-inline:var(--pad); height:100%;
+      display:flex; align-items:center; gap:24px;
+    }
+
+    .back-link {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:var(--font-mono); font-size:11px;
+      letter-spacing:.12em; text-transform:uppercase;
+      color:var(--fg-2);
+      transition:color var(--t-fast), transform var(--t-fast);
+      flex-shrink:0;
+    }
+    .back-link:hover { color:var(--accent); transform:translateX(-3px); }
+    [data-lang="ar"] .back-link:hover { transform:translateX(3px); }
+
+    .logo-mark {
+      width:32px; height:32px;
+      display:inline-flex; align-items:center; justify-content:center;
+      border-radius:var(--r-sm); background:var(--accent);
+      color:#000; font-family:var(--font-display);
+      font-weight:700; font-size:12px; flex-shrink:0;
+    }
+    [data-theme="light"] .logo-mark { color:#fff; }
+
+    .header-title {
+      flex:1; display:flex; flex-direction:column; gap:1px;
+      text-align:center;
+    }
+    .header-tag {
+      font-family:var(--font-mono); font-size:9px;
+      letter-spacing:.18em; text-transform:uppercase; color:var(--accent);
+    }
+    .header-heading {
+      font-family:var(--font-display);
+      font-size:clamp(1rem,2vw,1.4rem);
+      font-weight:700; letter-spacing:-.02em; line-height:1.1;
+    }
+
+    .header-controls { flex-shrink:0; }
+    .dual-switcher {
+      display:flex; align-items:center;
+      border:1px solid var(--border); border-radius:var(--r-full);
+      overflow:hidden; height:32px;
+    }
+    .switcher-btn {
+      display:flex; align-items:center; justify-content:center;
+      padding:0 12px; height:100%;
+      font-family:var(--font-mono); font-size:11px; letter-spacing:.1em;
+      color:var(--fg-2); transition:background var(--t-fast), color var(--t-fast);
+    }
+    .switcher-btn:hover { background:var(--surface-2); color:var(--fg); }
+    .switcher-divider { width:1px; height:14px; background:var(--border); }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      padding-top:calc(var(--header-h) + 48px);
+      padding-bottom:32px;
+      padding-inline:var(--pad);
+      max-width:1400px; margin-inline:auto;
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:24px; flex-wrap:wrap;
+    }
+    .page-hero__count {
+      font-family:var(--font-display);
+      font-size:clamp(3rem,8vw,7rem);
+      font-weight:700; letter-spacing:-.05em; line-height:.9;
+      color:var(--fg);
+      display:flex; align-items:baseline; gap:12px;
+    }
+    .page-hero__count span:last-child {
+      font-size:clamp(.9rem,2vw,1.2rem);
+      color:var(--fg-3); letter-spacing:.1em;
+      text-transform:uppercase; font-family:var(--font-mono);
+    }
+    .page-hero__desc {
+      max-width:380px;
+      font-size:13px; color:var(--fg-2); line-height:1.75;
+      padding-bottom:8px;
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      position:sticky; top:var(--header-h); z-index:100;
+      background:var(--bg);
+      border-bottom:1px solid var(--border-2);
+      transition:background var(--t-med);
+    }
+    .filter-bar__inner {
+      max-width:1400px; margin-inline:auto;
+      padding-inline:var(--pad);
+      padding-block:12px;
+      display:flex; align-items:center; gap:8px;
+      flex-wrap:wrap;
+    }
+    .filter-chip {
+      font-family:var(--font-mono); font-size:10px;
+      letter-spacing:.14em; text-transform:uppercase;
+      padding:7px 16px; border-radius:var(--r-full);
+      border:1px solid var(--border); color:var(--fg-3);
+      transition:background var(--t-fast), color var(--t-fast),
+                 border-color var(--t-fast), transform var(--t-fast);
+    }
+    .filter-chip:hover { background:var(--surface-2); color:var(--fg-2); transform:translateY(-1px); }
+    .filter-chip.active {
+      background:var(--accent); color:#000;
+      border-color:transparent; font-weight:700;
+    }
+    [data-theme="light"] .filter-chip.active { color:#fff; }
+
+    /* ── PROJECTS SECTION ── */
+    .projects-section { padding-block:40px 80px; }
+    .projects-container { max-width:1400px; margin-inline:auto; padding-inline:var(--pad); }
+
+    .projects-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:20px;
+    }
+
+    /* ── PROJECT CARD ── */
+    .proj-card {
+      border-radius:var(--r-lg);
+      overflow:hidden;
+      background:var(--bg-card);
+      border:1px solid var(--border-2);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      transition:border-color var(--t-med), transform var(--t-med), box-shadow var(--t-med);
+      cursor:none;
+      /* Scroll reveal — start hidden */
+      opacity:0;
+      transform:translateY(24px);
+    }
+    .proj-card.in {
+      opacity:1;
+      transform:translateY(0);
+      transition:opacity var(--t-slow) var(--ease-out),
+                 transform var(--t-slow) var(--ease-out),
+                 border-color var(--t-med),
+                 box-shadow var(--t-med);
+    }
+    .proj-card:hover {
+      border-color:var(--border);
+      transform:translateY(-5px);
+      box-shadow:0 24px 48px rgba(0,0,0,.3);
+    }
+    [data-theme="light"] .proj-card:hover { box-shadow:0 24px 48px rgba(46,90,34,.12); }
+
+    /* Image wrap */
+    .proj-card__img-wrap {
+      position:relative;
+      aspect-ratio:4/3;
+      overflow:hidden;
+      background:var(--surface-2);
+    }
+    .proj-card__img {
+      width:100%; height:100%;
+      object-fit:cover;
+      transition:transform .6s var(--ease-out), filter .4s;
+    }
+    .proj-card:hover .proj-card__img { transform:scale(1.05); }
+
+    /* Overlay with button */
+    .proj-card__overlay {
+      position:absolute; inset:0;
+      background:rgba(0,0,0,.45);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0;
+      transition:opacity var(--t-med);
+    }
+    .proj-card:hover .proj-card__overlay { opacity:1; }
+
+    .proj-card__view-btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 22px;
+      border-radius:var(--r-full);
+      background:var(--accent);
+      color:#000;
+      font-family:var(--font-body);
+      font-size:11px; font-weight:700; letter-spacing:.06em;
+      transform:translateY(8px);
+      transition:transform var(--t-med) var(--ease-out),
+                 box-shadow var(--t-fast), background var(--t-fast);
+    }
+    [data-theme="light"] .proj-card__view-btn { color:#fff; }
+    .proj-card:hover .proj-card__view-btn { transform:translateY(0); }
+    .proj-card__view-btn:hover {
+      background:#fff; color:#000;
+      box-shadow:0 4px 16px rgba(0,0,0,.2);
+    }
+
+    /* Card body */
+    .proj-card__body { padding:14px 16px 18px; }
+    .proj-card__cat {
+      display:inline-block;
+      font-family:var(--font-mono); font-size:9px;
+      letter-spacing:.15em; text-transform:uppercase;
+      color:var(--sage); margin-bottom:6px;
+    }
+    .proj-card__title {
+      font-family:var(--font-display);
+      font-size:clamp(.95rem,1.5vw,1.1rem);
+      font-weight:700; letter-spacing:-.02em;
+      margin-bottom:5px; line-height:1.2;
+      transition:color var(--t-fast);
+    }
+    .proj-card:hover .proj-card__title { color:var(--accent); }
+    .proj-card__desc {
+      font-size:12px; color:var(--fg-2); line-height:1.6;
+    }
+
+    .proj-card.filtered-out { display:none; }
+
+    /* ── FOOTER ── */
+    .proj-footer {
+      border-top:1px solid var(--border-2);
+      padding:24px var(--pad);
+      background:var(--bg-2);
+    }
+    .proj-footer__inner {
+      max-width:1400px; margin-inline:auto;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px; flex-wrap:wrap;
+    }
+    .proj-footer__logo {
+      display:flex; align-items:center; gap:8px;
+    }
+    .proj-footer__name {
+      font-family:var(--font-mono); font-size:11px;
+      letter-spacing:.1em; color:var(--fg-3);
+    }
+    .proj-footer__copy {
+      font-family:var(--font-mono); font-size:10px;
+      letter-spacing:.06em; color:var(--fg-3);
+    }
+    .proj-footer__ig {
+      font-family:var(--font-mono); font-size:11px;
+      letter-spacing:.08em; color:var(--fg-3);
+      transition:color var(--t-fast);
+    }
+    .proj-footer__ig:hover { color:var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px){ .projects-grid{ grid-template-columns:repeat(3,1fr); } }
+    @media(max-width:760px) { .projects-grid{ grid-template-columns:repeat(2,1fr); gap:14px; } }
+    @media(max-width:480px) {
+      .projects-grid{ grid-template-columns:1fr; }
+      .header-title { display:none; }
+      .page-hero { flex-direction:column; align-items:flex-start; }
+    }
+    @media(hover:none){
+      .cursor{ display:none !important; }
+      body{ cursor:auto !important; }
+      button,a{ cursor:pointer !important; }
+    }
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Grain -->
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+</div>
+
+<!-- ══════ HEADER ══════ -->
+<header class="site-header" id="siteHeader" role="banner">
+  <div class="header-inner">
+
+    <a href="../index.html" class="back-link" aria-label="Back to home">
+      <span class="logo-mark">YA</span>
+      <span id="backText" data-en="yamanalie" data-ar="يمان علي">yamanalie</span>
+    </a>
+
+    <div class="header-title">
+      <span class="header-tag" data-en="Selected Work" data-ar="أعمال مختارة">Selected Work</span>
+      <h1 class="header-heading"
+          data-en="Brand &amp; Logo Design"
+          data-ar="تصميم الهوية والشعار">Brand &amp; Logo Design</h1>
+    </div>
+
+    <div class="header-controls">
+      <div class="dual-switcher">
+        <button class="switcher-btn" id="langToggle" aria-label="Switch language">
+          <span id="langLabel">EN</span>
+        </button>
+        <div class="switcher-divider" aria-hidden="true"></div>
+        <button class="switcher-btn" id="themeToggle" aria-label="Switch theme">
+          <span id="themeIcon">◐</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+
+<!-- ══════ MAIN ══════ -->
+<main id="main" role="main">
+
+  <!-- Hero band -->
+  <div class="page-hero">
+    <p class="page-hero__count">
+      <span>25</span>
+      <span data-en="projects" data-ar="مشروع">projects</span>
+    </p>
+    <p class="page-hero__desc"
+       data-en="Every mark crafted here starts with a strategy and ends with a system."
+       data-ar="كل شعار هنا يبدأ باستراتيجية وينتهي بنظام متكامل.">
+      Every mark crafted here starts with a strategy and ends with a system.
+    </p>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar" id="filterBar">
+    <div class="filter-bar__inner">
+      <button class="filter-chip active" data-filter="all"
+              data-en="All" data-ar="الكل">All</button>
+      <button class="filter-chip" data-filter="logo"
+              data-en="Logo Design" data-ar="تصميم الشعار">Logo Design</button>
+      <button class="filter-chip" data-filter="brand"
+              data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</button>
+    </div>
+  </div>
+
+  <!-- Projects grid -->
+  <section class="projects-section" aria-label="Brand and logo projects">
+    <div class="projects-container">
+      <div class="projects-grid" id="projectsGrid">
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/livil-logo.jpg" alt="Livil Brand Identity" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/livil-logo.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Livil</h2>
+            <p class="proj-card__desc" data-en="Organic identity for a wellness brand rooted in nature." data-ar="هوية عضوية لعلامة صحية متجذرة في الطبيعة.">Organic identity for a wellness brand rooted in nature.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logotype-04.jpg" alt="Typeform Mark" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logotype-04.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Typeform Mark</h2>
+            <p class="proj-card__desc" data-en="Custom logotype exploring negative space and balance." data-ar="شعار مخصص يستكشف الفراغ السلبي والتوازن.">Custom logotype exploring negative space and balance.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-03.jpg" alt="Verdant Studio" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-03.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Verdant Studio</h2>
+            <p class="proj-card__desc" data-en="Complete brand system for a creative architecture firm." data-ar="نظام هوية كامل لشركة معمارية إبداعية.">Complete brand system for a creative architecture firm.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logo-04.jpg" alt="Minimal Mark" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logo-04.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Minimal Mark</h2>
+            <p class="proj-card__desc" data-en="Geometric logo mark for a tech consulting firm." data-ar="شعار هندسي لشركة استشارات تقنية.">Geometric logo mark for a tech consulting firm.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-05.jpg" alt="Aurum" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-05.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Aurum</h2>
+            <p class="proj-card__desc" data-en="Luxury brand identity for a premium fragrance house." data-ar="هوية فاخرة لدار عطور متميزة.">Luxury brand identity for a premium fragrance house.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logo-06.jpg" alt="Emblem Mark" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logo-06.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Emblem Mark</h2>
+            <p class="proj-card__desc" data-en="Heritage-inspired emblem for a family-run business." data-ar="شعار بطابع تراثي لمشروع عائلي.">Heritage-inspired emblem for a family-run business.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-07.jpg" alt="Roots F&B" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-07.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Roots F&amp;B</h2>
+            <p class="proj-card__desc" data-en="Earthy brand identity for a farm-to-table restaurant." data-ar="هوية طبيعية لمطعم من المزرعة إلى الطاولة.">Earthy brand identity for a farm-to-table restaurant.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logo-08.jpg" alt="Arabic Mark" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logo-08.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Arabic Mark</h2>
+            <p class="proj-card__desc" data-en="Modern Arabic logotype fusing calligraphy and geometry." data-ar="شعار عربي عصري يمزج الخط والهندسة.">Modern Arabic logotype fusing calligraphy and geometry.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-09.jpg" alt="Nova Startup" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-09.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Nova Startup</h2>
+            <p class="proj-card__desc" data-en="Bold brand identity for an early-stage tech startup." data-ar="هوية جريئة لشركة ناشئة في التقنية.">Bold brand identity for an early-stage tech startup.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logo-10.jpg" alt="Wordmark Series" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logo-10.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Wordmark Series</h2>
+            <p class="proj-card__desc" data-en="Custom wordmark explorations for retail brands." data-ar="استكشافات كلمات مرئية لعلامات تجارية.">Custom wordmark explorations for retail brands.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-11.jpg" alt="Calm Co." loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-11.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Calm Co.</h2>
+            <p class="proj-card__desc" data-en="Wellness brand built around stillness and clarity." data-ar="هوية صحة مبنية على الهدوء والوضوح.">Wellness brand built around stillness and clarity.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logo-12.jpg" alt="Monogram Mark" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logo-12.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Monogram Mark</h2>
+            <p class="proj-card__desc" data-en="Interlocking monogram for a personal brand." data-ar="مونوغرام متشابك لعلامة شخصية.">Interlocking monogram for a personal brand.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-13.jpg" alt="Safi Skincare" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-13.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Safi Skincare</h2>
+            <p class="proj-card__desc" data-en="Clean, minimal brand for a natural skincare line." data-ar="هوية نظيفة وبسيطة لخط عناية طبيعية بالبشرة.">Clean, minimal brand for a natural skincare line.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logo-14.jpg" alt="Icon Mark" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logo-14.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Icon Mark</h2>
+            <p class="proj-card__desc" data-en="Symbolic icon mark for a digital-first brand." data-ar="علامة رمزية لعلامة رقمية أولاً.">Symbolic icon mark for a digital-first brand.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-15.jpg" alt="Baraka Coffee" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-15.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Baraka Coffee</h2>
+            <p class="proj-card__desc" data-en="Warm, artisanal brand for a specialty coffee shop." data-ar="هوية دافئة وحرفية لمقهى قهوة متخصص.">Warm, artisanal brand for a specialty coffee shop.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logo-16.jpg" alt="Abstract Mark" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logo-16.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Abstract Mark</h2>
+            <p class="proj-card__desc" data-en="Abstract fluid mark for a creative consulting agency." data-ar="علامة مجردة سائلة لوكالة استشارات إبداعية.">Abstract fluid mark for a creative consulting agency.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-17.jpg" alt="Dar Al Oud" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-17.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Dar Al Oud</h2>
+            <p class="proj-card__desc" data-en="Heritage-rooted identity for an Arabic oud &amp; incense brand." data-ar="هوية متجذرة بالتراث لعلامة عود وبخور عربية.">Heritage-rooted identity for an Arabic oud &amp; incense brand.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logo-18.jpg" alt="Shield Badge" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logo-18.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Shield Badge</h2>
+            <p class="proj-card__desc" data-en="Strong badge-style logo for a sports coaching brand." data-ar="شعار بطولي لعلامة تدريب رياضي.">Strong badge-style logo for a sports coaching brand.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-19.jpg" alt="Sabr Co." loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-19.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Sabr Co.</h2>
+            <p class="proj-card__desc" data-en="Mindful brand identity for a mental wellness platform." data-ar="هوية واعية لمنصة صحة نفسية.">Mindful brand identity for a mental wellness platform.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logo-20.jpg" alt="Line Art Logo" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logo-20.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Line Art Logo</h2>
+            <p class="proj-card__desc" data-en="Delicate line-art logo for an interior design studio." data-ar="شعار فني خطي دقيق لاستوديو تصميم داخلي.">Delicate line-art logo for an interior design studio.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-21.jpg" alt="Noor Education" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-21.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Noor Education</h2>
+            <p class="proj-card__desc" data-en="Bright, trustworthy brand for an online education platform." data-ar="هوية مشرقة وموثوقة لمنصة تعليم إلكتروني.">Bright, trustworthy brand for an online education platform.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logo-22.jpg" alt="Negative Space" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logo-22.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Negative Space</h2>
+            <p class="proj-card__desc" data-en="Clever negative space logo with hidden meaning." data-ar="شعار بفراغ سلبي ذكي يخفي معنى مخفياً.">Clever negative space logo with hidden meaning.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-23.jpg" alt="Riyadh Collective" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-23.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Riyadh Collective</h2>
+            <p class="proj-card__desc" data-en="Urban brand identity for a creative collective in Riyadh." data-ar="هوية حضرية لمجموعة إبداعية في الرياض.">Urban brand identity for a creative collective in Riyadh.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="logo">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/logo-24.jpg" alt="Circular Mark" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/logo-24.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            <h2 class="proj-card__title">Circular Mark</h2>
+            <p class="proj-card__desc" data-en="Balanced circular logo mark for a holistic health brand." data-ar="علامة دائرية متوازنة لعلامة صحة شاملة.">Balanced circular logo mark for a holistic health brand.</p>
+          </div>
+        </article>
+
+        <article class="proj-card" data-category="brand">
+          <div class="proj-card__img-wrap">
+            <img class="proj-card__img" src="../images/projects/brand-25.jpg" alt="Kayan" loading="lazy" width="600" height="450"/>
+            <div class="proj-card__overlay" aria-hidden="true">
+              <a href="../images/projects/brand-25.jpg" class="proj-card__view-btn" target="_blank" rel="noopener noreferrer" data-en="View Full" data-ar="عرض كامل">View Full</a>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <span class="proj-card__cat" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <h2 class="proj-card__title">Kayan</h2>
+            <p class="proj-card__desc" data-en="Full brand identity for a lifestyle and culture platform." data-ar="هوية متكاملة لمنصة أسلوب حياة وثقافة.">Full brand identity for a lifestyle and culture platform.</p>
+          </div>
+        </article>
+
+      </div><!-- /projects-grid -->
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="proj-footer" role="contentinfo">
+  <div class="proj-footer__inner">
+    <a href="../index.html" class="proj-footer__logo">
+      <span class="logo-mark">YA</span>
+      <span class="proj-footer__name">yamanalie</span>
+    </a>
+    <p class="proj-footer__copy"
+       data-en="© 2025 Yaman Ali. All rights reserved."
+       data-ar="© 2025 يمان علي. جميع الحقوق محفوظة.">
+      © 2025 Yaman Ali. All rights reserved.
+    </p>
+    <a href="https://www.instagram.com/yamanalie" target="_blank"
+       rel="noopener noreferrer" class="proj-footer__ig">@yamanalie</a>
+  </div>
+</footer>
+
+
+<!-- ══════ INLINE JS ══════ -->
+<script>
+(function () {
+
+  /* ── Scroll progress ── */
+  const bar = document.getElementById('scrollProgress');
+  window.addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (bar) bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+  }, { passive: true });
+
+  /* ── Sticky header shadow ── */
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    if (header) header.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  /* ── Cursor ── */
+  if (!window.matchMedia('(hover: none)').matches) {
+    const cur  = document.getElementById('cursor');
+    const dot  = cur?.querySelector('.cursor-dot');
+    const ring = cur?.querySelector('.cursor-ring');
+    let mx=-300,my=-300,dx=-300,dy=-300,rx=-300,ry=-300;
+    const lerp = (a,b,t) => a+(b-a)*t;
+    const tick = () => {
+      dx=lerp(dx,mx,0.55); dy=lerp(dy,my,0.55);
+      rx=lerp(rx,mx,0.28); ry=lerp(ry,my,0.28);
+      if (cur) cur.style.transform = `translate(${dx}px,${dy}px) translate(-50%,-50%)`;
+      if (ring) ring.style.transform = `translate(calc(-50% + ${rx-dx}px),calc(-50% + ${ry-dy}px))`;
+      requestAnimationFrame(tick);
+    };
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+    document.addEventListener('mouseleave', () => { mx=-300; my=-300; });
+    document.querySelectorAll('.proj-card').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cur-card'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cur-card'));
+    });
+    document.querySelectorAll('a,button').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cur-link'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cur-link'));
+    });
+    tick();
+  }
+
+  /* ── Theme ── */
+  const applyTheme = t => {
+    document.documentElement.dataset.theme = t;
+    localStorage.setItem('ya-theme', t);
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.textContent = t === 'dark' ? '◑' : '◐';
+  };
+  applyTheme(localStorage.getItem('ya-theme') || 'dark');
+  document.getElementById('themeToggle')?.addEventListener('click', () => {
+    applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ── Language ── */
+  const applyLang = lang => {
+    document.documentElement.dataset.lang = lang;
+    document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+    localStorage.setItem('ya-lang', lang);
+    const lbl = document.getElementById('langLabel');
+    if (lbl) lbl.textContent = lang === 'en' ? 'EN' : 'AR';
+    /* Swap text */
+    document.querySelectorAll('[data-en],[data-ar]').forEach(el => {
+      const val = el.getAttribute(`data-${lang}`);
+      if (val === null) return;
+      if (el.children.length === 0) el.textContent = val;
+    });
+    /* back arrow direction */
+    const arrow = document.querySelector('.back-link .logo-mark');
+  };
+  applyLang(localStorage.getItem('ya-lang') || 'en');
+  document.getElementById('langToggle')?.addEventListener('click', () => {
+    applyLang(document.documentElement.dataset.lang === 'en' ? 'ar' : 'en');
+  });
+
+  /* ── Filter tabs ── */
+  const chips = document.querySelectorAll('.filter-chip');
+  const cards = document.querySelectorAll('.proj-card');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const filter = chip.dataset.filter;
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      cards.forEach((card, i) => {
+        const match = filter === 'all' || card.dataset.category === filter;
+        card.classList.toggle('filtered-out', !match);
+        if (match) {
+          card.classList.remove('in');
+          setTimeout(() => card.classList.add('in'), 40 + i * 40);
+        }
+      });
+    });
+  });
+
+  /* ── Scroll reveal ── */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  cards.forEach((card, i) => {
+    card.style.transitionDelay = (i % 4) * 0.07 + 's';
+    obs.observe(card);
+  });
+
+  /* ── Card tilt ── */
+  if (!window.matchMedia('(hover: none)').matches) {
+    cards.forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r  = card.getBoundingClientRect();
+        const dx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
+        const dy = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
+        card.style.transform = `perspective(700px) rotateX(${-dy*4}deg) rotateY(${dx*4}deg) translateY(-5px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform .5s cubic-bezier(0.22,1,0.36,1)';
+        card.style.transform  = '';
+        setTimeout(() => card.style.transition = '', 500);
+      });
+    });
+  }
+
+  /* ── Haptic on buttons ── */
+  document.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.style.transition = 'transform .08s ease';
+      btn.style.transform  = 'scale(0.95)';
+      setTimeout(() => {
+        btn.style.transition = 'transform .4s cubic-bezier(0.34,1.56,0.64,1)';
+        btn.style.transform  = 'scale(1)';
+      }, 80);
+      setTimeout(() => { btn.style.transition=''; btn.style.transform=''; }, 500);
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>

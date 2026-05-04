@@ -3,724 +3,810 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yaman Ali — Brand Identity & Web Designer</title>
-  <meta name="description" content="Yaman Ali (yamanalie) — Brand Identity Designer & Web Designer. Creating identities that breathe." />
+  <title>Yaman Ali — Brand Identity & Web Design</title>
+  <meta name="description" content="Yaman Ali (yamanalie) — Brand Identity, Web & Social Media Designer. Building a presence that lasts." />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <!-- Custom Fonts -->
+  <style>
+    @font-face { font-family:'MikhakBold';        src:url('fonts/MikhakBold.ttf') format('truetype');            font-weight:700; font-display:swap; }
+    @font-face { font-family:'Amin';              src:url('fonts/Amin.otf') format('opentype');                  font-weight:400; font-display:swap; }
+    @font-face { font-family:'ThmanyahSerif';     src:url('fonts/thmanyahseriftext-Bold.otf') format('opentype');font-weight:700; font-display:swap; }
+    @font-face { font-family:'BaderDergham';      src:url('fonts/bader_al dergham.ttf') format('truetype');      font-weight:400; font-display:swap; }
+    @font-face { font-family:'SimplySerif';       src:url('fonts/SimplySerif-Bold.ttf') format('truetype');      font-weight:700; font-display:swap; }
+    @font-face { font-family:'COOPBL';            src:url('fonts/COOPBL.ttf') format('truetype');                font-weight:700; font-display:swap; }
 
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css" />
+  /* ── Process Teaser Section ── */
+  </style>
+  <style>
+    /* process teaser grid */
+    .section--process-teaser { background: var(--bg-2, #1f4516); }
+    .process-teaser-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(40px,7vw,100px);
+      align-items: center;
+    }
+    .process-teaser-img { position: relative; }
+    .process-teaser-img__frame {
+      border-radius: 28px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: rgba(212,232,165,.05);
+      border: 1px solid rgba(212,232,165,.1);
+    }
+    .process-teaser-img__frame img { width:100%; height:100%; object-fit:cover; transition: transform .8s cubic-bezier(.22,1,.36,1); }
+    .process-teaser-img__frame:hover img { transform: scale(1.04); }
+    .process-teaser-img__badge {
+      position: absolute;
+      bottom: 20px; left: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 9999px;
+      background: rgba(26,58,18,.75);
+      border: 1px solid rgba(212,232,165,.15);
+      backdrop-filter: blur(10px);
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(240,245,232,.7);
+    }
+    [data-theme="light"] .process-teaser-img__badge { background: rgba(240,245,232,.8); }
+    .process-teaser-copy { display: flex; flex-direction: column; gap: 0; }
+    .process-teaser-h { font-size: clamp(2.8rem,7vw,6rem) !important; line-height: .96 !important; margin-bottom: 24px; }
+    .process-teaser-desc {
+      color: rgba(240,245,232,.65);
+      font-size: clamp(.9rem,1.3vw,1.05rem);
+      line-height: 1.8;
+      margin-bottom: 32px;
+      max-width: 480px;
+    }
+    [data-theme="light"] .process-teaser-desc { color: rgba(26,58,18,.65); }
+    .process-teaser-steps { display: flex; flex-direction: column; gap: 14px; }
+    .pts-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(212,232,165,.08);
+      background: rgba(212,232,165,.04);
+      transition: border-color .18s, background .18s, transform .18s;
+    }
+    .pts-item:hover { border-color: rgba(212,232,165,.2); background: rgba(212,232,165,.08); transform: translateX(4px); }
+    [data-lang="ar"] .pts-item:hover { transform: translateX(-4px); }
+    .pts-num {
+      font-family: 'Courier New', monospace;
+      font-size: 10px;
+      letter-spacing: .15em;
+      color: #D4E8A5;
+      flex-shrink: 0;
+      width: 28px;
+    }
+    [data-theme="light"] .pts-num { color: #2E5A22; }
+    .pts-label { font-size: 13px; color: rgba(240,245,232,.75); }
+    [data-theme="light"] .pts-label { color: rgba(26,58,18,.7); }
+
+    /* Web Design coming soon chip in inquiry */
+    .service-soon {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 9px;
+      font-family: 'Courier New', monospace;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(240,245,232,.35);
+      border: 1px solid rgba(240,245,232,.15);
+      padding: 2px 7px;
+      border-radius: 9999px;
+      margin-left: 8px;
+    }
+    [data-lang="ar"] .service-soon { margin-left: 0; margin-right: 8px; }
+    .checkbox-item.disabled { opacity: .38; pointer-events: none; }
+
+    @media (max-width: 900px) {
+      .process-teaser-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 540px) {
+      .process-teaser-img__frame { display: none; }
+    }
+  </style>
+
+  <link rel="stylesheet" href="css/style.css"/>
 </head>
-
 <body>
 
-  <!-- ══════════════════════════════════════
-       GRAIN OVERLAY (cinematic texture)
-  ══════════════════════════════════════ -->
-  <div class="grain-overlay" aria-hidden="true"></div>
+<!-- GRAIN OVERLAY -->
+<div class="grain-overlay" aria-hidden="true"></div>
 
-  <!-- ══════════════════════════════════════
-       SCROLL PROGRESS BAR
-  ══════════════════════════════════════ -->
-  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-  <!-- ══════════════════════════════════════
-       CUSTOM CURSOR
-  ══════════════════════════════════════ -->
-  <div class="cursor" id="cursor" aria-hidden="true">
-    <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
-  </div>
+<!-- CUSTOM CURSOR — soft circle (original style) -->
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+</div>
 
-  <!-- ══════════════════════════════════════
-       HEADER / NAV
-  ══════════════════════════════════════ -->
-  <header class="site-header" id="siteHeader" role="banner">
-    <nav class="nav-inner" role="navigation" aria-label="Primary navigation">
+<!-- ══════ HEADER ══════ -->
+<header class="site-header" id="siteHeader" role="banner">
+  <nav class="nav-inner" role="navigation" aria-label="Primary navigation">
 
-      <!-- Logo -->
-      <a href="#hero" class="nav-logo" aria-label="Yaman Ali — Home">
-        <span class="logo-mark">YA</span>
-        <span class="logo-text">yamanalie</span>
+    <a href="#hero" class="nav-logo" aria-label="Yaman Ali — Home">
+      <span class="logo-mark">YA</span>
+      <span class="logo-text">yamanalie</span>
+    </a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="#my-process" class="nav-link" data-en="Process"   data-ar="العملية">Process</a></li>
+      <li><a href="#work"      class="nav-link" data-en="Work"      data-ar="الأعمال">Work</a></li>
+      <li><a href="#about"     class="nav-link" data-en="About Me"  data-ar="عني">About Me</a></li>
+      <li><a href="#resources" class="nav-link" data-en="Resources" data-ar="الموارد">Resources</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="inquiry.html" class="btn btn-primary magnetic nav-cta"
+         data-en="Start a Project" data-ar="ابدأ مشروعاً">
+        <span class="btn-text">Start a Project</span>
+        <span class="btn-fill" aria-hidden="true"></span>
       </a>
-
-      <!-- Nav Links -->
-      <ul class="nav-links" role="list">
-        <li><a href="#process" class="nav-link" data-en="Process" data-ar="العملية">Process</a></li>
-        <li><a href="#work" class="nav-link" data-en="Work" data-ar="الأعمال">Work</a></li>
-        <li><a href="#about" class="nav-link" data-en="About" data-ar="عن يمان">About</a></li>
-        <li><a href="#resources" class="nav-link" data-en="Resources" data-ar="الموارد">Resources</a></li>
-      </ul>
-
-      <!-- Nav Actions -->
-      <div class="nav-actions">
-        <!-- CTA -->
-        <a href="#contact" class="btn btn-primary magnetic" data-en="Start a Project" data-ar="ابدأ مشروعاً">
-          <span class="btn-text">Start a Project</span>
-          <span class="btn-fill" aria-hidden="true"></span>
-        </a>
-
-        <!-- Dual Switcher -->
-        <div class="dual-switcher" role="group" aria-label="Language and Theme switcher">
-          <button class="switcher-btn" id="langToggle" aria-label="Switch language" title="Toggle Language EN/AR">
-            <span class="switcher-label" id="langLabel">EN</span>
-          </button>
-          <div class="switcher-divider" aria-hidden="true"></div>
-          <button class="switcher-btn" id="themeToggle" aria-label="Switch theme" title="Toggle Dark/Light">
-            <span class="theme-icon" id="themeIcon" aria-hidden="true">◐</span>
-          </button>
-        </div>
-
-        <!-- Hamburger (mobile) -->
-        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
-          <span></span><span></span><span></span>
+      <div class="dual-switcher" role="group">
+        <button class="switcher-btn" id="langToggle" aria-label="Switch language">
+          <span id="langLabel">EN</span>
+        </button>
+        <div class="switcher-divider" aria-hidden="true"></div>
+        <button class="switcher-btn" id="themeToggle" aria-label="Switch theme">
+          <span id="themeIcon">◐</span>
         </button>
       </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Mobile navigation" hidden>
-      <ul role="list">
-        <li><a href="#process" class="mobile-link" data-en="Process" data-ar="العملية">Process</a></li>
-        <li><a href="#work" class="mobile-link" data-en="Work" data-ar="الأعمال">Work</a></li>
-        <li><a href="#about" class="mobile-link" data-en="About" data-ar="عن يمان">About</a></li>
-        <li><a href="#resources" class="mobile-link" data-en="Resources" data-ar="الموارد">Resources</a></li>
-        <li><a href="#contact" class="mobile-link mobile-cta" data-en="Start a Project" data-ar="ابدأ مشروعاً">Start a Project</a></li>
-      </ul>
+      <button class="hamburger" id="hamburger"
+              aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </header>
+  </nav>
+</header>
 
-  <!-- ══════════════════════════════════════
-       MAIN CONTENT
-  ══════════════════════════════════════ -->
-  <main id="main" role="main">
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu__top">
+    <a href="#hero" class="nav-logo mobile-logo">
+      <span class="logo-mark">YA</span>
+      <span class="logo-text">yamanalie</span>
+    </a>
+    <button class="mobile-menu__close" id="mobileMenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+  <nav class="mobile-menu__nav">
+    <a href="#my-process" class="mobile-link" data-en="Process"   data-ar="العملية">Process</a>
+    <a href="#work"      class="mobile-link" data-en="Work"      data-ar="الأعمال">Work</a>
+    <a href="#about"     class="mobile-link" data-en="About Me"  data-ar="عني">About Me</a>
+    <a href="#resources" class="mobile-link" data-en="Resources" data-ar="الموارد">Resources</a>
+  </nav>
+  <div class="mobile-menu__bottom">
+    <a href="#contact" class="btn btn-primary btn--full mobile-cta-btn"
+       data-en="Start a Project" data-ar="ابدأ مشروعاً">
+      <span class="btn-text">Start a Project</span>
+      <span class="btn-fill" aria-hidden="true"></span>
+    </a>
+    <div class="mobile-switchers">
+      <button class="switcher-btn" id="mobileLangToggle">EN / AR</button>
+      <button class="switcher-btn" id="mobileThemeToggle">◐</button>
+    </div>
+  </div>
+</div>
+<div class="mobile-overlay" id="mobileOverlay" aria-hidden="true"></div>
 
-    <!-- ─────────────────────────────────────
-         SECTION 1 · HERO
-    ───────────────────────────────────── -->
-    <section class="section section--hero" id="hero" aria-labelledby="heroHeadline">
 
-      <!-- Infinity Loop Background -->
-      <div class="hero-bg" aria-hidden="true">
-        <svg class="infinity-loop" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-          <g class="loop-group">
-            <path class="loop-path loop-path--1" d="M720,450 C720,450 540,200 360,200 C180,200 80,350 80,450 C80,550 180,700 360,700 C540,700 720,450 720,450 C720,450 900,200 1080,200 C1260,200 1360,350 1360,450 C1360,550 1260,700 1080,700 C900,700 720,450 720,450 Z"/>
-            <path class="loop-path loop-path--2" d="M720,450 C720,450 570,250 400,250 C230,250 140,370 140,450 C140,530 230,650 400,650 C570,650 720,450 720,450 C720,450 870,250 1040,250 C1210,250 1300,370 1300,450 C1300,530 1210,650 1040,650 C870,650 720,450 720,450 Z"/>
-          </g>
-        </svg>
-      </div>
+<!-- ══════ MAIN ══════ -->
+<main id="main" role="main">
 
-      <div class="container">
-        <div class="hero-inner">
+  <!-- ── HERO ── -->
+  <section class="section section--hero" id="hero" aria-labelledby="heroHeadline">
 
-          <!-- Eyebrow -->
-          <p class="hero-eyebrow reveal-line" data-en="Brand Identity & 3D Design" data-ar="هوية بصرية وتصميم ثلاثي الأبعاد">
-            Brand Identity &amp; 3D Design
+    <!-- Infinity Loop Background -->
+    <div class="hero-bg" aria-hidden="true">
+      <svg class="infinity-loop" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+        <path class="loop-path loop-path--1"
+          d="M720,450 C720,450 540,200 360,200 C180,200 80,350 80,450 C80,550 180,700 360,700
+             C540,700 720,450 720,450 C720,450 900,200 1080,200 C1260,200 1360,350 1360,450
+             C1360,550 1260,700 1080,700 C900,700 720,450 720,450 Z"/>
+        <path class="loop-path loop-path--2"
+          d="M720,450 C720,450 570,250 400,250 C230,250 140,370 140,450 C140,530 230,650 400,650
+             C570,650 720,450 720,450 C720,450 870,250 1040,250 C1210,250 1300,370 1300,450
+             C1300,530 1210,650 1040,650 C870,650 720,450 720,450 Z"/>
+      </svg>
+    </div>
+
+    <div class="container">
+      <div class="hero-split">
+
+        <!-- LEFT: Headline + copy -->
+        <div class="hero-left">
+          <p class="hero-eyebrow reveal-line"
+             data-en="Brand Identity · Web · Social Media"
+             data-ar="هوية بصرية · ويب · سوشيال ميديا">
+            Brand Identity · Web · Social Media
           </p>
 
-          <!-- Main Headline (line-by-line mask reveal) -->
-          <h1 class="hero-headline" id="heroHeadline" aria-label="Creating Identities that Breathe">
-            <span class="headline-line reveal-line" data-line="0">
-              <span class="line-inner" data-en="Creating" data-ar="نبني">Creating</span>
+          <h1 class="hero-headline" id="heroHeadline">
+            <span class="headline-line" data-line="0">
+              <span class="line-inner" data-en="Building" data-ar="نبني">Building</span>
             </span>
-            <span class="headline-line reveal-line" data-line="1">
-              <span class="line-inner" data-en="Identities" data-ar="هويات">Identities</span>
+            <span class="headline-line" data-line="1">
+              <span class="line-inner" data-en="a Presence" data-ar="حضورًا">a Presence</span>
             </span>
-            <span class="headline-line reveal-line" data-line="2">
-              <span class="line-inner italic" data-en="that Breathe." data-ar="تتنفّس.">that Breathe.</span>
+            <span class="headline-line" data-line="2">
+              <span class="line-inner italic" data-en="that Lasts." data-ar="لا يُنسى.">that Lasts.</span>
             </span>
           </h1>
 
-          <!-- Sub-copy -->
-          <p class="hero-sub reveal-line" data-en="From brand strategy to 3D geometry — every mark I make is built to perform." data-ar="من استراتيجية العلامة التجارية إلى الهندسة ثلاثية الأبعاد — كل ما أصنعه مبني ليؤدي دوره.">
-            From brand strategy to 3D geometry — every mark I make is built to perform.
+          <p class="hero-sub reveal-line"
+             data-en="From brand identity to web &amp; social — every project is built to build presence."
+             data-ar="نبني حضورًا لا يُنسى — من هوية العلامة إلى الويب والسوشيال ميديا.">
+            From brand identity to web &amp; social — every project is built to build presence.
           </p>
 
-          <!-- Hero CTA Row -->
-          <div class="hero-cta-row reveal-line" data-line="4">
-            <a href="#work" class="btn btn-primary magnetic" data-en="View Work" data-ar="استعرض الأعمال">
+          <div class="hero-cta-row reveal-line">
+            <a href="#work" class="btn btn-primary magnetic"
+               data-en="View Work" data-ar="استعرض الأعمال">
               <span class="btn-text">View Work</span>
               <span class="btn-fill" aria-hidden="true"></span>
             </a>
-            <a href="#process" class="btn btn-ghost" data-en="See the Process" data-ar="اكتشف العملية">
+            <a href="#my-process" class="btn btn-ghost"
+               data-en="See the Process" data-ar="اكتشف العملية">
               <span class="btn-text">See the Process</span>
             </a>
           </div>
 
-          <!-- Availability badge -->
-          <div class="hero-badge reveal-line" data-line="5">
+          <div class="hero-badge reveal-line">
             <span class="badge-dot" aria-hidden="true"></span>
             <span data-en="Available for projects" data-ar="متاح للمشاريع">Available for projects</span>
           </div>
-
         </div>
 
-        <!-- Hero scroll hint -->
-        <div class="hero-scroll-hint" aria-hidden="true">
-          <span class="scroll-label">scroll</span>
-          <div class="scroll-line"></div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ─────────────────────────────────────
-         SECTION 2 · PROCESS
-    ───────────────────────────────────── -->
-    <section class="section section--process" id="process" aria-labelledby="processTitle">
-      <div class="container">
-
-        <div class="section-header">
-          <span class="section-tag reveal-item" data-en="How I Work" data-ar="كيف أعمل">How I Work</span>
-          <h2 class="section-title reveal-item" id="processTitle" data-en="The Process" data-ar="العملية">The Process</h2>
-        </div>
-
-        <div class="process-grid">
-
-          <!-- Step 01 -->
-          <article class="process-card reveal-item" data-step="01" aria-labelledby="step01title">
-            <div class="process-card__num" aria-hidden="true">01</div>
-            <div class="process-card__body">
-              <h3 class="process-card__title" id="step01title" data-en="Discovery &amp; Strategy" data-ar="الاكتشاف والاستراتيجية">
-                Discovery &amp; Strategy
-              </h3>
-              <p class="process-card__desc" data-en="Every identity starts with a problem worth solving. I dive deep into your market, audience, and intent to surface the truth your brand should own." data-ar="كل هوية تبدأ من مشكلة تستحق الحل. أتعمق في سوقك وجمهورك ونواياك لأكتشف الحقيقة التي يجب أن تمتلكها علامتك.">
-                Every identity starts with a problem worth solving. I dive deep into your market, audience, and intent to surface the truth your brand should own.
-              </p>
-              <ul class="process-card__tags" role="list">
-                <li>Brand Audit</li>
-                <li>Competitor Analysis</li>
-                <li>Positioning Map</li>
-              </ul>
-            </div>
-            <div class="process-card__hover-reveal" aria-hidden="true">
-              <div class="card-glyph">◈</div>
-            </div>
-          </article>
-
-          <!-- Step 02 -->
-          <article class="process-card reveal-item" data-step="02" aria-labelledby="step02title">
-            <div class="process-card__num" aria-hidden="true">02</div>
-            <div class="process-card__body">
-              <h3 class="process-card__title" id="step02title" data-en="Visual Iteration" data-ar="التكرار البصري">
-                Visual Iteration
-              </h3>
-              <p class="process-card__desc" data-en="From rough thumbnail to refined vector — I work in rapid, visible cycles. You'll see the evolution, not just the outcome." data-ar="من المسودة الأولى إلى الاتجاه المتجه الدقيق — أعمل في دورات سريعة ومرئية. ستشهد التطور لا النتيجة وحدها.">
-                From rough thumbnail to refined vector — I work in rapid, visible cycles. You'll see the evolution, not just the outcome.
-              </p>
-              <ul class="process-card__tags" role="list">
-                <li>Sketch Rounds</li>
-                <li>Vector Refinement</li>
-                <li>Colour Systems</li>
-              </ul>
-            </div>
-            <div class="process-card__hover-reveal" aria-hidden="true">
-              <div class="card-glyph">◉</div>
-            </div>
-          </article>
-
-          <!-- Step 03 -->
-          <article class="process-card reveal-item" data-step="03" aria-labelledby="step03title">
-            <div class="process-card__num" aria-hidden="true">03</div>
-            <div class="process-card__body">
-              <h3 class="process-card__title" id="step03title" data-en="System Implementation" data-ar="تطبيق النظام">
-                System Implementation
-              </h3>
-              <p class="process-card__desc" data-en="Logos are just the beginning. I build complete brand systems — packaging, mockups, motion guidelines — so your identity works in the real world." data-ar="الشعار مجرد البداية. أبني أنظمة هوية متكاملة — تغليف ومجسمات وإرشادات حركية — لتعمل هويتك في العالم الحقيقي.">
-                Logos are just the beginning. I build complete brand systems — packaging, mockups, motion guidelines — so your identity works in the real world.
-              </p>
-              <ul class="process-card__tags" role="list">
-                <li>Brand Guidelines</li>
-                <li>3D Mockups</li>
-                <li>Motion Direction</li>
-              </ul>
-            </div>
-            <div class="process-card__hover-reveal" aria-hidden="true">
-              <div class="card-glyph">◎</div>
-            </div>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ─────────────────────────────────────
-         SECTION 3 · WORK / PORTFOLIO GRID
-    ───────────────────────────────────── -->
-    <section class="section section--work" id="work" aria-labelledby="workTitle">
-      <div class="container">
-
-        <div class="section-header">
-          <span class="section-tag reveal-item" data-en="Selected Work" data-ar="أعمال مختارة">Selected Work</span>
-          <h2 class="section-title reveal-item" id="workTitle" data-en="The Work" data-ar="الأعمال">The Work</h2>
-        </div>
-
-        <!-- Filter Tabs -->
-        <div class="filter-tabs reveal-item" role="tablist" aria-label="Filter projects by category">
-          <button class="filter-tab active" role="tab" aria-selected="true" data-filter="all" data-en="All" data-ar="الكل">All</button>
-          <button class="filter-tab" role="tab" aria-selected="false" data-filter="logo" data-en="Logo Design" data-ar="تصميم الشعار">Logo Design</button>
-          <button class="filter-tab" role="tab" aria-selected="false" data-filter="social" data-en="Social Media" data-ar="السوشيال ميديا">Social Media</button>
-          <button class="filter-tab" role="tab" aria-selected="false" data-filter="3d" data-en="Web / 3D" data-ar="ويب / ثلاثي الأبعاد">Web / 3D</button>
-        </div>
-
-        <!-- Project Grid -->
-        <div class="project-grid" id="projectGrid" role="list">
-
-          <!-- Card 01 — placeholder; replace src with your image -->
-          <article class="project-card reveal-card" role="listitem" data-category="logo" aria-labelledby="proj01title">
-            <div class="card-img-wrap">
-              <img
-                class="card-img"
-                src="img/projects/livil-logo.jpg"
-                data-src="img/projects/livil-logo.jpg"
-                alt="Livil Brand Identity — minimal earthy logo design"
-                loading="lazy"
-                width="800" height="600"
-              />
-              <div class="card-img-blur" aria-hidden="true"></div>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="card-tag">Logo Design</span>
-                <span class="card-year">2024</span>
+        <!-- RIGHT: Carousel -->
+        <div class="hero-right" aria-hidden="true">
+          <div class="hero-carousel" id="heroCarousel">
+            <div class="carousel-track" id="carouselTrack">
+              <div class="carousel-card">
+                <div class="carousel-card__img">
+                  <img src="images/projects/livil-logo.jpg" alt="Livil Brand" loading="lazy"/>
+                </div>
+                <span class="carousel-card__label"
+                      data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
               </div>
-              <h3 class="card-title" id="proj01title">Livil</h3>
-              <p class="card-desc">Organic identity for a wellness brand rooted in nature.</p>
-              <a href="#" class="card-link" aria-label="View Livil project">View Project →</a>
-            </div>
-          </article>
-
-          <!-- Card 02 -->
-          <article class="project-card reveal-card" role="listitem" data-category="3d" aria-labelledby="proj02title">
-            <div class="card-img-wrap">
-              <img
-                class="card-img"
-                src="img/projects/3d-mark.jpg"
-                data-src="img/projects/3d-mark.jpg"
-                alt="3D Brand Mark — geometric rendering"
-                loading="lazy"
-                width="800" height="600"
-              />
-              <div class="card-img-blur" aria-hidden="true"></div>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="card-tag">3D Design</span>
-                <span class="card-year">2024</span>
+              <div class="carousel-card">
+                <div class="carousel-card__img">
+                  <img src="images/projects/social-system.jpg" alt="Social" loading="lazy"/>
+                </div>
+                <span class="carousel-card__label"
+                      data-en="Social Media" data-ar="سوشيال ميديا">Social Media</span>
               </div>
-              <h3 class="card-title" id="proj02title">Geometric Mark</h3>
-              <p class="card-desc">3D brand sculpture for a luxury architecture studio.</p>
-              <a href="#" class="card-link" aria-label="View Geometric Mark project">View Project →</a>
-            </div>
-          </article>
-
-          <!-- Card 03 -->
-          <article class="project-card reveal-card" role="listitem" data-category="social" aria-labelledby="proj03title">
-            <div class="card-img-wrap">
-              <img
-                class="card-img"
-                src="img/projects/social-system.jpg"
-                data-src="img/projects/social-system.jpg"
-                alt="Social Media Design System"
-                loading="lazy"
-                width="800" height="600"
-              />
-              <div class="card-img-blur" aria-hidden="true"></div>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="card-tag">Social Media</span>
-                <span class="card-year">2024</span>
+              <div class="carousel-card">
+                <div class="carousel-card__img">
+                  <img src="images/projects/logotype-04.jpg" alt="Brand" loading="lazy"/>
+                </div>
+                <span class="carousel-card__label"
+                      data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
               </div>
-              <h3 class="card-title" id="proj03title">Social System</h3>
-              <p class="card-desc">Complete IG content architecture for a fashion label.</p>
-              <a href="#" class="card-link" aria-label="View Social System project">View Project →</a>
-            </div>
-          </article>
-
-          <!-- Card 04 -->
-          <article class="project-card reveal-card" role="listitem" data-category="logo" aria-labelledby="proj04title">
-            <div class="card-img-wrap">
-              <img
-                class="card-img"
-                src="img/projects/logotype-04.jpg"
-                data-src="img/projects/logotype-04.jpg"
-                alt="Logotype design project"
-                loading="lazy"
-                width="800" height="600"
-              />
-              <div class="card-img-blur" aria-hidden="true"></div>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="card-tag">Logo Design</span>
-                <span class="card-year">2023</span>
+              <div class="carousel-card">
+                <div class="carousel-card__img">
+                  <img src="images/projects/social-campaign.jpg" alt="Web" loading="lazy"/>
+                </div>
+                <span class="carousel-card__label"
+                      data-en="Web Design" data-ar="تصميم ويب">Web Design</span>
               </div>
-              <h3 class="card-title" id="proj04title">Typeform Mark</h3>
-              <p class="card-desc">Custom logotype exploring negative space and balance.</p>
-              <a href="#" class="card-link" aria-label="View Typeform Mark project">View Project →</a>
-            </div>
-          </article>
-
-          <!-- Card 05 -->
-          <article class="project-card reveal-card" role="listitem" data-category="3d" aria-labelledby="proj05title">
-            <div class="card-img-wrap">
-              <img
-                class="card-img"
-                src="img/projects/product-render.jpg"
-                data-src="img/projects/product-render.jpg"
-                alt="3D Product Render"
-                loading="lazy"
-                width="800" height="600"
-              />
-              <div class="card-img-blur" aria-hidden="true"></div>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="card-tag">3D Render</span>
-                <span class="card-year">2024</span>
+              <div class="carousel-card">
+                <div class="carousel-card__img">
+                  <img src="images/projects/livil-logo.jpg" alt="Identity" loading="lazy"/>
+                </div>
+                <span class="carousel-card__label"
+                      data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
               </div>
-              <h3 class="card-title" id="proj05title">Product Render</h3>
-              <p class="card-desc">Hyper-real packaging visualization for a fragrance house.</p>
-              <a href="#" class="card-link" aria-label="View Product Render project">View Project →</a>
-            </div>
-          </article>
-
-          <!-- Card 06 -->
-          <article class="project-card reveal-card" role="listitem" data-category="social" aria-labelledby="proj06title">
-            <div class="card-img-wrap">
-              <img
-                class="card-img"
-                src="img/projects/social-campaign.jpg"
-                data-src="img/projects/social-campaign.jpg"
-                alt="Social media campaign design"
-                loading="lazy"
-                width="800" height="600"
-              />
-              <div class="card-img-blur" aria-hidden="true"></div>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="card-tag">Social Media</span>
-                <span class="card-year">2023</span>
-              </div>
-              <h3 class="card-title" id="proj06title">Campaign Series</h3>
-              <p class="card-desc">Ramadan campaign artwork across 30-day content arc.</p>
-              <a href="#" class="card-link" aria-label="View Campaign Series project">View Project →</a>
-            </div>
-          </article>
-
-        </div><!-- /project-grid -->
-      </div>
-    </section>
-
-
-    <!-- ─────────────────────────────────────
-         SECTION 4 · ABOUT
-    ───────────────────────────────────── -->
-    <section class="section section--about" id="about" aria-labelledby="aboutTitle">
-      <div class="container">
-        <div class="about-grid">
-
-          <!-- Left: Image -->
-          <div class="about-img-wrap reveal-item">
-            <div class="about-img-frame">
-              <img
-                src="img/yaman-portrait.jpg"
-                alt="Yaman Ali — Brand Identity Designer & 3D Artist"
-                class="about-img"
-                loading="lazy"
-                width="600" height="750"
-              />
-            </div>
-            <!-- Floating stat cards -->
-            <div class="about-stat about-stat--1 reveal-item">
-              <span class="stat-num">60+</span>
-              <span class="stat-label" data-en="Brands Built" data-ar="علامة تجارية">Brands Built</span>
-            </div>
-            <div class="about-stat about-stat--2 reveal-item">
-              <span class="stat-num">4+</span>
-              <span class="stat-label" data-en="Years Active" data-ar="سنوات خبرة">Years Active</span>
             </div>
           </div>
-
-          <!-- Right: Copy -->
-          <div class="about-copy">
-            <span class="section-tag reveal-item" data-en="About Yaman" data-ar="عن يمان">About Yaman</span>
-            <h2 class="section-title reveal-item" id="aboutTitle" data-en="From the pitch to the pixel." data-ar="من الملعب إلى البيكسل.">
-              From the pitch to the pixel.
-            </h2>
-            <div class="about-body">
-              <p class="reveal-item" data-en="From the discipline of professional football to the precision of 3D Brand Geometry. I build identities that don't just look good — they perform." data-ar="من انضباط كرة القدم الاحترافية إلى دقة الهندسة ثلاثية الأبعاد. أبني هويات لا تبدو رائعة فحسب — بل تؤدي دورها.">
-                From the discipline of professional football to the precision of 3D Brand Geometry. I build identities that don't just look good — they perform.
-              </p>
-              <p class="reveal-item" data-en="Every logo I design carries the same mentality I brought to the field — obsessive preparation, clean execution, and a relentless drive to win attention in a crowded space." data-ar="كل شعار أصممه يحمل نفس العقلية التي أحضرتها إلى الملعب — تحضير مكثف، تنفيذ نظيف، وسعي لا يهدأ لكسب الانتباه في فضاء مكتظ.">
-                Every logo I design carries the same mentality I brought to the field — obsessive preparation, clean execution, and a relentless drive to win attention in a crowded space.
-              </p>
-            </div>
-            <div class="about-cta reveal-item">
-              <a href="#contact" class="btn btn-primary magnetic" data-en="Work with me" data-ar="اعمل معي">
-                <span class="btn-text">Work with me</span>
-                <span class="btn-fill" aria-hidden="true"></span>
-              </a>
-              <a href="https://www.instagram.com/yamanalie" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" aria-label="Visit Instagram @yamanalie">
-                <span class="btn-text">@yamanalie</span>
-              </a>
-            </div>
-          </div>
-
         </div>
+
+      </div><!-- /hero-split -->
+
+      <div class="hero-scroll-hint" aria-hidden="true">
+        <span class="scroll-label">scroll</span>
+        <div class="scroll-line"></div>
       </div>
-    </section>
+    </div>
+  </section>
 
 
-    <!-- ─────────────────────────────────────
-         SECTION 5 · RESOURCES / PRODUCTS
-    ───────────────────────────────────── -->
-    <section class="section section--resources" id="resources" aria-labelledby="resourcesTitle">
-      <div class="container">
-
-        <div class="section-header">
-          <span class="section-tag reveal-item" data-en="Free & Premium Tools" data-ar="أدوات مجانية وبريميوم">Free &amp; Premium Tools</span>
-          <h2 class="section-title reveal-item" id="resourcesTitle" data-en="Resources" data-ar="الموارد">Resources</h2>
-        </div>
-
-        <div class="resources-grid">
-
-          <!-- Resource Card 01 — Free Redlines Pack -->
-          <article class="resource-card reveal-item" aria-labelledby="res01title">
-            <div class="resource-card__badge">FREE</div>
-            <div class="resource-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <rect x="8" y="8" width="44" height="44" rx="4" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M8 22H52" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M22 22V52" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M15 15H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="resource-card__body">
-              <h3 class="resource-card__title" id="res01title" data-en="Instagram Redlines Pack" data-ar="حزمة الإرشادات البصرية للإنستقرام">
-                Instagram Redlines Pack
-              </h3>
-              <p class="resource-card__desc" data-en="Prevent UI overlaps on Reels &amp; Posts. A designer's essential tool for pixel-perfect IG content." data-ar="تجنّب تداخل واجهة المستخدم في الريلز والبوستات. أداة المصمم الأساسية للمحتوى المثالي.">
-                Prevent UI overlaps on Reels &amp; Posts. A designer's essential tool for pixel-perfect IG content.
-              </p>
-              <ul class="resource-card__details" role="list">
-                <li>Figma &amp; Photoshop templates</li>
-                <li>All IG format safe zones</li>
-                <li>Regularly updated</li>
-              </ul>
-            </div>
-            <button class="btn btn-primary magnetic resource-download-btn" data-resource="ig-redlines" data-en="Download Free" data-ar="تحميل مجاناً" aria-label="Download Instagram Redlines Pack — free sign up required">
-              <span class="btn-text">Download Free</span>
-              <span class="btn-fill" aria-hidden="true"></span>
-            </button>
-          </article>
-
-          <!-- Resource Card 02 — Premium (placeholder) -->
-          <article class="resource-card reveal-item" aria-labelledby="res02title">
-            <div class="resource-card__badge resource-card__badge--premium">SOON</div>
-            <div class="resource-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <circle cx="30" cy="30" r="22" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M30 14V30L38 38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="resource-card__body">
-              <h3 class="resource-card__title" id="res02title" data-en="Brand Strategy Template" data-ar="قالب استراتيجية العلامة التجارية">
-                Brand Strategy Template
-              </h3>
-              <p class="resource-card__desc" data-en="A comprehensive Notion + PDF template for mapping your brand positioning, audience, and visual direction from day one." data-ar="قالب شامل بنظام نوشن وPDF لرسم خريطة موقعك التنافسي وجمهورك واتجاهك البصري منذ اليوم الأول.">
-                A comprehensive Notion + PDF template for mapping your brand positioning, audience, and visual direction from day one.
-              </p>
-            </div>
-            <button class="btn btn-ghost" disabled data-en="Coming Soon" data-ar="قريباً">
-              <span class="btn-text">Coming Soon</span>
-            </button>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ─────────────────────────────────────
-         SECTION 6 · CONTACT CTA BAND
-    ───────────────────────────────────── -->
-    <section class="section section--contact-band" id="contact" aria-labelledby="contactBandTitle">
-      <div class="container">
-        <div class="contact-band-inner reveal-item">
-          <p class="contact-band__eyebrow" data-en="Ready when you are" data-ar="جاهز متى تكون أنت">Ready when you are</p>
-          <h2 class="contact-band__title" id="contactBandTitle" data-en="Let's build something great." data-ar="لنبنِ شيئاً عظيماً.">
-            Let's build<br/><em>something great.</em>
-          </h2>
-          <button class="btn btn-primary btn--xl magnetic" id="openInquiryBtn" data-en="Start a Project" data-ar="ابدأ مشروعاً" aria-haspopup="dialog" aria-controls="inquiryModal">
-            <span class="btn-text">Start a Project</span>
-            <span class="btn-fill" aria-hidden="true"></span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-  </main><!-- /main -->
-
-
-  <!-- ══════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════ -->
-  <footer class="site-footer" role="contentinfo">
+  <!-- ── MY PROCESS TEASER ── -->
+  <section class="section section--process-teaser" id="my-process" aria-labelledby="processTeaserTitle">
     <div class="container">
-      <div class="footer-inner">
+      <div class="process-teaser-grid">
 
-        <div class="footer-brand">
-          <a href="#hero" class="footer-logo" aria-label="Yaman Ali — back to top">
-            <span class="logo-mark">YA</span>
-          </a>
-          <p class="footer-tagline" data-en="Creating Identities that Breathe." data-ar="نصنع هويات تتنفّس.">
-            Creating Identities that Breathe.
+        <div class="process-teaser-img reveal-item">
+          <div class="process-teaser-img__frame">
+            <img src="images/process-overview.jpg" alt="Yaman Ali design process" loading="lazy" width="900" height="700"/>
+          </div>
+          <div class="process-teaser-img__badge">
+            <span class="badge-dot" aria-hidden="true"></span>
+            <span data-en="From brief to delivery" data-ar="من الإيجاز إلى التسليم">From brief to delivery</span>
+          </div>
+        </div>
+
+        <div class="process-teaser-copy">
+          <span class="section-tag reveal-item" data-en="How it works" data-ar="كيف يعمل">How it works</span>
+
+          <h2 class="section-title process-teaser-h reveal-item" id="processTeaserTitle">
+            <span data-en="My" data-ar="عمليتي">My</span>
+            <span class="italic" data-en=" Process." data-ar=" في التصميم."> Process.</span>
+          </h2>
+
+          <p class="process-teaser-desc reveal-item"
+             data-en="Every project follows a clear, structured path — from the first conversation to the final file delivery. No guesswork. No surprises. Just a process designed to get the right result, efficiently."
+             data-ar="كل مشروع يسير في مسار واضح ومنظم — من أول محادثة إلى تسليم الملف الأخير. لا تخمين. لا مفاجآت. فقط عملية مصممة للوصول إلى النتيجة الصحيحة بكفاءة.">
+            Every project follows a clear, structured path — from the first conversation to the final file delivery. No guesswork. No surprises. Just a process designed to get the right result, efficiently.
           </p>
-        </div>
 
-        <nav class="footer-nav" aria-label="Footer navigation">
-          <ul role="list">
-            <li><a href="#process" data-en="Process" data-ar="العملية">Process</a></li>
-            <li><a href="#work" data-en="Work" data-ar="الأعمال">Work</a></li>
-            <li><a href="#about" data-en="About" data-ar="عن يمان">About</a></li>
-            <li><a href="#resources" data-en="Resources" data-ar="الموارد">Resources</a></li>
-            <li><a href="auth.html" data-en="Sign In" data-ar="تسجيل الدخول">Sign In</a></li>
-          </ul>
-        </nav>
+          <div class="process-teaser-steps reveal-item">
+            <div class="pts-item">
+              <span class="pts-num">01</span>
+              <span class="pts-label" data-en="Discovery — call or questionnaire" data-ar="الاكتشاف — مكالمة أو استبيان">Discovery — call or questionnaire</span>
+            </div>
+            <div class="pts-item">
+              <span class="pts-num">02</span>
+              <span class="pts-label" data-en="Research &amp; Strategy" data-ar="البحث والاستراتيجية">Research &amp; Strategy</span>
+            </div>
+            <div class="pts-item">
+              <span class="pts-num">03</span>
+              <span class="pts-label" data-en="Design &amp; Refinement" data-ar="التصميم والتنقيح">Design &amp; Refinement</span>
+            </div>
+            <div class="pts-item">
+              <span class="pts-num">04</span>
+              <span class="pts-label" data-en="Final Delivery" data-ar="التسليم النهائي">Final Delivery</span>
+            </div>
+          </div>
 
-        <div class="footer-social">
-          <a href="https://www.instagram.com/yamanalie" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram @yamanalie">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
-          </a>
-          <a href="https://www.pinterest.com/yamanalie" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Pinterest yamanalie">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.18-.77 1.23-5.22 1.23-5.22s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.33.67 1.33 1.48 0 .9-.58 2.26-.87 3.52-.25 1.05.52 1.9 1.54 1.9 1.85 0 3.28-1.95 3.28-4.77 0-2.49-1.79-4.24-4.35-4.24-2.96 0-4.69 2.22-4.69 4.51 0 .89.34 1.85.77 2.37.08.1.09.19.07.29-.08.32-.25 1.05-.29 1.2-.05.19-.16.23-.37.14-1.39-.65-2.26-2.68-2.26-4.32 0-3.52 2.56-6.76 7.38-6.76 3.87 0 6.88 2.76 6.88 6.45 0 3.85-2.42 6.94-5.78 6.94-1.13 0-2.19-.59-2.55-1.28l-.69 2.59c-.25.97-.93 2.18-1.39 2.92.85.26 1.75.4 2.68.4 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-          </a>
-          <a href="www.linkedin.com/in/yaman-ali-845737389" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn yamanalie">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 014 0v4M12 10v7"/></svg>
-          </a>
-        </div>
-
-      </div>
-
-      <div class="footer-bottom">
-        <p class="footer-copy" data-en="© 2025 Yaman Ali. All rights reserved." data-ar="© 2025 يمان علي. جميع الحقوق محفوظة.">
-          © 2025 Yaman Ali. All rights reserved.
-        </p>
-        <p class="footer-craft">Crafted with intent.</p>
-      </div>
-    </div>
-  </footer>
-
-
-  <!-- ══════════════════════════════════════
-       MODALS
-  ══════════════════════════════════════ -->
-
-  <!-- ─── Auth Gate Modal ─── -->
-  <div class="modal-overlay" id="authGateOverlay" role="dialog" aria-modal="true" aria-labelledby="authGateTitle" hidden>
-    <div class="modal modal--auth-gate">
-      <button class="modal-close" data-modal="authGateOverlay" aria-label="Close modal">✕</button>
-      <div class="modal-body">
-        <div class="modal-icon" aria-hidden="true">◈</div>
-        <h2 class="modal-title" id="authGateTitle" data-en="Let's build something great." data-ar="لنبنِ شيئاً عظيماً.">
-          Let's build something great.
-        </h2>
-        <p class="modal-sub" data-en="Create a free account to track your project, or continue as a guest." data-ar="أنشئ حساباً مجانياً لمتابعة مشروعك، أو تابع كضيف.">
-          Create a free account to track your project, or continue as a guest.
-        </p>
-        <div class="modal-actions">
-          <a href="auth.html" class="btn btn-primary btn--full magnetic">
-            <span class="btn-text" data-en="Create Account" data-ar="إنشاء حساب">Create Account</span>
-            <span class="btn-fill" aria-hidden="true"></span>
-          </a>
-          <button class="btn btn-ghost btn--full" id="continueGuestBtn" data-en="Continue as Guest" data-ar="المتابعة كضيف">
-            <span class="btn-text">Continue as Guest</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── Inquiry Form Modal ─── -->
-  <div class="modal-overlay" id="inquiryModal" role="dialog" aria-modal="true" aria-labelledby="inquiryModalTitle" hidden>
-    <div class="modal modal--inquiry">
-      <button class="modal-close" data-modal="inquiryModal" aria-label="Close inquiry form">✕</button>
-
-      <!-- Progress bar -->
-      <div class="inquiry-progress" aria-label="Form progress" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="1">
-        <div class="inquiry-progress__bar" id="inquiryProgressBar"></div>
-        <span class="inquiry-progress__label" id="inquiryProgressLabel">1 / 10</span>
-      </div>
-
-      <div class="modal-body">
-        <h2 class="modal-title" id="inquiryModalTitle" data-en="Tell me about your brand." data-ar="أخبرني عن علامتك التجارية.">
-          Tell me about your brand.
-        </h2>
-
-        <form id="inquiryForm" novalidate>
-          <!-- Steps are rendered by JS -->
-          <div id="inquirySteps"></div>
-
-          <div class="form-nav">
-            <button type="button" class="btn btn-ghost" id="inquiryPrev" hidden>
-              <span class="btn-text" data-en="← Back" data-ar="→ رجوع">← Back</span>
-            </button>
-            <button type="button" class="btn btn-primary magnetic" id="inquiryNext">
-              <span class="btn-text" data-en="Next →" data-ar="التالي ←">Next →</span>
+          <div class="reveal-item" style="margin-top:32px">
+            <a href="process.html" class="btn btn-primary magnetic"
+               data-en="View the Full Process →" data-ar="← استعرض العملية الكاملة">
+              <span class="btn-text">View the Full Process →</span>
               <span class="btn-fill" aria-hidden="true"></span>
-            </button>
+            </a>
           </div>
-        </form>
+        </div>
+
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- ─── Resource Download Modal (email gate) ─── -->
-  <div class="modal-overlay" id="downloadModal" role="dialog" aria-modal="true" aria-labelledby="downloadModalTitle" hidden>
-    <div class="modal modal--download">
-      <button class="modal-close" data-modal="downloadModal" aria-label="Close download modal">✕</button>
-      <div class="modal-body">
-        <div class="modal-icon" aria-hidden="true">↓</div>
-        <h2 class="modal-title" id="downloadModalTitle" data-en="Get the Free Pack" data-ar="احصل على الحزمة المجانية">
-          Get the Free Pack
-        </h2>
-        <p class="modal-sub" data-en="Drop your email and I'll send it straight to you — plus occasional design tips." data-ar="أضف بريدك الإلكتروني وسأرسله مباشرة — مع نصائح تصميمية دورية.">
-          Drop your email and I'll send it straight to you — plus occasional design tips.
-        </p>
-        <form id="downloadForm" novalidate>
-          <div class="form-field">
-            <label for="downloadEmail" class="form-label" data-en="Email address" data-ar="البريد الإلكتروني">Email address</label>
-            <input type="email" id="downloadEmail" name="email" class="form-input" required autocomplete="email" placeholder="you@example.com" />
+
+  <!-- ── WORK ── -->
+  <section class="section section--work" id="work" aria-labelledby="workTitle">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag reveal-item"
+              data-en="Selected Work" data-ar="أعمال مختارة">Selected Work</span>
+        <h2 class="section-title reveal-item" id="workTitle"
+            data-en="The Work" data-ar="الأعمال">The Work</h2>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs reveal-item" role="tablist">
+        <button class="filter-tab active" role="tab" aria-selected="true"
+                data-filter="all" data-en="All" data-ar="الكل">All</button>
+        <button class="filter-tab" role="tab" aria-selected="false"
+                data-filter="logo" data-en="Logo Design" data-ar="تصميم الشعار">Logo Design</button>
+        <button class="filter-tab" role="tab" aria-selected="false"
+                data-filter="social" data-en="Social Media" data-ar="السوشيال ميديا">Social Media</button>
+      </div>
+
+
+      <!-- 3 Project Cards — NO year shown -->
+      <div class="project-grid" id="projectGrid" role="list">
+
+        <article class="project-card reveal-card" role="listitem"
+                 data-category="logo" aria-labelledby="proj01title">
+          <div class="card-img-wrap">
+            <img class="card-img" src="images/projects/livil-logo.jpg"
+                 alt="Livil Brand Identity" loading="lazy" width="800" height="600"/>
+            <div class="card-img-blur" aria-hidden="true"></div>
           </div>
-          <button type="submit" class="btn btn-primary btn--full magnetic">
-            <span class="btn-text" data-en="Send me the pack →" data-ar="أرسل لي الحزمة →">Send me the pack →</span>
-            <span class="btn-fill" aria-hidden="true"></span>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="card-tag" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            </div>
+            <h3 class="card-title" id="proj01title">Livil</h3>
+            <p class="card-desc"
+               data-en="Organic identity for a wellness brand rooted in nature."
+               data-ar="هوية عضوية لعلامة صحية متجذرة في الطبيعة.">
+              Organic identity for a wellness brand rooted in nature.
+            </p>
+            <a href="#" class="card-link"
+               data-en="View Project →" data-ar="← عرض المشروع">View Project →</a>
+          </div>
+        </article>
+
+        <article class="project-card reveal-card" role="listitem"
+                 data-category="logo" aria-labelledby="proj02title">
+          <div class="card-img-wrap">
+            <img class="card-img" src="images/projects/logotype-04.jpg"
+                 alt="Typeform Mark" loading="lazy" width="800" height="600"/>
+            <div class="card-img-blur" aria-hidden="true"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="card-tag" data-en="Logo Design" data-ar="تصميم شعار">Logo Design</span>
+            </div>
+            <h3 class="card-title" id="proj02title">Typeform Mark</h3>
+            <p class="card-desc"
+               data-en="Custom logotype exploring negative space and balance."
+               data-ar="شعار مخصص يستكشف الفراغ السلبي والتوازن.">
+              Custom logotype exploring negative space and balance.
+            </p>
+            <a href="#" class="card-link"
+               data-en="View Project →" data-ar="← عرض المشروع">View Project →</a>
+          </div>
+        </article>
+
+        <article class="project-card reveal-card" role="listitem"
+                 data-category="social" aria-labelledby="proj03title">
+          <div class="card-img-wrap">
+            <img class="card-img" src="images/projects/social-system.jpg"
+                 alt="Social Media System" loading="lazy" width="800" height="600"/>
+            <div class="card-img-blur" aria-hidden="true"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="card-tag" data-en="Social Media" data-ar="سوشيال ميديا">Social Media</span>
+            </div>
+            <h3 class="card-title" id="proj03title">Social System</h3>
+            <p class="card-desc"
+               data-en="Complete IG content architecture for a fashion label."
+               data-ar="بنية محتوى إنستقرام متكاملة لعلامة أزياء.">
+              Complete IG content architecture for a fashion label.
+            </p>
+            <a href="#" class="card-link"
+               data-en="View Project →" data-ar="← عرض المشروع">View Project →</a>
+          </div>
+        </article>
+
+      </div><!-- /project-grid -->
+
+      <!-- View All button → subhtml/projects.html -->
+      <div class="work-cta reveal-item">
+        <a href="subhtml/projects.html" class="btn btn-primary magnetic"
+           data-en="View All Projects" data-ar="عرض جميع الأعمال">
+          <span class="btn-text">View All Projects</span>
+          <span class="btn-fill" aria-hidden="true"></span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ── ABOUT ME ── -->
+  <section class="section section--about" id="about" aria-labelledby="aboutTitle">
+    <div class="container">
+      <div class="about-grid">
+
+        <!-- Image side -->
+        <div class="about-img-wrap reveal-item">
+          <div class="about-img-frame">
+            <img src="images/yaman-portrait.jpg"
+                 alt="Yaman Ali — Brand Identity & Web Designer"
+                 class="about-img" loading="lazy" width="600" height="750"/>
+          </div>
+          <div class="about-stat about-stat--1 reveal-item">
+            <span class="stat-num">20+</span>
+            <span class="stat-label" data-en="Brands Built" data-ar="علامة تجارية">Brands Built</span>
+          </div>
+          <div class="about-stat about-stat--2 reveal-item">
+            <span class="stat-num">+1</span>
+            <span class="stat-label" data-en="Year Experience" data-ar="سنة خبرة">Year Experience</span>
+          </div>
+        </div>
+
+        <!-- Copy side -->
+        <div class="about-copy">
+          <span class="section-tag reveal-item"
+                data-en="About Me" data-ar="عني">About Me</span>
+
+          <h2 class="section-title reveal-item" id="aboutTitle"
+              data-en="Brand &amp; Web Designer."
+              data-ar="مصمم هويات بصرية ومواقع إلكترونية.">
+            Brand &amp; Web Designer.
+          </h2>
+
+          <div class="about-skills reveal-item">
+            <span class="skill-chip"
+                  data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+            <span class="skill-chip"
+                  data-en="Web Design" data-ar="تصميم ويب">Web Design</span>
+            <span class="skill-chip"
+                  data-en="Social Media Design" data-ar="تصميم سوشيال">Social Media Design</span>
+          </div>
+
+          <div class="about-body">
+            <p class="reveal-item"
+               data-en="I craft brand identities, web experiences, and social media systems that don't just look good — they build a lasting presence. Every project is built with intention, clarity, and an eye for what makes a brand truly unforgettable."
+               data-ar="أصنع هويات بصرية وتجارب ويب وأنظمة سوشيال ميديا لا تبدو رائعة فحسب — بل تبني حضورًا لا يُنسى. كل مشروع يُبنى بنية وضوح وتفاصيل تجعل العلامة حقاً لا تُنسى.">
+              I craft brand identities, web experiences, and social media systems that don't just look good — they build a lasting presence. Every project is built with intention, clarity, and an eye for what makes a brand truly unforgettable.
+            </p>
+          </div>
+
+          <div class="about-cta reveal-item">
+            <a href="#contact" class="btn btn-primary magnetic"
+               data-en="Work with Me" data-ar="اعمل معي">
+              <span class="btn-text">Work with Me</span>
+              <span class="btn-fill" aria-hidden="true"></span>
+            </a>
+            <a href="https://www.instagram.com/yamanalie" target="_blank"
+               rel="noopener noreferrer" class="btn btn-ghost">
+              <span class="btn-text">@yamanalie</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── RESOURCES ── -->
+  <section class="section section--resources" id="resources" aria-labelledby="resourcesTitle">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag reveal-item"
+              data-en="Free &amp; Premium Tools" data-ar="أدوات مجانية وبريميوم">
+          Free &amp; Premium Tools
+        </span>
+        <h2 class="section-title reveal-item" id="resourcesTitle"
+            data-en="Resources" data-ar="الموارد">Resources</h2>
+      </div>
+
+      <div class="resources-grid">
+
+        <!-- Card 1 — Instagram Redlines — COMING SOON -->
+        <article class="resource-card reveal-item">
+          <div class="resource-card__badge resource-card__badge--soon">
+            <span data-en="COMING SOON" data-ar="قريباً">COMING SOON</span>
+          </div>
+          <div class="resource-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 60 60" fill="none">
+              <rect x="8" y="8" width="44" height="44" rx="4"
+                    stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8 22H52"  stroke="currentColor" stroke-width="1.5"/>
+              <path d="M22 22V52" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="resource-card__body">
+            <h3 class="resource-card__title">
+              Instagram <span class="redlines-word">Redlines</span> Pack
+            </h3>
+            <p class="resource-card__desc"
+               data-en="Prevent UI overlaps on Reels &amp; Posts. Pixel-perfect IG safe zones for designers."
+               data-ar="تجنّب تداخل الواجهة في الريلز والبوستات. مناطق أمان دقيقة للمصممين.">
+              Prevent UI overlaps on Reels &amp; Posts. Pixel-perfect IG safe zones for designers.
+            </p>
+          </div>
+          <button class="btn btn-ghost" disabled aria-disabled="true">
+            <span class="btn-text" data-en="Coming Soon" data-ar="قريباً">Coming Soon</span>
           </button>
-        </form>
+        </article>
+
+        <!-- Card 2 — Brand Strategy — SOON -->
+        <article class="resource-card reveal-item">
+          <div class="resource-card__badge resource-card__badge--soon">
+            <span data-en="SOON" data-ar="قريباً">SOON</span>
+          </div>
+          <div class="resource-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 60 60" fill="none">
+              <circle cx="30" cy="30" r="22" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M30 14V30L38 38" stroke="currentColor"
+                    stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="resource-card__body">
+            <h3 class="resource-card__title"
+                data-en="Brand Strategy Template" data-ar="قالب استراتيجية العلامة">
+              Brand Strategy Template
+            </h3>
+            <p class="resource-card__desc"
+               data-en="A Notion + PDF template for mapping your brand positioning from day one."
+               data-ar="قالب نوشن وPDF لرسم موقعك التنافسي منذ اليوم الأول.">
+              A Notion + PDF template for mapping your brand positioning from day one.
+            </p>
+          </div>
+          <button class="btn btn-ghost" disabled aria-disabled="true">
+            <span class="btn-text" data-en="Coming Soon" data-ar="قريباً">Coming Soon</span>
+          </button>
+        </article>
+
+      </div>
+
+      <!-- View All → subhtml/resources.html -->
+      <div class="resources-cta reveal-item">
+        <a href="subhtml/resources.html" class="btn btn-primary magnetic"
+           data-en="View All Resources" data-ar="عرض جميع الموارد">
+          <span class="btn-text">View All Resources</span>
+          <span class="btn-fill" aria-hidden="true"></span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ── CONTACT BAND ── -->
+  <section class="section section--contact-band" id="contact" aria-labelledby="contactBandTitle">
+    <div class="container">
+      <div class="contact-band-inner reveal-item">
+        <p class="contact-band__eyebrow"
+           data-en="Ready when you are" data-ar="جاهز متى تكون أنت">
+          Ready when you are
+        </p>
+        <h2 class="contact-band__title" id="contactBandTitle">
+          <span data-en="Let's build" data-ar="لنبنِ">Let's build</span><br/>
+          <em data-en="something great." data-ar="حضورًا لا يُنسى.">something great.</em>
+        </h2>
+        <a href="inquiry.html" class="btn btn-primary btn--xl magnetic" id="openInquiryBtn">
+          <span class="btn-text"
+                data-en="Start a Project" data-ar="ابدأ مشروعاً">Start a Project</span>
+          <span class="btn-fill" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+
+<!-- ══════ FOOTER ══════ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-inner">
+
+      <div class="footer-brand">
+        <a href="#hero" class="footer-logo">
+          <span class="logo-mark">YA</span>
+        </a>
+        <p class="footer-tagline"
+           data-en="Building a presence that lasts."
+           data-ar="نبني حضورًا لا يُنسى.">
+          Building a presence that lasts.
+        </p>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <ul role="list">
+          <li><a href="#my-process"       data-en="Process"      data-ar="العملية">Process</a></li>
+          <li><a href="#work"             data-en="Work"         data-ar="الأعمال">Work</a></li>
+          <li><a href="#about"            data-en="About Me"     data-ar="عني">About Me</a></li>
+          <li><a href="#resources"        data-en="Resources"    data-ar="الموارد">Resources</a></li>
+          <li><a href="subhtml/projects.html"  data-en="All Projects" data-ar="جميع الأعمال">All Projects</a></li>
+          <li><a href="subhtml/process.html"  data-en="The Process"  data-ar="العملية">The Process</a></li>
+          <li><a href="login/auth.html"   data-en="Sign In"      data-ar="تسجيل الدخول">Sign In</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-social">
+        <a href="https://www.instagram.com/yamanalie" target="_blank"
+           rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="https://www.pinterest.com/yamanalie" target="_blank"
+           rel="noopener noreferrer" class="social-link" aria-label="Pinterest">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.18-.77 1.23-5.22 1.23-5.22s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.33.67 1.33 1.48 0 .9-.58 2.26-.87 3.52-.25 1.05.52 1.9 1.54 1.9 1.85 0 3.28-1.95 3.28-4.77 0-2.49-1.79-4.24-4.35-4.24-2.96 0-4.69 2.22-4.69 4.51 0 .89.34 1.85.77 2.37.08.1.09.19.07.29-.08.32-.25 1.05-.29 1.2-.05.19-.16.23-.37.14-1.39-.65-2.26-2.68-2.26-4.32 0-3.52 2.56-6.76 7.38-6.76 3.87 0 6.88 2.76 6.88 6.45 0 3.85-2.42 6.94-5.78 6.94-1.13 0-2.19-.59-2.55-1.28l-.69 2.59c-.25.97-.93 2.18-1.39 2.92.85.26 1.75.4 2.68.4 5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/yamanalie" target="_blank"
+           rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="2" width="20" height="20" rx="3"/>
+            <path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 014 0v4M12 10v7"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy"
+         data-en="© 2025 Yaman Ali. All rights reserved."
+         data-ar="© 2025 يمان علي. جميع الحقوق محفوظة.">
+        © 2025 Yaman Ali. All rights reserved.
+      </p>
+      <p class="footer-craft">Crafted with intent.</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════ MODALS ══════ -->
+
+<!-- Auth Gate -->
+<div class="modal-overlay" id="authGateOverlay" role="dialog" aria-modal="true"
+     aria-labelledby="authGateTitle" hidden>
+  <div class="modal modal--auth-gate">
+    <button class="modal-close" data-modal="authGateOverlay" aria-label="Close">✕</button>
+    <div class="modal-body">
+      <div class="modal-icon">◈</div>
+      <h2 class="modal-title" id="authGateTitle"
+          data-en="Let's build something great." data-ar="لنبنِ حضورًا لا يُنسى.">
+        Let's build something great.
+      </h2>
+      <p class="modal-sub"
+         data-en="Create a free account to track your project, or continue as a guest."
+         data-ar="أنشئ حساباً مجانياً لمتابعة مشروعك، أو تابع كضيف.">
+        Create a free account to track your project, or continue as a guest.
+      </p>
+      <div class="modal-actions">
+        <a href="login/auth.html" class="btn btn-primary btn--full magnetic">
+          <span class="btn-text" data-en="Create Account" data-ar="إنشاء حساب">Create Account</span>
+          <span class="btn-fill"></span>
+        </a>
+        <button class="btn btn-ghost btn--full" id="continueGuestBtn">
+          <span class="btn-text"
+                data-en="Continue as Guest" data-ar="المتابعة كضيف">Continue as Guest</span>
+        </button>
       </div>
     </div>
   </div>
+</div>
 
 
-  <!-- ══════════════════════════════════════
-       SCRIPTS — Babel in-browser + libs
-  ══════════════════════════════════════ -->
 
-  <!-- Babel standalone (in-browser JSX/modern JS transpiler) -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- Download Modal -->
+<div class="modal-overlay" id="downloadModal" role="dialog" aria-modal="true"
+     aria-labelledby="downloadModalTitle" hidden>
+  <div class="modal modal--download">
+    <button class="modal-close" data-modal="downloadModal" aria-label="Close">✕</button>
+    <div class="modal-body">
+      <div class="modal-icon">↓</div>
+      <h2 class="modal-title" id="downloadModalTitle"
+          data-en="Get the Free Pack" data-ar="احصل على الحزمة المجانية">
+        Get the Free Pack
+      </h2>
+      <p class="modal-sub"
+         data-en="Drop your email and I'll send it to you — plus design tips."
+         data-ar="أضف بريدك وسأرسله مباشرة — مع نصائح تصميمية.">
+        Drop your email and I'll send it to you — plus design tips.
+      </p>
+      <form id="downloadForm" novalidate>
+        <div class="form-field">
+          <label for="downloadEmail" class="form-label"
+                 data-en="Email address" data-ar="البريد الإلكتروني">Email address</label>
+          <input type="email" id="downloadEmail" name="email" class="form-input"
+                 required autocomplete="email" placeholder="you@example.com"/>
+        </div>
+        <button type="submit" class="btn btn-primary btn--full magnetic">
+          <span class="btn-text"
+                data-en="Send me the pack →" data-ar="أرسل لي الحزمة →">Send me the pack →</span>
+          <span class="btn-fill"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
 
-  <!-- Framer Motion UMD (window.FramerMotion) -->
-  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
 
-  <!-- App logic -->
-  <script type="text/babel" src="js/app.js"></script>
+<!-- ══════ SCRIPTS ══════ -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
 
 </body>
 </html>
+

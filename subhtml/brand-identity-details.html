@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark" data-lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yamanalie — Full Brand Identity</title>
+
+  <style>
+    @font-face { font-family:'MikhakBold';    src:url('../fonts/MikhakBold.ttf') format('truetype');            font-weight:700; font-display:swap; }
+    @font-face { font-family:'ThmanyahSerif'; src:url('../fonts/thmanyahseriftext-Bold.otf') format('opentype');font-weight:700; font-display:swap; }
+    @font-face { font-family:'SimplySerif';   src:url('../fonts/SimplySerif-Bold.ttf') format('truetype');      font-weight:700; font-display:swap; }
+    @font-face { font-family:'COOPBL';        src:url('../fonts/COOPBL.ttf') format('truetype');                font-weight:700; font-display:swap; }
+
+    /* ── TOKENS ── */
+    :root {
+      --bg:#1a3a12; --bg-2:#1f4516;
+      --bg-card:rgba(26,58,18,.60);
+      --surface:rgba(212,232,165,.05); --surface-2:rgba(212,232,165,.10);
+      --border:rgba(212,232,165,.14); --border-2:rgba(212,232,165,.07);
+      --fg:#F0F5E8; --fg-2:rgba(240,245,232,.65); --fg-3:rgba(240,245,232,.35);
+      --accent:#D4E8A5; --accent-dim:rgba(212,232,165,.18);
+      --sage:#5B8C3E; --orange:#E57A34;
+      --font-d:'COOPBL','SimplySerif',Georgia,serif;
+      --font-b:'MikhakBold',system-ui,sans-serif;
+      --font-m:'Courier New',monospace;
+      --font-ar:'ThmanyahSerif','Cairo',sans-serif;
+      --ease:cubic-bezier(.22,1,.36,1);
+      --tf:.18s; --tm:.36s; --ts:.55s;
+      --r-sm:6px; --r-md:12px; --r-lg:20px; --r-xl:28px; --r-full:9999px;
+      --hh:64px; --pad:clamp(16px,5vw,80px);
+    }
+    [data-theme="light"] {
+      --bg:#F0F5E8; --bg-2:#E6EDD9;
+      --bg-card:rgba(240,245,232,.72);
+      --surface:rgba(46,90,34,.05); --surface-2:rgba(46,90,34,.10);
+      --border:rgba(46,90,34,.18); --border-2:rgba(46,90,34,.09);
+      --fg:#1a3a12; --fg-2:rgba(26,58,18,.70); --fg-3:rgba(26,58,18,.42);
+      --accent:#2E5A22; --accent-dim:rgba(46,90,34,.15); --sage:#4a7a30;
+    }
+    [data-lang="ar"] { direction:rtl; --font-d:var(--font-ar); --font-b:var(--font-ar); }
+
+    /* ── RESET ── */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden;scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--fg);font-family:var(--font-b);overflow-x:hidden;cursor:none;transition:background var(--tm),color var(--tm)}
+    @media(hover:none){body{cursor:auto}}
+    img{max-width:100%;display:block} a{color:inherit;text-decoration:none}
+    button{cursor:none;background:none;border:none;font-family:inherit;color:inherit}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--r-sm)}
+    ::selection{background:var(--accent);color:#000}
+    [data-theme="light"] ::selection{color:#fff}
+
+    /* ── GRAIN ── */
+    .grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:180px;mix-blend-mode:overlay}
+
+    /* ── SCROLL PROGRESS ── */
+    .sp{position:fixed;top:0;left:0;width:0%;height:2px;background:var(--accent);z-index:10000;box-shadow:0 0 10px var(--accent);transition:width .08s linear}
+
+    /* ── CURSOR ── */
+    .cursor{position:fixed;top:0;left:0;z-index:9998;pointer-events:none;transform:translate(-50%,-50%)}
+    .cursor-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:width var(--tf),height var(--tf)}
+    .cursor-ring{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(212,232,165,.4);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:width .20s var(--ease),height .20s var(--ease)}
+    body.cl .cursor-dot{width:6px;height:6px} body.cl .cursor-ring{width:30px;height:30px}
+    @media(hover:none){.cursor{display:none!important}}
+
+    /* ── HEADER ── */
+    .hdr{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--hh);
+      background:rgba(26,58,18,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border-2);transition:background var(--tm)}
+    [data-theme="light"] .hdr{background:rgba(240,245,232,.72)}
+    .hdr.s{background:rgba(26,58,18,.88);border-bottom-color:var(--border)}
+    [data-theme="light"] .hdr.s{background:rgba(240,245,232,.94)}
+    .hdr-in{max-width:1280px;margin-inline:auto;padding-inline:var(--pad);height:100%;display:flex;align-items:center;gap:20px}
+    .back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2);transition:color var(--tf),transform var(--tf)}
+    .back:hover{color:var(--accent);transform:translateX(-3px)}
+    [data-lang="ar"] .back:hover{transform:translateX(3px)}
+    .lm{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--r-sm);background:var(--accent);color:#000;font-family:var(--font-d);font-weight:700;font-size:12px;flex-shrink:0}
+    [data-theme="light"] .lm{color:#fff}
+    .hdr-r{margin-inline-start:auto;display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:var(--r-full);overflow:hidden;height:32px}
+    .sw{display:flex;align-items:center;justify-content:center;padding:0 12px;height:100%;font-family:var(--font-m);font-size:11px;letter-spacing:.1em;color:var(--fg-2);transition:background var(--tf),color var(--tf)}
+    .sw:hover{background:var(--surface-2);color:var(--fg)}
+    .sd{width:1px;height:14px;background:var(--border)}
+
+    /* ── HERO ── */
+    .hero{padding-top:calc(var(--hh) + 80px);padding-bottom:80px;padding-inline:var(--pad);max-width:1280px;margin-inline:auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,100px);align-items:center}
+    .hero-tag{font-family:var(--font-m);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+    .hero-h{font-family:var(--font-d);font-size:clamp(2.4rem,6vw,5.5rem);font-weight:700;letter-spacing:-.04em;line-height:.96;margin-bottom:24px;
+      /* mask reveal — JS adds .in */
+      overflow:hidden}
+    .hero-h span{display:block;transform:translateY(110%);opacity:0;transition:transform var(--ts) var(--ease),opacity var(--ts) var(--ease)}
+    .hero-h span:nth-child(2){transition-delay:.12s}
+    .hero-h span:nth-child(3){transition-delay:.24s;font-family:'SimplySerif',Georgia,serif;font-style:italic}
+    .hero-h.in span{transform:translateY(0);opacity:1}
+    .hero-sub{color:var(--fg-2);font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.8;margin-bottom:32px;max-width:460px}
+    .cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+
+    /* Buttons */
+    .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 26px;border-radius:var(--r-full);font-family:var(--font-b);font-size:13px;font-weight:700;letter-spacing:.03em;overflow:hidden;text-decoration:none;transition:box-shadow var(--tf),transform var(--tf);cursor:none;z-index:0}
+    .btn:active{transform:scale(.95)}
+    .btn-p{background:var(--accent);color:#000}
+    [data-theme="light"] .btn-p{color:#fff}
+    .btn-p:hover{box-shadow:0 0 0 3px var(--accent-dim),0 8px 24px rgba(212,232,165,.2)}
+    .btn-fill{position:absolute;inset:0;border-radius:inherit;background:rgba(255,255,255,.15);transform:scaleX(0) translateX(-100%);transform-origin:left;transition:transform .5s var(--ease);z-index:-1;pointer-events:none}
+    .btn-p:hover .btn-fill{transform:scaleX(1) translateX(0)}
+    .btn-g{background:transparent;color:var(--fg);border:1px solid var(--border)}
+    .btn-g:hover{background:var(--surface-2)}
+
+    /* Hero image mockup area */
+    .hero-img-wrap{position:relative;border-radius:var(--r-xl);overflow:hidden;aspect-ratio:4/3;background:var(--surface);border:1px solid var(--border-2)}
+    .hero-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+    .hero-img-wrap:hover img{transform:scale(1.04)}
+    .hero-img-badge{position:absolute;bottom:16px;left:16px;background:var(--bg-card);border:1px solid var(--border);backdrop-filter:blur(10px);padding:10px 14px;border-radius:var(--r-md);font-family:var(--font-m);font-size:10px;letter-spacing:.1em;color:var(--accent)}
+
+    /* ── SECTION SHARED ── */
+    .section{padding-block:clamp(64px,9vw,120px);padding-inline:var(--pad);max-width:1280px;margin-inline:auto}
+    .sec-tag{font-family:var(--font-m);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:block}
+    .sec-h{font-family:var(--font-d);font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin-bottom:20px}
+    .sec-sub{color:var(--fg-2);font-size:clamp(.9rem,1.3vw,1rem);line-height:1.8;max-width:560px}
+
+    /* Reveal */
+    .ri{opacity:0;transform:translateY(26px);transition:opacity var(--ts) var(--ease),transform var(--ts) var(--ease)}
+    .ri.in{opacity:1;transform:translateY(0)}
+    .ri:nth-child(1){transition-delay:0s} .ri:nth-child(2){transition-delay:.08s}
+    .ri:nth-child(3){transition-delay:.16s} .ri:nth-child(4){transition-delay:.24s}
+    .ri:nth-child(5){transition-delay:.32s} .ri:nth-child(6){transition-delay:.40s}
+
+    /* ── WHAT'S INCLUDED ── */
+    .included-section{background:var(--bg-2);padding-block:clamp(64px,9vw,120px)}
+    .included-inner{max-width:1280px;margin-inline:auto;padding-inline:var(--pad)}
+    .deliverables-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+    .del-card{padding:28px 24px;border-radius:var(--r-lg);background:var(--bg-card);border:1px solid var(--border-2);backdrop-filter:blur(8px);transition:border-color var(--tm),transform var(--tm),box-shadow var(--tm)}
+    .del-card:hover{border-color:var(--border);transform:translateY(-5px);box-shadow:0 20px 48px rgba(0,0,0,.28)}
+    [data-theme="light"] .del-card:hover{box-shadow:0 20px 48px rgba(46,90,34,.1)}
+    .del-icon{font-size:1.8rem;margin-bottom:16px;color:var(--accent);opacity:.8}
+    .del-title{font-family:var(--font-d);font-size:1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+    .del-desc{font-size:12.5px;color:var(--fg-2);line-height:1.75}
+
+    /* ── PROCESS STEPS ── */
+    .steps{display:flex;flex-direction:column;gap:0;margin-top:56px;position:relative}
+    .steps::before{content:'';position:absolute;top:0;bottom:0;left:19px;width:1px;background:var(--border-2)}
+    [data-lang="ar"] .steps::before{left:auto;right:19px}
+    .step{display:grid;grid-template-columns:40px 1fr;gap:24px;padding-bottom:48px;position:relative}
+    .step:last-child{padding-bottom:0}
+    .step-num{width:40px;height:40px;border-radius:50%;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;color:var(--accent);flex-shrink:0;position:relative;z-index:1;transition:background var(--tm),border-color var(--tm)}
+    .step:hover .step-num{background:var(--accent);color:#000;border-color:transparent}
+    .step-body{padding-top:8px}
+    .step-title{font-family:var(--font-d);font-size:1.1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:8px;transition:color var(--tf)}
+    .step:hover .step-title{color:var(--accent)}
+    .step-desc{font-size:13px;color:var(--fg-2);line-height:1.8}
+
+    /* ── EXAMPLES GALLERY ── */
+    .gallery-section{background:var(--bg-2);padding-block:clamp(64px,9vw,120px)}
+    .gallery-inner{max-width:1280px;margin-inline:auto;padding-inline:var(--pad)}
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+    .gallery-item{border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;background:var(--surface-2);border:1px solid var(--border-2);position:relative;cursor:none}
+    .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+    .gallery-item:hover img{transform:scale(1.06)}
+    .gallery-item-label{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);font-family:var(--font-m);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,245,232,.8);opacity:0;transition:opacity var(--tm)}
+    .gallery-item:hover .gallery-item-label{opacity:1}
+
+    /* ── PRICING CARD ── */
+    .pricing-section{padding-block:clamp(64px,9vw,120px);padding-inline:var(--pad);max-width:1280px;margin-inline:auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:center}
+    .price-card{padding:40px;border-radius:var(--r-xl);background:var(--bg-card);border:1px solid var(--border);backdrop-filter:blur(12px);position:relative;overflow:hidden}
+    .price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
+    .price-label{font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+    .price-amount{font-family:var(--font-d);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:8px}
+    .price-note{font-family:var(--font-m);font-size:11px;color:var(--fg-3);letter-spacing:.06em;margin-bottom:28px}
+    .price-list{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+    .price-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--fg-2);line-height:1.5}
+    .price-item::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0;margin-top:1px}
+    .price-cta{font-size:14px;color:var(--fg-2);line-height:1.75}
+
+    /* ── FAQ ── */
+    .faq-section{background:var(--bg-2);padding-block:clamp(64px,9vw,120px)}
+    .faq-inner{max-width:800px;margin-inline:auto;padding-inline:var(--pad)}
+    .faq-list{display:flex;flex-direction:column;gap:0;margin-top:48px}
+    .faq-item{border-bottom:1px solid var(--border-2)}
+    .faq-q{width:100%;padding:20px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--font-d);font-size:clamp(.95rem,1.5vw,1.05rem);font-weight:700;letter-spacing:-.01em;text-align:start;cursor:none;transition:color var(--tf)}
+    .faq-q:hover{color:var(--accent)}
+    .faq-icon{font-size:18px;color:var(--accent);transition:transform var(--tm) var(--ease);flex-shrink:0}
+    .faq-item.open .faq-icon{transform:rotate(45deg)}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--ease),padding var(--tm)}
+    .faq-a-inner{padding-bottom:20px;font-size:13px;color:var(--fg-2);line-height:1.8}
+    .faq-item.open .faq-a{max-height:300px}
+
+    /* ── CTA BAND ── */
+    .cta-band{padding-block:clamp(80px,12vw,160px);padding-inline:var(--pad);text-align:center}
+    .cta-band h2{font-family:var(--font-d);font-size:clamp(2.2rem,6vw,5.5rem);font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:32px}
+    .cta-band h2 em{font-family:'SimplySerif',Georgia,serif;font-style:italic;color:var(--accent)}
+
+    /* ── FOOTER ── */
+    .foot{border-top:1px solid var(--border-2);padding:24px var(--pad);background:var(--bg-2)}
+    .foot-in{max-width:1280px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .foot-logo{display:flex;align-items:center;gap:8px}
+    .foot-name{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;color:var(--fg-3)}
+    .foot-copy{font-family:var(--font-m);font-size:10px;letter-spacing:.06em;color:var(--fg-3)}
+    .foot-back{font-family:var(--font-m);font-size:11px;letter-spacing:.08em;color:var(--fg-3);transition:color var(--tf)}
+    .foot-back:hover{color:var(--accent)}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px){
+      .hero,.pricing-section{grid-template-columns:1fr}
+      .deliverables-grid,.gallery-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:540px){
+      .deliverables-grid,.gallery-grid{grid-template-columns:1fr}
+      .hero-img-wrap{display:none}
+    }
+    @media(hover:none){.cursor{display:none!important}body{cursor:auto!important}button,a{cursor:pointer!important}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="sp" id="sp" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+</div>
+
+<!-- HEADER -->
+<header class="hdr" id="hdr" role="banner">
+  <div class="hdr-in">
+    <a href="../index.html" class="back">
+      <span class="lm">YA</span>
+      <span data-en="← Back" data-ar="رجوع →">← Back</span>
+    </a>
+    <div class="hdr-r">
+      <button class="sw" id="langToggle"><span id="langLabel">EN</span></button>
+      <div class="sd"></div>
+      <button class="sw" id="themeToggle"><span id="themeIcon">◐</span></button>
+    </div>
+  </div>
+</header>
+
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <span class="hero-tag ri" data-en="Service · Brand Identity" data-ar="خدمة · الهوية البصرية">Service · Brand Identity</span>
+    <h1 class="hero-h" id="heroH">
+      <span data-en="Full Brand" data-ar="هوية">Full Brand</span>
+      <span data-en="Identity" data-ar="بصرية">Identity</span>
+      <span data-en="System." data-ar="متكاملة.">System.</span>
+    </h1>
+    <p class="hero-sub ri"
+       data-en="Not just a logo. A complete visual language — built to work across every surface, screen, and situation your brand will ever face."
+       data-ar="ليس مجرد شعار. لغة بصرية متكاملة — مصممة لتعمل على كل سطح وشاشة وموقف ستواجهه علامتك.">
+      Not just a logo. A complete visual language — built to work across every surface, screen, and situation your brand will ever face.
+    </p>
+    <div class="cta-row ri">
+      <a href="../index.html#contact" class="btn btn-p">
+        <span data-en="Start this Project →" data-ar="ابدأ هذا المشروع ←">Start this Project →</span>
+        <span class="btn-fill"></span>
+      </a>
+      <a href="../subhtml/projects.html" class="btn btn-g">
+        <span data-en="See Examples" data-ar="شاهد الأمثلة">See Examples</span>
+      </a>
+    </div>
+  </div>
+  <div class="hero-img-wrap ri">
+    <img src="../images/examples/brand-identity-hero.jpg" alt="Brand Identity Example" loading="eager"/>
+    <div class="hero-img-badge" data-en="✦ Complete Brand System" data-ar="✦ نظام هوية متكامل">✦ Complete Brand System</div>
+  </div>
+</div>
+
+
+<!-- WHAT'S INCLUDED -->
+<div class="included-section">
+  <div class="included-inner">
+    <span class="sec-tag ri" data-en="What you get" data-ar="ما ستحصل عليه">What you get</span>
+    <h2 class="sec-h ri" data-en="Everything your brand needs." data-ar="كل ما تحتاجه علامتك.">Everything your brand needs.</h2>
+    <p class="sec-sub ri"
+       data-en="A full brand identity is the foundation that everything else grows from. Here's exactly what's included."
+       data-ar="الهوية البصرية الكاملة هي الأساس الذي ينمو منه كل شيء آخر. إليك بالتفصيل ما هو مضمّن.">
+      A full brand identity is the foundation that everything else grows from. Here's exactly what's included.
+    </p>
+    <div class="deliverables-grid">
+
+      <div class="del-card ri">
+        <div class="del-icon">◈</div>
+        <h3 class="del-title" data-en="Logo Suite" data-ar="مجموعة الشعارات">Logo Suite</h3>
+        <p class="del-desc" data-en="Primary logo, alternate versions, icon mark, and favicon — delivered in PNG, JPG, SVG, and PDF across all colour variations." data-ar="الشعار الرئيسي، نسخ بديلة، علامة أيقونة، وفافيكون — بصيغ PNG وJPG وSVG وPDF بجميع تنويعات الألوان.">Primary logo, alternate versions, icon mark, and favicon — delivered in PNG, JPG, SVG, and PDF across all colour variations.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">Aa</div>
+        <h3 class="del-title" data-en="Typography System" data-ar="نظام الطباعة">Typography System</h3>
+        <p class="del-desc" data-en="Primary and secondary typefaces selected and paired for your brand personality — with usage rules and hierarchy guidelines." data-ar="خطوط أساسية وثانوية مختارة ومقترنة لشخصية علامتك — مع قواعد الاستخدام وإرشادات التسلسل الهرمي.">Primary and secondary typefaces selected and paired for your brand personality — with usage rules and hierarchy guidelines.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">◉</div>
+        <h3 class="del-title" data-en="Colour Palette" data-ar="لوحة الألوان">Colour Palette</h3>
+        <p class="del-desc" data-en="Primary, secondary, and neutral colours with HEX, RGB, and CMYK codes — plus usage rules for digital and print." data-ar="الألوان الأساسية والثانوية والمحايدة مع رموز HEX وRGB وCMYK — بالإضافة إلى قواعد الاستخدام للرقمي والطباعي.">Primary, secondary, and neutral colours with HEX, RGB, and CMYK codes — plus usage rules for digital and print.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">▦</div>
+        <h3 class="del-title" data-en="Brand Pattern & Textures" data-ar="نمط العلامة والأنسجة">Brand Pattern &amp; Textures</h3>
+        <p class="del-desc" data-en="Custom graphic elements, patterns, and textures that extend the visual language beyond the logo." data-ar="عناصر جرافيك مخصصة وأنماط وأنسجة تمتد باللغة البصرية إلى ما وراء الشعار.">Custom graphic elements, patterns, and textures that extend the visual language beyond the logo.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">◻</div>
+        <h3 class="del-title" data-en="Brand Mockups" data-ar="النماذج التطبيقية">Brand Mockups</h3>
+        <p class="del-desc" data-en="Photorealistic mockups showing your identity applied to business cards, packaging, merchandise, and digital surfaces." data-ar="نماذج واقعية تُظهر هويتك مطبقة على بطاقات العمل والتغليف والبضائع والأسطح الرقمية.">Photorealistic mockups showing your identity applied to business cards, packaging, merchandise, and digital surfaces.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">◎</div>
+        <h3 class="del-title" data-en="Brand Guidelines PDF" data-ar="دليل الهوية البصرية">Brand Guidelines PDF</h3>
+        <p class="del-desc" data-en="A full brand guide document — so you, your team, and any future designer knows exactly how to use the identity correctly." data-ar="وثيقة دليل العلامة الكاملة — حتى تعرف أنت وفريقك وأي مصمم مستقبلي كيفية استخدام الهوية بشكل صحيح.">A full brand guide document — so you, your team, and any future designer knows exactly how to use the identity correctly.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- PROCESS -->
+<div class="section">
+  <span class="sec-tag ri" data-en="How it works" data-ar="كيف يعمل">How it works</span>
+  <h2 class="sec-h ri" data-en="The journey from brief to brand." data-ar="الرحلة من الإيجاز إلى العلامة.">The journey from brief to brand.</h2>
+  <p class="sec-sub ri"
+     data-en="A structured process that keeps you informed at every stage — no surprises, just results."
+     data-ar="عملية منظمة تبقيك على اطلاع في كل مرحلة — لا مفاجآت، فقط نتائج.">
+    A structured process that keeps you informed at every stage — no surprises, just results.
+  </p>
+
+  <div class="steps">
+    <div class="step ri">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3 class="step-title" data-en="Discovery Call" data-ar="مكالمة الاكتشاف">Discovery Call</h3>
+        <p class="step-desc" data-en="We start with a 30-minute call to understand your business, your audience, your competitors, and what makes you different. This shapes everything." data-ar="نبدأ بمكالمة مدتها 30 دقيقة لفهم عملك وجمهورك ومنافسيك وما يجعلك مختلفاً. هذا يشكل كل شيء.">We start with a 30-minute call to understand your business, your audience, your competitors, and what makes you different. This shapes everything.</p>
+      </div>
+    </div>
+    <div class="step ri">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3 class="step-title" data-en="Research & Strategy" data-ar="البحث والاستراتيجية">Research &amp; Strategy</h3>
+        <p class="step-desc" data-en="Deep market research, competitor analysis, and positioning work. I map out the visual territory your brand should own before touching any design tools." data-ar="بحث عميق في السوق وتحليل المنافسين وعمل التموضع. أرسم الأراضي البصرية التي يجب أن تمتلكها علامتك قبل لمس أي أداة تصميم.">Deep market research, competitor analysis, and positioning work. I map out the visual territory your brand should own before touching any design tools.</p>
+      </div>
+    </div>
+    <div class="step ri">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3 class="step-title" data-en="Concept Development" data-ar="تطوير المفهوم">Concept Development</h3>
+        <p class="step-desc" data-en="I develop 2–3 distinct logo concepts with rationale for each. Every design decision is intentional and explained — not just aesthetic." data-ar="أطور 2-3 مفاهيم شعار مميزة مع مبررات لكل منها. كل قرار تصميمي مقصود ومُفسَّر — ليس مجرد جماليات.">I develop 2–3 distinct logo concepts with rationale for each. Every design decision is intentional and explained — not just aesthetic.</p>
+      </div>
+    </div>
+    <div class="step ri">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3 class="step-title" data-en="Refinement Rounds" data-ar="جولات التنقيح">Refinement Rounds</h3>
+        <p class="step-desc" data-en="You choose a direction and we refine. Included revision rounds let us dial in the details until it feels exactly right. No rushed decisions." data-ar="تختار اتجاهاً ونقوم بالتنقيح. جولات المراجعة المضمنة تتيح لنا ضبط التفاصيل حتى تشعر أنها صحيحة تماماً. لا قرارات متسرعة.">You choose a direction and we refine. Included revision rounds let us dial in the details until it feels exactly right. No rushed decisions.</p>
+      </div>
+    </div>
+    <div class="step ri">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3 class="step-title" data-en="System Build & Delivery" data-ar="بناء النظام والتسليم">System Build &amp; Delivery</h3>
+        <p class="step-desc" data-en="Once the logo is locked, I build out the full system — typography, colours, patterns, mockups, and the brand guidelines document. Everything is organised and packaged for immediate use." data-ar="بمجرد إقفال الشعار، أبني النظام الكامل — الطباعة والألوان والأنماط والنماذج ووثيقة دليل العلامة. كل شيء منظم ومعبأ للاستخدام الفوري.">Once the logo is locked, I build out the full system — typography, colours, patterns, mockups, and the brand guidelines document. Everything is organised and packaged for immediate use.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="gallery-inner">
+    <span class="sec-tag ri" data-en="Example Work" data-ar="أعمال مثال">Example Work</span>
+    <h2 class="sec-h ri" data-en="What it looks like in practice." data-ar="كيف يبدو في التطبيق الفعلي.">What it looks like in practice.</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item ri">
+        <img src="../images/examples/brand-ex-1.jpg" alt="Brand identity example 1" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Logo Suite" data-ar="مجموعة الشعارات">Logo Suite</div>
+      </div>
+      <div class="gallery-item ri">
+        <img src="../images/examples/brand-ex-2.jpg" alt="Colour palette example" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Colour Palette" data-ar="لوحة الألوان">Colour Palette</div>
+      </div>
+      <div class="gallery-item ri">
+        <img src="../images/examples/brand-ex-3.jpg" alt="Typography system" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Typography" data-ar="الطباعة">Typography</div>
+      </div>
+      <div class="gallery-item ri">
+        <img src="../images/examples/brand-ex-4.jpg" alt="Brand mockup" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Mockups" data-ar="النماذج">Mockups</div>
+      </div>
+      <div class="gallery-item ri">
+        <img src="../images/examples/brand-ex-5.jpg" alt="Brand guidelines" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Brand Guidelines" data-ar="دليل الهوية">Brand Guidelines</div>
+      </div>
+      <div class="gallery-item ri">
+        <img src="../images/examples/brand-ex-6.jpg" alt="Brand patterns" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Brand Patterns" data-ar="أنماط العلامة">Brand Patterns</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- PRICING -->
+<div class="pricing-section">
+  <div class="ri">
+    <span class="sec-tag" data-en="Investment" data-ar="الاستثمار">Investment</span>
+    <h2 class="sec-h" data-en="Transparent pricing. No surprises." data-ar="أسعار شفافة. لا مفاجآت.">Transparent pricing. No surprises.</h2>
+    <p class="sec-sub"
+       data-en="Building a brand is one of the highest-return investments a business can make. This package gives you a complete, professional foundation."
+       data-ar="بناء علامة تجارية هو أحد أعلى الاستثمارات عائداً يمكن لأي عمل القيام به. تمنحك هذه الحزمة أساساً مهنياً متكاملاً.">
+      Building a brand is one of the highest-return investments a business can make. This package gives you a complete, professional foundation.
+    </p>
+  </div>
+  <div class="price-card ri">
+    <p class="price-label" data-en="Full Brand Identity Package" data-ar="حزمة الهوية البصرية الكاملة">Full Brand Identity Package</p>
+    <p class="price-amount">$1,200+</p>
+    <p class="price-note" data-en="Starting price — final quote based on project scope" data-ar="سعر ابتداءً — السعر النهائي بناءً على نطاق المشروع">Starting price — final quote based on project scope</p>
+    <ul class="price-list">
+      <li class="price-item" data-en="Full logo suite (all formats)" data-ar="مجموعة شعارات كاملة (جميع الصيغ)">Full logo suite (all formats)</li>
+      <li class="price-item" data-en="Typography & colour systems" data-ar="أنظمة الطباعة والألوان">Typography &amp; colour systems</li>
+      <li class="price-item" data-en="Brand patterns & graphic elements" data-ar="أنماط العلامة والعناصر الجرافيكية">Brand patterns &amp; graphic elements</li>
+      <li class="price-item" data-en="Photorealistic mockups (5+)" data-ar="نماذج واقعية (5+)">Photorealistic mockups (5+)</li>
+      <li class="price-item" data-en="Brand guidelines PDF document" data-ar="وثيقة دليل الهوية PDF">Brand guidelines PDF document</li>
+      <li class="price-item" data-en="3 revision rounds included" data-ar="3 جولات مراجعة مضمنة">3 revision rounds included</li>
+      <li class="price-item" data-en="Files organised & ready to use" data-ar="ملفات منظمة وجاهزة للاستخدام">Files organised &amp; ready to use</li>
+    </ul>
+    <a href="../index.html#contact" class="btn btn-p" style="width:100%;justify-content:center;">
+      <span data-en="Start a Project →" data-ar="ابدأ مشروعاً ←">Start a Project →</span>
+      <span class="btn-fill"></span>
+    </a>
+  </div>
+</div>
+
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="faq-inner">
+    <span class="sec-tag ri" data-en="Questions" data-ar="أسئلة">Questions</span>
+    <h2 class="sec-h ri" data-en="Frequently asked." data-ar="الأسئلة الأكثر شيوعاً.">Frequently asked.</h2>
+    <div class="faq-list" id="faqList">
+
+      <div class="faq-item ri">
+        <button class="faq-q" aria-expanded="false">
+          <span data-en="How long does the process take?" data-ar="كم تستغرق العملية؟">How long does the process take?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner" data-en="Typically 3–5 weeks from the discovery call to final delivery. Rush timelines are possible for an additional fee — mention it in your brief." data-ar="عادةً من 3 إلى 5 أسابيع من مكالمة الاكتشاف إلى التسليم النهائي. الجداول الزمنية العاجلة ممكنة برسوم إضافية — أذكر ذلك في موجزك.">Typically 3–5 weeks from the discovery call to final delivery. Rush timelines are possible for an additional fee — mention it in your brief.</div></div>
+      </div>
+
+      <div class="faq-item ri">
+        <button class="faq-q" aria-expanded="false">
+          <span data-en="What if I don't like the first concepts?" data-ar="ماذا لو لم يعجبني المفهوم الأول؟">What if I don't like the first concepts?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner" data-en="That's what revision rounds are for. Every package includes structured revision rounds so we can refine until it's right. The discovery process is also designed to minimise surprises from the start." data-ar="هذا ما جولات المراجعة موجودة من أجله. كل حزمة تتضمن جولات مراجعة منظمة حتى نتمكن من التنقيح حتى يكون صحيحاً. عملية الاكتشاف أيضاً مصممة لتقليل المفاجآت من البداية.">That's what revision rounds are for. Every package includes structured revision rounds so we can refine until it's right. The discovery process is also designed to minimise surprises from the start.</div></div>
+      </div>
+
+      <div class="faq-item ri">
+        <button class="faq-q" aria-expanded="false">
+          <span data-en="Do I own everything at the end?" data-ar="هل أمتلك كل شيء في النهاية؟">Do I own everything at the end?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner" data-en="Yes. Full ownership and rights to all final files are transferred to you upon final payment. The source files (AI/EPS) can be included for an additional fee." data-ar="نعم. الملكية الكاملة وحقوق جميع الملفات النهائية تنتقل إليك عند الدفع النهائي. يمكن تضمين الملفات المصدرية (AI/EPS) برسوم إضافية.">Yes. Full ownership and rights to all final files are transferred to you upon final payment. The source files (AI/EPS) can be included for an additional fee.</div></div>
+      </div>
+
+      <div class="faq-item ri">
+        <button class="faq-q" aria-expanded="false">
+          <span data-en="Can I start with just a logo?" data-ar="هل يمكنني البدء بشعار فقط؟">Can I start with just a logo?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner" data-en="Yes — check out the Brand Essentials package. It's a lighter entry point that includes the core logo files, typography, colour palette, mockups, and 2 revision rounds." data-ar="نعم — اطلع على حزمة أساسيات العلامة. إنها نقطة دخول أخف تتضمن ملفات الشعار الأساسية والطباعة ولوحة الألوان والنماذج وجولتي مراجعة.">Yes — check out the Brand Essentials package. It's a lighter entry point that includes the core logo files, typography, colour palette, mockups, and 2 revision rounds.</div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- CTA BAND -->
+<div class="cta-band ri">
+  <h2>
+    <span data-en="Ready to build" data-ar="مستعد لبناء">Ready to build</span><br>
+    <em data-en="something that lasts?" data-ar="شيء يدوم؟">something that lasts?</em>
+  </h2>
+  <a href="../index.html#contact" class="btn btn-p" style="font-size:15px;padding:16px 40px;">
+    <span data-en="Start a Project →" data-ar="ابدأ مشروعاً ←">Start a Project →</span>
+    <span class="btn-fill"></span>
+  </a>
+</div>
+
+
+<!-- FOOTER -->
+<footer class="foot" role="contentinfo">
+  <div class="foot-in">
+    <div class="foot-logo">
+      <span class="lm">YA</span>
+      <span class="foot-name">yamanalie</span>
+    </div>
+    <p class="foot-copy" data-en="© 2025 Yaman Ali." data-ar="© 2025 يمان علي.">© 2025 Yaman Ali.</p>
+    <a href="../index.html" class="foot-back" data-en="← Back to Home" data-ar="العودة للرئيسية →">← Back to Home</a>
+  </div>
+</footer>
+
+
+<script>
+(function(){
+  /* ── Scroll progress ── */
+  const sp = document.getElementById('sp');
+  window.addEventListener('scroll',()=>{
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if(sp) sp.style.width=(max>0?(window.scrollY/max)*100:0)+'%';
+  },{passive:true});
+
+  /* ── Header ── */
+  const hdr = document.getElementById('hdr');
+  window.addEventListener('scroll',()=>{ if(hdr) hdr.classList.toggle('s',window.scrollY>30); },{passive:true});
+
+  /* ── Cursor ── */
+  if(!window.matchMedia('(hover: none)').matches){
+    const cur=document.getElementById('cursor');
+    const ring=cur?.querySelector('.cursor-ring');
+    let mx=-300,my=-300,dx=-300,dy=-300,rx=-300,ry=-300;
+    const lerp=(a,b,t)=>a+(b-a)*t;
+    const tick=()=>{
+      dx=lerp(dx,mx,.55); dy=lerp(dy,my,.55);
+      rx=lerp(rx,mx,.28); ry=lerp(ry,my,.28);
+      if(cur) cur.style.transform=`translate(${dx}px,${dy}px) translate(-50%,-50%)`;
+      if(ring) ring.style.transform=`translate(calc(-50% + ${rx-dx}px),calc(-50% + ${ry-dy}px))`;
+      requestAnimationFrame(tick);
+    };
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+    document.addEventListener('mouseleave',()=>{mx=-300;my=-300;});
+    document.querySelectorAll('a,button').forEach(el=>{
+      el.addEventListener('mouseenter',()=>document.body.classList.add('cl'));
+      el.addEventListener('mouseleave',()=>document.body.classList.remove('cl'));
+    });
+    tick();
+  }
+
+  /* ── Theme ── */
+  const applyTheme=t=>{
+    document.documentElement.dataset.theme=t;
+    localStorage.setItem('ya-theme',t);
+    const i=document.getElementById('themeIcon');
+    if(i) i.textContent=t==='dark'?'◑':'◐';
+  };
+  applyTheme(localStorage.getItem('ya-theme')||'dark');
+  document.getElementById('themeToggle')?.addEventListener('click',()=>
+    applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark')
+  );
+
+  /* ── Language ── */
+  const applyLang=lang=>{
+    document.documentElement.dataset.lang=lang;
+    document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+    document.documentElement.lang=lang;
+    localStorage.setItem('ya-lang',lang);
+    const l=document.getElementById('langLabel');
+    if(l) l.textContent=lang==='en'?'EN':'AR';
+    document.querySelectorAll('[data-en],[data-ar]').forEach(el=>{
+      const val=el.getAttribute(`data-${lang}`);
+      if(val===null) return;
+      if(el.children.length===0) el.textContent=val;
+    });
+  };
+  applyLang(localStorage.getItem('ya-lang')||'en');
+  document.getElementById('langToggle')?.addEventListener('click',()=>
+    applyLang(document.documentElement.dataset.lang==='en'?'ar':'en')
+  );
+
+  /* ── Hero headline reveal ── */
+  setTimeout(()=>{ document.getElementById('heroH')?.classList.add('in'); },120);
+
+  /* ── Scroll reveal ── */
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);} });
+  },{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.ri').forEach(el=>obs.observe(el));
+
+  /* ── FAQ accordion ── */
+  document.querySelectorAll('.faq-q').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const item=btn.closest('.faq-item');
+      const isOpen=item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+      if(!isOpen) item.classList.add('open');
+      btn.setAttribute('aria-expanded',String(!isOpen));
+    });
+  });
+
+  /* ── Haptic buttons ── */
+  document.querySelectorAll('.btn,button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      btn.style.transition='transform .08s ease';
+      btn.style.transform='scale(.95)';
+      setTimeout(()=>{btn.style.transition='transform .4s cubic-bezier(.34,1.56,.64,1)';btn.style.transform='scale(1)';},80);
+      setTimeout(()=>{btn.style.transition='';btn.style.transform='';},500);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

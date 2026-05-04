@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark" data-lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yamanalie — The Process</title>
+  <meta name="description" content="How Yaman Ali works — from discovery to final delivery. Every step explained."/>
+
+  <style>
+    @font-face { font-family:'MikhakBold';    src:url('../fonts/MikhakBold.ttf') format('truetype');            font-weight:700; font-display:swap; }
+    @font-face { font-family:'ThmanyahSerif'; src:url('../fonts/thmanyahseriftext-Bold.otf') format('opentype');font-weight:700; font-display:swap; }
+    @font-face { font-family:'SimplySerif';   src:url('../fonts/SimplySerif-Bold.ttf') format('truetype');      font-weight:700; font-display:swap; }
+    @font-face { font-family:'COOPBL';        src:url('../fonts/COOPBL.ttf') format('truetype');                font-weight:700; font-display:swap; }
+
+    /* ── TOKENS ── */
+    :root {
+      --bg:#1a3a12; --bg-2:#1f4516;
+      --bg-card:rgba(26,58,18,.60);
+      --surface:rgba(212,232,165,.05); --surface-2:rgba(212,232,165,.10);
+      --border:rgba(212,232,165,.14); --border-2:rgba(212,232,165,.07);
+      --fg:#F0F5E8; --fg-2:rgba(240,245,232,.65); --fg-3:rgba(240,245,232,.35);
+      --accent:#D4E8A5; --accent-dim:rgba(212,232,165,.18);
+      --sage:#5B8C3E; --orange:#E57A34;
+      --font-d:'COOPBL','SimplySerif',Georgia,serif;
+      --font-b:'MikhakBold',system-ui,sans-serif;
+      --font-m:'Courier New',monospace;
+      --font-ar:'ThmanyahSerif','Cairo',sans-serif;
+      --ease:cubic-bezier(.22,1,.36,1);
+      --tf:.18s; --tm:.36s; --ts:.55s;
+      --r-sm:6px; --r-md:12px; --r-lg:20px; --r-xl:28px; --r-full:9999px;
+      --hh:64px; --pad:clamp(16px,5vw,80px);
+    }
+    [data-theme="light"] {
+      --bg:#F0F5E8; --bg-2:#E6EDD9;
+      --bg-card:rgba(240,245,232,.72);
+      --surface:rgba(46,90,34,.05); --surface-2:rgba(46,90,34,.10);
+      --border:rgba(46,90,34,.18); --border-2:rgba(46,90,34,.09);
+      --fg:#1a3a12; --fg-2:rgba(26,58,18,.70); --fg-3:rgba(26,58,18,.42);
+      --accent:#2E5A22; --accent-dim:rgba(46,90,34,.15); --sage:#4a7a30;
+    }
+    [data-lang="ar"] { direction:rtl; --font-d:var(--font-ar); --font-b:var(--font-ar); }
+
+    /* ── RESET ── */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden;scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--fg);font-family:var(--font-b);overflow-x:hidden;cursor:none;transition:background var(--tm),color var(--tm)}
+    @media(hover:none){body{cursor:auto}}
+    img{max-width:100%;display:block} a{color:inherit;text-decoration:none}
+    button{cursor:none;background:none;border:none;font-family:inherit;color:inherit}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--r-sm)}
+    ::selection{background:var(--accent);color:#000}
+    [data-theme="light"] ::selection{color:#fff}
+
+    .grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:180px;mix-blend-mode:overlay}
+    .sp{position:fixed;top:0;left:0;width:0%;height:2px;background:var(--accent);z-index:10000;box-shadow:0 0 10px var(--accent);transition:width .08s linear}
+    .cursor{position:fixed;top:0;left:0;z-index:9998;pointer-events:none;transform:translate(-50%,-50%)}
+    .cursor-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:width var(--tf),height var(--tf)}
+    .cursor-ring{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(212,232,165,.4);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:width .20s var(--ease),height .20s var(--ease)}
+    body.cl .cursor-dot{width:6px;height:6px} body.cl .cursor-ring{width:30px;height:30px}
+    @media(hover:none){.cursor{display:none!important}}
+
+    /* ── HEADER ── */
+    .hdr{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--hh);background:rgba(26,58,18,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border-2);transition:background var(--tm)}
+    [data-theme="light"] .hdr{background:rgba(240,245,232,.72)}
+    .hdr.s{background:rgba(26,58,18,.88);border-bottom-color:var(--border)}
+    [data-theme="light"] .hdr.s{background:rgba(240,245,232,.94)}
+    .hdr-in{max-width:1280px;margin-inline:auto;padding-inline:var(--pad);height:100%;display:flex;align-items:center;gap:20px}
+    .back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2);transition:color var(--tf),transform var(--tf)}
+    .back:hover{color:var(--accent);transform:translateX(-3px)}
+    [data-lang="ar"] .back:hover{transform:translateX(3px)}
+    .lm{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--r-sm);background:var(--accent);color:#000;font-family:var(--font-d);font-weight:700;font-size:12px;flex-shrink:0}
+    [data-theme="light"] .lm{color:#fff}
+    .hdr-r{margin-inline-start:auto;display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:var(--r-full);overflow:hidden;height:32px}
+    .sw{display:flex;align-items:center;justify-content:center;padding:0 12px;height:100%;font-family:var(--font-m);font-size:11px;letter-spacing:.1em;color:var(--fg-2);transition:background var(--tf),color var(--tf)}
+    .sw:hover{background:var(--surface-2);color:var(--fg)}
+    .sd{width:1px;height:14px;background:var(--border)}
+
+    /* ── BUTTONS ── */
+    .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 26px;border-radius:var(--r-full);font-family:var(--font-b);font-size:13px;font-weight:700;letter-spacing:.03em;overflow:hidden;text-decoration:none;transition:box-shadow var(--tf),transform var(--tf);cursor:none;z-index:0}
+    .btn:active{transform:scale(.95)}
+    .btn-p{background:var(--accent);color:#000}
+    [data-theme="light"] .btn-p{color:#fff}
+    .btn-p:hover{box-shadow:0 0 0 3px var(--accent-dim),0 8px 24px rgba(212,232,165,.2)}
+    .btn-fill{position:absolute;inset:0;border-radius:inherit;background:rgba(255,255,255,.15);transform:scaleX(0) translateX(-100%);transform-origin:left;transition:transform .5s var(--ease);z-index:-1;pointer-events:none}
+    .btn-p:hover .btn-fill{transform:scaleX(1) translateX(0)}
+    .btn-g{background:transparent;color:var(--fg);border:1px solid var(--border)}
+    .btn-g:hover{background:var(--surface-2)}
+
+    /* ── REVEAL ── */
+    .ri{opacity:0;transform:translateY(26px);transition:opacity var(--ts) var(--ease),transform var(--ts) var(--ease)}
+    .ri.in{opacity:1;transform:translateY(0)}
+    .ri:nth-child(1){transition-delay:0s} .ri:nth-child(2){transition-delay:.08s}
+    .ri:nth-child(3){transition-delay:.16s} .ri:nth-child(4){transition-delay:.24s}
+    .ri:nth-child(5){transition-delay:.32s}
+
+    /* ── HERO ── */
+    .hero{padding-top:calc(var(--hh) + 80px);padding-bottom:64px;padding-inline:var(--pad);max-width:1280px;margin-inline:auto;text-align:center}
+    .hero-tag{font-family:var(--font-m);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:block}
+    .hero-h{font-family:var(--font-d);font-size:clamp(3rem,9vw,9rem);font-weight:700;letter-spacing:-.05em;line-height:.9;margin-bottom:28px;overflow:hidden}
+    .hero-h span{display:block;transform:translateY(110%);opacity:0;transition:transform var(--ts) var(--ease),opacity var(--ts) var(--ease)}
+    .hero-h span:nth-child(2){transition-delay:.14s;font-family:'SimplySerif',Georgia,serif;font-style:italic}
+    .hero-h.in span{transform:translateY(0);opacity:1}
+    .hero-sub{color:var(--fg-2);font-size:clamp(.95rem,1.4vw,1.1rem);line-height:1.8;max-width:580px;margin:0 auto 40px}
+
+    /* ── INTRO QUOTE ── */
+    .intro-quote{max-width:900px;margin:0 auto;padding:clamp(48px,7vw,80px) var(--pad);text-align:center}
+    .quote-mark{font-family:var(--font-d);font-size:6rem;line-height:.5;color:var(--accent);opacity:.3;display:block;margin-bottom:16px}
+    .quote-text{font-family:'SimplySerif',Georgia,serif;font-style:italic;font-size:clamp(1.2rem,2.5vw,1.8rem);line-height:1.5;color:var(--fg);margin-bottom:20px}
+    .quote-attr{font-family:var(--font-m);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)}
+
+    /* ── PHASE SECTIONS ── */
+    .phases{max-width:1280px;margin-inline:auto;padding-inline:var(--pad)}
+
+    /* phase block */
+    .phase{display:grid;grid-template-columns:200px 1fr;gap:clamp(32px,5vw,80px);padding-block:clamp(56px,8vw,100px);border-bottom:1px solid var(--border-2);position:relative}
+    .phase:last-child{border-bottom:none}
+
+    /* left column — number + label */
+    .phase-num-col{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding-top:6px;flex-shrink:0}
+    .phase-number{font-family:var(--font-d);font-size:clamp(4rem,8vw,7rem);font-weight:700;letter-spacing:-.05em;line-height:1;color:var(--accent);opacity:.18;transition:opacity var(--tm)}
+    .phase:hover .phase-number{opacity:.45}
+    .phase-tag{font-family:var(--font-m);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);padding:4px 10px;border:1px solid var(--accent-dim);border-radius:var(--r-full)}
+
+    /* right column — content */
+
+    .phase-title{font-family:var(--font-d);font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin-bottom:16px;transition:color var(--tf)}
+    .phase:hover .phase-title{color:var(--accent)}
+    .phase-desc{color:var(--fg-2);font-size:clamp(.9rem,1.3vw,1.05rem);line-height:1.85;margin-bottom:28px;max-width:640px}
+
+    /* Discovery option cards */
+    .discovery-options{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+    .disc-option{padding:24px;border-radius:var(--r-lg);background:var(--bg-card);border:1px solid var(--border-2);backdrop-filter:blur(8px);transition:border-color var(--tm),transform var(--tm),box-shadow var(--tm)}
+    .disc-option:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.25)}
+    [data-theme="light"] .disc-option:hover{box-shadow:0 16px 40px rgba(46,90,34,.1)}
+    .disc-option-icon{font-size:1.6rem;color:var(--accent);margin-bottom:12px;opacity:.8}
+    .disc-option-title{font-family:var(--font-d);font-size:1rem;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+    .disc-option-desc{font-size:12.5px;color:var(--fg-2);line-height:1.7}
+    .disc-option-tag{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-family:var(--font-m);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--sage)}
+
+    /* Detail list */
+    .phase-details{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+    .pd-item{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:var(--fg-2);line-height:1.6}
+    .pd-item::before{content:'→';color:var(--accent);flex-shrink:0;margin-top:1px;font-weight:700}
+    [data-lang="ar"] .pd-item::before{content:'←'}
+
+    /* Timeline badge */
+    .phase-timeline{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:var(--r-full);background:var(--surface-2);border:1px solid var(--border);font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3)}
+    .phase-timeline span{color:var(--accent)}
+
+    /* Phase image */
+    .phase-img{border-radius:var(--r-xl);overflow:hidden;aspect-ratio:16/9;background:var(--surface-2);border:1px solid var(--border-2);margin-top:28px}
+    .phase-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+    .phase-img:hover img{transform:scale(1.04)}
+
+    /* ── DELIVERY CHECKLIST ── */
+    .delivery-section{background:var(--bg-2);padding-block:clamp(64px,9vw,120px)}
+    .delivery-inner{max-width:1280px;margin-inline:auto;padding-inline:var(--pad)}
+    .delivery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+    .del-card{padding:28px 24px;border-radius:var(--r-lg);background:var(--bg-card);border:1px solid var(--border-2);backdrop-filter:blur(8px);transition:border-color var(--tm),transform var(--tm),box-shadow var(--tm)}
+    .del-card:hover{border-color:var(--border);transform:translateY(-5px);box-shadow:0 20px 48px rgba(0,0,0,.28)}
+    [data-theme="light"] .del-card:hover{box-shadow:0 20px 48px rgba(46,90,34,.1)}
+    .del-icon{font-size:1.8rem;margin-bottom:16px;color:var(--accent);opacity:.8}
+    .del-title{font-family:var(--font-d);font-size:1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+    .del-desc{font-size:12.5px;color:var(--fg-2);line-height:1.75}
+
+    /* ── FAQ ── */
+    .faq-section{padding-block:clamp(64px,9vw,120px);max-width:800px;margin-inline:auto;padding-inline:var(--pad)}
+    .sec-tag{font-family:var(--font-m);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:block}
+    .sec-h{font-family:var(--font-d);font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin-bottom:20px}
+    .faq-list{display:flex;flex-direction:column;margin-top:48px}
+    .faq-item{border-bottom:1px solid var(--border-2)}
+    .faq-q{width:100%;padding:20px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--font-d);font-size:clamp(.95rem,1.5vw,1.05rem);font-weight:700;letter-spacing:-.01em;text-align:start;cursor:none;transition:color var(--tf)}
+    .faq-q:hover{color:var(--accent)}
+    .faq-icon{font-size:18px;color:var(--accent);transition:transform var(--tm) var(--ease);flex-shrink:0}
+    .faq-item.open .faq-icon{transform:rotate(45deg)}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--ease)}
+    .faq-a-inner{padding-bottom:20px;font-size:13px;color:var(--fg-2);line-height:1.8}
+    .faq-item.open .faq-a{max-height:400px}
+
+    /* ── CTA BAND ── */
+    .cta-band{padding-block:clamp(80px,12vw,160px);padding-inline:var(--pad);text-align:center}
+    .cta-band h2{font-family:var(--font-d);font-size:clamp(2.2rem,6vw,5.5rem);font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:32px}
+    .cta-band h2 em{font-family:'SimplySerif',Georgia,serif;font-style:italic;color:var(--accent)}
+    .cta-row{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+
+    /* ── FOOTER ── */
+    .foot{border-top:1px solid var(--border-2);padding:24px var(--pad);background:var(--bg-2)}
+    .foot-in{max-width:1280px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .foot-logo{display:flex;align-items:center;gap:8px}
+    .foot-name{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;color:var(--fg-3)}
+    .foot-copy{font-family:var(--font-m);font-size:10px;letter-spacing:.06em;color:var(--fg-3)}
+    .foot-back{font-family:var(--font-m);font-size:11px;letter-spacing:.08em;color:var(--fg-3);transition:color var(--tf)}
+    .foot-back:hover{color:var(--accent)}
+
+    @media(max-width:860px){
+      .phase{grid-template-columns:1fr}
+      .phase-num-col{flex-direction:row;align-items:center}
+      .phase-number{font-size:3rem;opacity:.35}
+      .discovery-options{grid-template-columns:1fr}
+      .delivery-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:540px){
+      .delivery-grid{grid-template-columns:1fr}
+    }
+    @media(hover:none){.cursor{display:none!important}body{cursor:auto!important}button,a{cursor:pointer!important}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="sp" id="sp" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+</div>
+
+<!-- HEADER -->
+<header class="hdr" id="hdr" role="banner">
+  <div class="hdr-in">
+    <a href="../index.html" class="back">
+      <span class="lm">YA</span>
+      <span data-en="← Back" data-ar="رجوع →">← Back</span>
+    </a>
+    <div class="hdr-r">
+      <button class="sw" id="langToggle"><span id="langLabel">EN</span></button>
+      <div class="sd"></div>
+      <button class="sw" id="themeToggle"><span id="themeIcon">◐</span></button>
+    </div>
+  </div>
+</header>
+
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-tag ri" data-en="How I work" data-ar="كيف أعمل">How I work</span>
+  <h2 class="hero-h" id="heroH">
+    <span data-en="The" data-ar="العملية">The</span>
+    <span data-en="Process." data-ar="الكاملة.">Process.</span>
+  </h2>
+  <p class="hero-sub ri"
+     data-en="Every project follows the same clear path. From first contact to final delivery — no guesswork, no delays, no surprises."
+     data-ar="كل مشروع يسير في نفس المسار الواضح. من أول تواصل إلى التسليم النهائي — لا تخمين، لا تأخير، لا مفاجآت.">
+    Every project follows the same clear path. From first contact to final delivery — no guesswork, no delays, no surprises.
+  </p>
+  <div class="ri">
+    <a href="inquiry.html" class="btn btn-p"
+       data-en="Start a Project →" data-ar="ابدأ مشروعاً ←">
+      <span data-en="Start a Project →" data-ar="ابدأ مشروعاً ←">Start a Project →</span>
+      <span class="btn-fill"></span>
+    </a>
+  </div>
+</div>
+
+
+<!-- INTRO QUOTE -->
+<div class="intro-quote ri">
+  <span class="quote-mark" aria-hidden="true">"</span>
+  <p class="quote-text"
+     data-en="The best creative work isn't random. It's the result of a process that removes guesswork and replaces it with clarity."
+     data-ar="أفضل العمل الإبداعي ليس عشوائياً. إنه نتيجة عملية تزيل التخمين وتستبدله بالوضوح.">
+    The best creative work isn't random. It's the result of a process that removes guesswork and replaces it with clarity.
+  </p>
+  <span class="quote-attr">— Yaman Ali</span>
+</div>
+
+
+<!-- PHASES -->
+<div class="phases">
+
+  <!-- ══ PHASE 01 — DISCOVERY ══ -->
+  <div class="phase ri">
+    <div class="phase-num-col">
+      <div class="phase-number">01</div>
+      <div class="phase-tag" data-en="Discovery" data-ar="الاكتشاف">Discovery</div>
+    </div>
+    <div class="phase-content">
+      <h2 class="phase-title"
+          data-en="We start by understanding — deeply."
+          data-ar="نبدأ بالفهم — بعمق.">
+        We start by understanding — deeply.
+      </h2>
+      <p class="phase-desc"
+         data-en="Before any design work begins, I need to understand your business, your audience, your goals, and your competitive landscape. You have two ways to do this — choose what works for you."
+         data-ar="قبل بدء أي عمل تصميمي، أحتاج إلى فهم عملك وجمهورك وأهدافك وبيئتك التنافسية. لديك طريقتان للقيام بذلك — اختر ما يناسبك.">
+        Before any design work begins, I need to understand your business, your audience, your goals, and your competitive landscape. You have two ways to do this — choose what works for you.
+      </p>
+
+      <!-- TWO OPTIONS -->
+      <div class="discovery-options">
+
+        <div class="disc-option">
+          <div class="disc-option-icon">📞</div>
+          <h3 class="disc-option-title"
+              data-en="Discovery Call" data-ar="مكالمة الاكتشاف">Discovery Call</h3>
+          <p class="disc-option-desc"
+             data-en="A 30-minute video or voice call where we talk through your project, your vision, and your questions. The most efficient way to get aligned fast."
+             data-ar="مكالمة مدتها 30 دقيقة بالفيديو أو الصوت نناقش فيها مشروعك ورؤيتك وأسئلتك. أكثر الطرق فعالية للتوافق بسرعة.">
+            A 30-minute video or voice call where we talk through your project, your vision, and your questions. The most efficient way to get aligned fast.
+          </p>
+          <div class="disc-option-tag">
+            <span>✓</span>
+            <span data-en="Best for complex projects" data-ar="الأفضل للمشاريع المعقدة">Best for complex projects</span>
+          </div>
+        </div>
+
+        <div class="disc-option">
+          <div class="disc-option-icon">📋</div>
+          <h3 class="disc-option-title"
+              data-en="Written Questionnaire" data-ar="استبيان مكتوب">Written Questionnaire</h3>
+          <p class="disc-option-desc"
+             data-en="Prefer to work async? Fill in a structured project brief at your own pace. 10 targeted questions that give me everything I need — no call required."
+             data-ar="تفضّل العمل بشكل غير متزامن؟ اكمل موجزاً منظماً بالسرعة التي تناسبك. 10 أسئلة مستهدفة تمنحني كل ما أحتاجه — لا حاجة لمكالمة.">
+            Prefer to work async? Fill in a structured project brief at your own pace. 10 targeted questions that give me everything I need — no call required.
+          </p>
+          <div class="disc-option-tag">
+            <span>✓</span>
+            <span data-en="Best for clear-scope projects" data-ar="الأفضل للمشاريع ذات النطاق الواضح">Best for clear-scope projects</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="phase-timeline">
+        <span>⏱</span>
+        <span data-en="Timeline:" data-ar="الجدول الزمني:">Timeline:</span>
+        <span data-en="Day 1" data-ar="اليوم الأول">Day 1</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ PHASE 02 — RESEARCH & STRATEGY ══ -->
+  <div class="phase ri">
+    <div class="phase-num-col">
+      <div class="phase-number">02</div>
+      <div class="phase-tag" data-en="Research" data-ar="البحث">Research</div>
+    </div>
+    <div class="phase-content">
+      <h2 class="phase-title"
+          data-en="Research before pencil touches paper."
+          data-ar="البحث قبل أن تلمس القلم الورق.">
+        Research before pencil touches paper.
+      </h2>
+      <p class="phase-desc"
+         data-en="Most designers skip this step. I don't. I spend time mapping your market, studying your competitors, and defining the visual territory your brand should own — before any design tool opens."
+         data-ar="معظم المصممين يتخطون هذه الخطوة. أنا لا أفعل. أقضي وقتاً في رسم خريطة سوقك ودراسة منافسيك وتحديد الأراضي البصرية التي يجب أن تمتلكها علامتك — قبل فتح أي أداة تصميم.">
+        Most designers skip this step. I don't. I spend time mapping your market, studying your competitors, and defining the visual territory your brand should own — before any design tool opens.
+      </p>
+      <div class="phase-details">
+        <div class="pd-item" data-en="Competitor visual audit — what's already in your space" data-ar="تدقيق بصري للمنافسين — ما هو موجود بالفعل في مجالك">Competitor visual audit — what's already in your space</div>
+        <div class="pd-item" data-en="Audience profile — who we're designing for and why" data-ar="ملف الجمهور — لمن نصمم ولماذا">Audience profile — who we're designing for and why</div>
+        <div class="pd-item" data-en="Brand positioning — where you sit, where you should sit" data-ar="تموضع العلامة — أين أنت، وأين يجب أن تكون">Brand positioning — where you sit, where you should sit</div>
+        <div class="pd-item" data-en="Moodboard — visual direction presented for your approval before design starts" data-ar="لوحة المزاج — الاتجاه البصري مقدم لموافقتك قبل بدء التصميم">Moodboard — visual direction presented for your approval before design starts</div>
+      </div>
+      <div class="phase-timeline">
+        <span>⏱</span>
+        <span data-en="Timeline:" data-ar="الجدول الزمني:">Timeline:</span>
+        <span data-en="Days 2–4" data-ar="الأيام 2-4">Days 2–4</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ PHASE 03 — CONCEPT DEVELOPMENT ══ -->
+  <div class="phase ri">
+    <div class="phase-num-col">
+      <div class="phase-number">03</div>
+      <div class="phase-tag" data-en="Concept" data-ar="المفهوم">Concept</div>
+    </div>
+    <div class="phase-content">
+      <h2 class="phase-title"
+          data-en="Concepts — with reasons, not just options."
+          data-ar="مفاهيم — مع أسباب، ليس فقط خيارات.">
+        Concepts — with reasons, not just options.
+      </h2>
+      <p class="phase-desc"
+         data-en="I develop 2–3 distinct logo directions — each with a clear rationale explaining the thinking behind every visual decision. You're not choosing between random options. You're choosing between deliberate strategies."
+         data-ar="أطور 2-3 اتجاهات شعار مميزة — كل منها مع مبرر واضح يشرح التفكير وراء كل قرار بصري. أنت لا تختار بين خيارات عشوائية. أنت تختار بين استراتيجيات مقصودة.">
+        I develop 2–3 distinct logo directions — each with a clear rationale explaining the thinking behind every visual decision. You're not choosing between random options. You're choosing between deliberate strategies.
+      </p>
+      <div class="phase-details">
+        <div class="pd-item" data-en="2–3 concept directions presented in a clean presentation format" data-ar="2-3 اتجاهات مفهوم مقدمة بتنسيق عرض نظيف">2–3 concept directions presented in a clean presentation format</div>
+        <div class="pd-item" data-en="Each concept shown in context — not just on a white background" data-ar="كل مفهوم معروض في سياقه — وليس فقط على خلفية بيضاء">Each concept shown in context — not just on a white background</div>
+        <div class="pd-item" data-en="Written rationale for every design choice — colour, form, typography" data-ar="مبرر مكتوب لكل خيار تصميمي — اللون والشكل والطباعة">Written rationale for every design choice — colour, form, typography</div>
+        <div class="pd-item" data-en="One direction is chosen — we move forward together from here" data-ar="يتم اختيار اتجاه واحد — نمضي قدماً معاً من هنا">One direction is chosen — we move forward together from here</div>
+      </div>
+      <div class="phase-timeline">
+        <span>⏱</span>
+        <span data-en="Timeline:" data-ar="الجدول الزمني:">Timeline:</span>
+        <span data-en="Days 5–10" data-ar="الأيام 5-10">Days 5–10</span>
+      </div>
+      <div class="phase-img">
+        <img src="../images/process-concepts.jpg" alt="Concept development" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ PHASE 04 — REFINEMENT ══ -->
+  <div class="phase ri">
+    <div class="phase-num-col">
+      <div class="phase-number">04</div>
+      <div class="phase-tag" data-en="Refinement" data-ar="التنقيح">Refinement</div>
+    </div>
+    <div class="phase-content">
+      <h2 class="phase-title"
+          data-en="Structured revision. Not endless back-and-forth."
+          data-ar="مراجعة منظمة. وليس ذهاباً وإياباً لا نهاية له.">
+        Structured revision. Not endless back-and-forth.
+      </h2>
+      <p class="phase-desc"
+         data-en="Revision rounds are structured — not open-ended. Each round has a clear scope, a deadline, and a feedback format that keeps us both focused on making it better, not just different."
+         data-ar="جولات المراجعة منظمة — وليست مفتوحة. كل جولة لها نطاق واضح وموعد نهائي وتنسيق تغذية راجعة يبقينا نركز على جعلها أفضل، وليس فقط مختلفة.">
+        Revision rounds are structured — not open-ended. Each round has a clear scope, a deadline, and a feedback format that keeps us both focused on making it better, not just different.
+      </p>
+      <div class="phase-details">
+        <div class="pd-item" data-en="Round 1 — directional changes: layout, spacing, overall feel" data-ar="الجولة 1 — تغييرات اتجاهية: التخطيط والتباعد والشعور العام">Round 1 — directional changes: layout, spacing, overall feel</div>
+        <div class="pd-item" data-en="Round 2 — detail polish: weight, colour adjustments, fine-tuning" data-ar="الجولة 2 — صقل التفاصيل: الوزن وتعديلات الألوان والضبط الدقيق">Round 2 — detail polish: weight, colour adjustments, fine-tuning</div>
+        <div class="pd-item" data-en="Additional rounds available if needed at an agreed flat rate" data-ar="جولات إضافية متاحة عند الحاجة بسعر ثابت متفق عليه">Additional rounds available if needed at an agreed flat rate</div>
+        <div class="pd-item" data-en="Feedback is guided — I give you a structured template so nothing important gets missed" data-ar="التغذية الراجعة موجهة — أمنحك نموذجاً منظماً حتى لا يُفوّت شيء مهم">Feedback is guided — I give you a structured template so nothing important gets missed</div>
+      </div>
+      <div class="phase-timeline">
+        <span>⏱</span>
+        <span data-en="Timeline:" data-ar="الجدول الزمني:">Timeline:</span>
+        <span data-en="Days 11–18" data-ar="الأيام 11-18">Days 11–18</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ PHASE 05 — SYSTEM BUILD ══ -->
+  <div class="phase ri">
+    <div class="phase-num-col">
+      <div class="phase-number">05</div>
+      <div class="phase-tag" data-en="Build" data-ar="البناء">Build</div>
+    </div>
+    <div class="phase-content">
+      <h2 class="phase-title"
+          data-en="From logo to full system."
+          data-ar="من الشعار إلى النظام الكامل.">
+        From logo to full system.
+      </h2>
+      <p class="phase-desc"
+         data-en="Once the logo is locked, I build out everything around it — typography pairings, colour systems, brand patterns, and mockups. This is where a logo becomes a brand identity."
+         data-ar="بمجرد إقفال الشعار، أبني كل شيء حوله — أزواج الطباعة وأنظمة الألوان وأنماط العلامة والنماذج. هنا يصبح الشعار هوية بصرية.">
+        Once the logo is locked, I build out everything around it — typography pairings, colour systems, brand patterns, and mockups. This is where a logo becomes a brand identity.
+      </p>
+      <div class="phase-details">
+        <div class="pd-item" data-en="Typography system — primary and secondary typeface pairing" data-ar="نظام الطباعة — اقتران الخط الأساسي والثانوي">Typography system — primary and secondary typeface pairing</div>
+        <div class="pd-item" data-en="Colour palette — all codes (HEX, RGB, CMYK), usage rules" data-ar="لوحة الألوان — جميع الرموز (HEX وRGB وCMYK) وقواعد الاستخدام">Colour palette — all codes (HEX, RGB, CMYK), usage rules</div>
+        <div class="pd-item" data-en="Brand patterns and graphic elements (Full Identity package)" data-ar="أنماط العلامة والعناصر الجرافيكية (حزمة الهوية الكاملة)">Brand patterns and graphic elements (Full Identity package)</div>
+        <div class="pd-item" data-en="Photorealistic mockups showing the identity in real-world contexts" data-ar="نماذج واقعية تظهر الهوية في سياقات العالم الحقيقي">Photorealistic mockups showing the identity in real-world contexts</div>
+      </div>
+      <div class="phase-timeline">
+        <span>⏱</span>
+        <span data-en="Timeline:" data-ar="الجدول الزمني:">Timeline:</span>
+        <span data-en="Days 18–22" data-ar="الأيام 18-22">Days 18–22</span>
+      </div>
+      <div class="phase-img">
+        <img src="../images/process-system.jpg" alt="Brand system build" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ PHASE 06 — FINAL DELIVERY ══ -->
+  <div class="phase ri">
+    <div class="phase-num-col">
+      <div class="phase-number">06</div>
+      <div class="phase-tag" data-en="Delivery" data-ar="التسليم">Delivery</div>
+    </div>
+    <div class="phase-content">
+      <h2 class="phase-title"
+          data-en="Everything packaged. Ready to use."
+          data-ar="كل شيء معبأ. جاهز للاستخدام.">
+        Everything packaged. Ready to use.
+      </h2>
+      <p class="phase-desc"
+         data-en="The final delivery is a complete, organised package — not a chaotic zip file full of unnamed files. Every asset is labelled, structured, and ready to hand off to printers, developers, or your team."
+         data-ar="التسليم النهائي هو حزمة كاملة ومنظمة — وليس ملف ضغط فوضوياً مليئاً بملفات غير مسماة. كل أصل مُعنوَن ومهيكل وجاهز للتسليم للطابعين أو المطورين أو فريقك.">
+        The final delivery is a complete, organised package — not a chaotic zip file full of unnamed files. Every asset is labelled, structured, and ready to hand off to printers, developers, or your team.
+      </p>
+      <div class="phase-details">
+        <div class="pd-item" data-en="Shared folder with clear folder structure — /Logo /Typography /Colours /Mockups" data-ar="مجلد مشترك مع هيكل مجلد واضح — /الشعار /الطباعة /الألوان /النماذج">Shared folder with clear folder structure — /Logo /Typography /Colours /Mockups</div>
+        <div class="pd-item" data-en="Every file named consistently — no 'Final_v3_FINAL2.png'" data-ar="كل ملف مسمى باتساق — لا 'Final_v3_FINAL2.png'">Every file named consistently — no 'Final_v3_FINAL2.png'</div>
+        <div class="pd-item" data-en="Usage guide included — so any future designer knows how to use the identity" data-ar="دليل الاستخدام مضمون — حتى يعرف أي مصمم مستقبلي كيفية استخدام الهوية">Usage guide included — so any future designer knows how to use the identity</div>
+        <div class="pd-item" data-en="30-day post-delivery support — for any small questions or file adjustments" data-ar="دعم 30 يوماً بعد التسليم — لأي أسئلة صغيرة أو تعديلات على الملفات">30-day post-delivery support — for any small questions or file adjustments</div>
+      </div>
+      <div class="phase-timeline">
+        <span>⏱</span>
+        <span data-en="Timeline:" data-ar="الجدول الزمني:">Timeline:</span>
+        <span data-en="Day 23–25 (total: ~3–4 weeks)" data-ar="اليوم 23-25 (المجموع: ~3-4 أسابيع)">Day 23–25 (total: ~3–4 weeks)</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phases -->
+
+
+<!-- WHAT'S IN THE DELIVERY -->
+<div class="delivery-section">
+  <div class="delivery-inner">
+    <span class="sec-tag ri" data-en="Final delivery includes" data-ar="التسليم النهائي يشمل">Final delivery includes</span>
+    <h2 class="sec-h ri" data-en="Everything you need. Nothing you don't." data-ar="كل ما تحتاجه. لا شيء آخر.">Everything you need. Nothing you don't.</h2>
+    <div class="delivery-grid">
+
+      <div class="del-card ri">
+        <div class="del-icon">◈</div>
+        <h3 class="del-title" data-en="Logo Files — All Formats" data-ar="ملفات الشعار — جميع الصيغ">Logo Files — All Formats</h3>
+        <p class="del-desc" data-en="PNG, JPG, SVG, PDF — in full colour, reversed, and single colour. Every variation you'll ever need." data-ar="PNG وJPG وSVG وPDF — بالألوان الكاملة والمعكوسة والتون الواحد. كل تنويع ستحتاجه على الإطلاق.">PNG, JPG, SVG, PDF — in full colour, reversed, and single colour. Every variation you'll ever need.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">Aa</div>
+        <h3 class="del-title" data-en="Typography Guide" data-ar="دليل الطباعة">Typography Guide</h3>
+        <p class="del-desc" data-en="Font names, where to get them, how to use them — sizes, weights, hierarchy. The complete type system." data-ar="أسماء الخطوط وأين تحصل عليها وكيف تستخدمها — الأحجام والأوزان والتسلسل الهرمي. النظام الطباعي الكامل.">Font names, where to get them, how to use them — sizes, weights, hierarchy. The complete type system.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">◉</div>
+        <h3 class="del-title" data-en="Colour Codes" data-ar="رموز الألوان">Colour Codes</h3>
+        <p class="del-desc" data-en="HEX, RGB, and CMYK for every colour in the palette — so your brand is pixel-perfect on screen and print-perfect in production." data-ar="HEX وRGB وCMYK لكل لون في اللوحة — حتى تكون علامتك مثالية على الشاشة وفي الطباعة.">HEX, RGB, and CMYK for every colour in the palette — so your brand is pixel-perfect on screen and print-perfect in production.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">◻</div>
+        <h3 class="del-title" data-en="Mockups" data-ar="النماذج">Mockups</h3>
+        <p class="del-desc" data-en="Photorealistic scenes showing your brand in context — business cards, packaging, signage, digital screens. Ready to share immediately." data-ar="مشاهد واقعية تظهر علامتك في سياقها — بطاقات عمل وتغليف ولافتات وشاشات رقمية. جاهزة للمشاركة فوراً.">Photorealistic scenes showing your brand in context — business cards, packaging, signage, digital screens. Ready to share immediately.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">◎</div>
+        <h3 class="del-title" data-en="Usage Guide" data-ar="دليل الاستخدام">Usage Guide</h3>
+        <p class="del-desc" data-en="A concise document covering correct logo usage, colour applications, spacing rules, and what not to do. Essential for any team." data-ar="وثيقة موجزة تغطي الاستخدام الصحيح للشعار وتطبيقات الألوان وقواعد التباعد وما لا ينبغي فعله. ضرورية لأي فريق.">A concise document covering correct logo usage, colour applications, spacing rules, and what not to do. Essential for any team.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">↺</div>
+        <h3 class="del-title" data-en="30-Day Support" data-ar="دعم لمدة 30 يوماً">30-Day Support</h3>
+        <p class="del-desc" data-en="After delivery, I'm available for 30 days for minor adjustments, file format requests, or questions from your printer or developer." data-ar="بعد التسليم، أكون متاحاً لمدة 30 يوماً للتعديلات الطفيفة وطلبات تنسيق الملفات أو أسئلة طابعك أو مطورك.">After delivery, I'm available for 30 days for minor adjustments, file format requests, or questions from your printer or developer.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- FAQ -->
+<div class="faq-section">
+  <span class="sec-tag ri" data-en="Questions" data-ar="أسئلة">Questions</span>
+  <h2 class="sec-h ri" data-en="About the process." data-ar="حول العملية.">About the process.</h2>
+  <div class="faq-list">
+
+    <div class="faq-item ri">
+      <button class="faq-q" aria-expanded="false">
+        <span data-en="Do I have to do a call, or can I just fill in the questionnaire?" data-ar="هل يجب أن أجري مكالمة، أم يمكنني فقط ملء الاستبيان؟">Do I have to do a call, or can I just fill in the questionnaire?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner" data-en="Completely your choice. The questionnaire covers everything I need for a standard project. A call is offered as an alternative for people who prefer to talk things through, or for more complex projects where live discussion saves time." data-ar="الاختيار تماماً لك. الاستبيان يغطي كل ما أحتاجه لمشروع قياسي. المكالمة مقدمة كبديل للأشخاص الذين يفضلون مناقشة الأمور، أو للمشاريع الأكثر تعقيداً حيث توفر المناقشة المباشرة الوقت.">Completely your choice. The questionnaire covers everything I need for a standard project. A call is offered as an alternative for people who prefer to talk things through, or for more complex projects where live discussion saves time.</div></div>
+    </div>
+
+    <div class="faq-item ri">
+      <button class="faq-q" aria-expanded="false">
+        <span data-en="How long does the full process take?" data-ar="كم تستغرق العملية الكاملة؟">How long does the full process take?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner" data-en="Typically 3–4 weeks for a full brand identity. Brand Essentials takes 1–2 weeks. Social media templates take 1–2 weeks. The biggest variable is how quickly you provide feedback — the faster you respond, the faster the project moves." data-ar="عادةً من 3 إلى 4 أسابيع لهوية بصرية كاملة. أساسيات العلامة تستغرق من 1 إلى 2 أسبوع. قوالب السوشيال ميديا تستغرق من 1 إلى 2 أسبوع. المتغير الأكبر هو مدى سرعة تقديم ملاحظاتك — كلما كانت استجابتك أسرع، كان تقدم المشروع أسرع.">Typically 3–4 weeks for a full brand identity. Brand Essentials takes 1–2 weeks. Social media templates take 1–2 weeks. The biggest variable is how quickly you provide feedback — the faster you respond, the faster the project moves.</div></div>
+    </div>
+
+    <div class="faq-item ri">
+      <button class="faq-q" aria-expanded="false">
+        <span data-en="What if I need it faster?" data-ar="ماذا لو احتجت إليه بشكل أسرع؟">What if I need it faster?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner" data-en="Rush projects are available for an additional fee. Mention your deadline in your brief and I'll let you know if it's achievable. I'd rather be honest about timelines upfront than overpromise and underdeliver." data-ar="المشاريع العاجلة متاحة برسوم إضافية. اذكر موعدك النهائي في موجزك وسأخبرك إذا كان قابلاً للتحقيق. أفضل أن أكون صريحاً بشأن الجداول الزمنية مسبقاً من أن أعد بأكثر مما أستطيع وأسلم أقل.">Rush projects are available for an additional fee. Mention your deadline in your brief and I'll let you know if it's achievable. I'd rather be honest about timelines upfront than overpromise and underdeliver.</div></div>
+    </div>
+
+    <div class="faq-item ri">
+      <button class="faq-q" aria-expanded="false">
+        <span data-en="What do I need to prepare before we start?" data-ar="ماذا أحتاج للتحضير قبل أن نبدأ؟">What do I need to prepare before we start?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner" data-en="Just your ideas and some reference points — brands you like, colours that feel right, words that describe your vision. I'll guide you through the rest. You don't need to have it all figured out before we start." data-ar="فقط أفكارك وبعض نقاط المرجع — علامات تجارية تعجبك وألوان تبدو صحيحة وكلمات تصف رؤيتك. سأرشدك خلال الباقي. لا تحتاج إلى معرفة كل شيء قبل أن نبدأ.">Just your ideas and some reference points — brands you like, colours that feel right, words that describe your vision. I'll guide you through the rest. You don't need to have it all figured out before we start.</div></div>
+    </div>
+
+    <div class="faq-item ri">
+      <button class="faq-q" aria-expanded="false">
+        <span data-en="What happens after delivery?" data-ar="ماذا يحدث بعد التسليم؟">What happens after delivery?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner" data-en="You own everything. Full rights to all final files transfer to you on final payment. I'm available for 30 days post-delivery for small questions or file adjustments. After that, any significant new work would be scoped as a new project." data-ar="أنت تمتلك كل شيء. الحقوق الكاملة لجميع الملفات النهائية تنتقل إليك عند الدفع النهائي. أكون متاحاً لمدة 30 يوماً بعد التسليم للأسئلة الصغيرة أو تعديلات الملفات. بعد ذلك، أي عمل جديد مهم سيكون بنطاق مشروع جديد.">You own everything. Full rights to all final files transfer to you on final payment. I'm available for 30 days post-delivery for small questions or file adjustments. After that, any significant new work would be scoped as a new project.</div></div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- CTA BAND -->
+<div class="cta-band ri">
+  <h2>
+    <span data-en="Ready to start" data-ar="مستعد للبدء">Ready to start</span><br>
+    <em data-en="your project?" data-ar="مشروعك؟">your project?</em>
+  </h2>
+  <div class="cta-row">
+    <a href="inquiry.html" class="btn btn-p" style="font-size:15px;padding:16px 40px;">
+      <span data-en="Start a Project →" data-ar="ابدأ مشروعاً ←">Start a Project →</span>
+      <span class="btn-fill"></span>
+    </a>
+    <a href="../index.html" class="btn btn-g" style="font-size:15px;padding:16px 40px;">
+      <span data-en="Back to Home" data-ar="العودة للرئيسية">Back to Home</span>
+    </a>
+  </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer class="foot" role="contentinfo">
+  <div class="foot-in">
+    <div class="foot-logo">
+      <span class="lm">YA</span>
+      <span class="foot-name">yamanalie</span>
+    </div>
+    <p class="foot-copy"
+       data-en="© 2025 Yaman Ali. All rights reserved."
+       data-ar="© 2025 يمان علي. جميع الحقوق محفوظة.">
+      © 2025 Yaman Ali. All rights reserved.
+    </p>
+    <a href="../index.html" class="foot-back"
+       data-en="← Back to Home" data-ar="العودة للرئيسية →">← Back to Home</a>
+  </div>
+</footer>
+
+
+<script>
+(function(){
+  /* Scroll progress */
+  const sp=document.getElementById('sp');
+  window.addEventListener('scroll',()=>{const max=document.documentElement.scrollHeight-window.innerHeight;if(sp)sp.style.width=(max>0?(window.scrollY/max)*100:0)+'%';},{passive:true});
+  /* Header */
+  const hdr=document.getElementById('hdr');
+  window.addEventListener('scroll',()=>{if(hdr)hdr.classList.toggle('s',window.scrollY>30);},{passive:true});
+  /* Cursor */
+  if(!window.matchMedia('(hover: none)').matches){
+    const cur=document.getElementById('cursor'),ring=cur?.querySelector('.cursor-ring');
+    let mx=-300,my=-300,dx=-300,dy=-300,rx=-300,ry=-300;
+    const lerp=(a,b,t)=>a+(b-a)*t;
+    const tick=()=>{dx=lerp(dx,mx,.55);dy=lerp(dy,my,.55);rx=lerp(rx,mx,.28);ry=lerp(ry,my,.28);if(cur)cur.style.transform=`translate(${dx}px,${dy}px) translate(-50%,-50%)`;if(ring)ring.style.transform=`translate(calc(-50% + ${rx-dx}px),calc(-50% + ${ry-dy}px))`;requestAnimationFrame(tick);};
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+    document.addEventListener('mouseleave',()=>{mx=-300;my=-300;});
+    document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cl'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cl'));});
+    tick();
+  }
+  /* Theme */
+  const applyTheme=t=>{document.documentElement.dataset.theme=t;localStorage.setItem('ya-theme',t);const i=document.getElementById('themeIcon');if(i)i.textContent=t==='dark'?'◑':'◐';};
+  applyTheme(localStorage.getItem('ya-theme')||'dark');
+  document.getElementById('themeToggle')?.addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+  /* Language */
+  const applyLang=lang=>{document.documentElement.dataset.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.documentElement.lang=lang;localStorage.setItem('ya-lang',lang);const l=document.getElementById('langLabel');if(l)l.textContent=lang==='en'?'EN':'AR';document.querySelectorAll('[data-en],[data-ar]').forEach(el=>{const val=el.getAttribute(`data-${lang}`);if(val===null)return;if(el.children.length===0)el.textContent=val;});};
+  applyLang(localStorage.getItem('ya-lang')||'en');
+  document.getElementById('langToggle')?.addEventListener('click',()=>applyLang(document.documentElement.dataset.lang==='en'?'ar':'en'));
+  /* Hero reveal */
+  setTimeout(()=>document.getElementById('heroH')?.classList.add('in'),120);
+  /* Scroll reveal */
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:.07,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.ri').forEach(el=>obs.observe(el));
+  /* FAQ */
+  document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',()=>{const item=btn.closest('.faq-item');const isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));if(!isOpen)item.classList.add('open');btn.setAttribute('aria-expanded',String(!isOpen));});});
+  /* Haptic */
+  document.querySelectorAll('.btn,button').forEach(btn=>{btn.addEventListener('click',()=>{btn.style.transition='transform .08s ease';btn.style.transform='scale(.95)';setTimeout(()=>{btn.style.transition='transform .4s cubic-bezier(.34,1.56,.64,1)';btn.style.transform='scale(1)';},80);setTimeout(()=>{btn.style.transition='';btn.style.transform='';},500);});});
+})();
+</script>
+
+</body>
+</html>

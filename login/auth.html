@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yamanalie — Sign In</title>
+  <meta name="description" content="Sign in or create your Yamanalie account." />
+
+  <!-- Custom Fonts (same as main site) -->
+  <style>
+    @font-face { font-family:'MikhakBold';    src:url('../fonts/MikhakBold.ttf') format('truetype');            font-weight:700; font-display:swap; }
+    @font-face { font-family:'ThmanyahSerif'; src:url('../fonts/thmanyahseriftext-Bold.otf') format('opentype');font-weight:700; font-display:swap; }
+    @font-face { font-family:'Amin';          src:url('../fonts/Amin.otf') format('opentype');                  font-weight:400; font-display:swap; }
+    @font-face { font-family:'SimplySerif';   src:url('../fonts/SimplySerif-Bold.ttf') format('truetype');      font-weight:700; font-display:swap; }
+    @font-face { font-family:'COOPBL';        src:url('../fonts/COOPBL.ttf') format('truetype');                font-weight:700; font-display:swap; }
+  </style>
+
+  <style>
+    /* ══════════════════════════════════════════════
+       TOKENS
+    ══════════════════════════════════════════════ */
+    :root {
+      --bg:          #1a3a12;
+      --bg-2:        #1f4516;
+      --bg-card:     rgba(26,58,18,0.70);
+      --surface:     rgba(212,232,165,0.05);
+      --surface-2:   rgba(212,232,165,0.10);
+      --border:      rgba(212,232,165,0.15);
+      --border-2:    rgba(212,232,165,0.07);
+
+      --fg:          #F0F5E8;
+      --fg-2:        rgba(240,245,232,0.65);
+      --fg-3:        rgba(240,245,232,0.35);
+
+      --accent:      #D4E8A5;
+      --accent-dim:  rgba(212,232,165,0.18);
+      --sage:        #5B8C3E;
+      --orange:      #E57A34;
+
+      --font-display:'COOPBL','SimplySerif',Georgia,serif;
+      --font-body:   'MikhakBold',system-ui,sans-serif;
+      --font-mono:   'Courier New',monospace;
+      --font-ar:     'ThmanyahSerif','Amin','Cairo',sans-serif;
+
+      --ease-out:    cubic-bezier(0.22,1,0.36,1);
+      --t-fast:      .18s;
+      --t-med:       .36s;
+      --t-slow:      .60s;
+
+      --r-sm:6px; --r-md:12px; --r-lg:20px; --r-xl:32px; --r-full:9999px;
+    }
+
+    [data-theme="light"] {
+      --bg:        #F0F5E8;
+      --bg-2:      #E6EDD9;
+      --bg-card:   rgba(240,245,232,0.80);
+      --surface:   rgba(46,90,34,0.05);
+      --surface-2: rgba(46,90,34,0.10);
+      --border:    rgba(46,90,34,0.18);
+      --border-2:  rgba(46,90,34,0.09);
+      --fg:        #1a3a12;
+      --fg-2:      rgba(26,58,18,0.70);
+      --fg-3:      rgba(26,58,18,0.40);
+      --accent:    #2E5A22;
+      --accent-dim:rgba(46,90,34,0.15);
+      --sage:      #4a7a30;
+    }
+
+    [data-lang="ar"] {
+      direction: rtl;
+      --font-body: var(--font-ar);
+      --font-display: var(--font-ar);
+    }
+
+    /* ══════════════════════════════════════════════
+       RESET
+    ══════════════════════════════════════════════ */
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+    html { font-size:16px; -webkit-font-smoothing:antialiased; }
+
+    body {
+      background:var(--bg);
+      color:var(--fg);
+      font-family:var(--font-body);
+      min-height:100svh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:24px 16px;
+      overflow-x:hidden;
+      cursor:none;
+      transition:background var(--t-med), color var(--t-med);
+      position:relative;
+    }
+
+    @media(hover:none){ body{ cursor:auto; } }
+
+    a { color:inherit; text-decoration:none; }
+    button { cursor:none; font-family:inherit; border:none; background:none; color:inherit; }
+    input  { font-family:inherit; }
+    :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:var(--r-sm); }
+    ::selection { background:var(--accent); color:#000; }
+    [data-theme="light"] ::selection { color:#fff; }
+
+    /* ══════════════════════════════════════════════
+       GRAIN
+    ══════════════════════════════════════════════ */
+    .grain {
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      pointer-events:none;
+      opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:180px;
+      mix-blend-mode:overlay;
+    }
+
+    /* ══════════════════════════════════════════════
+       CURSOR
+    ══════════════════════════════════════════════ */
+    .cursor {
+      position:fixed;
+      top:0; left:0;
+      z-index:9998;
+      pointer-events:none;
+      transform:translate(-50%,-50%);
+    }
+
+    .cursor-dot {
+      width:10px; height:10px;
+      border-radius:50%;
+      background:var(--accent);
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      transition:width var(--t-fast), height var(--t-fast), background var(--t-fast);
+    }
+
+    .cursor-ring {
+      width:38px; height:38px;
+      border-radius:50%;
+      border:1.5px solid rgba(212,232,165,0.4);
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      transition:width .20s var(--ease-out), height .20s var(--ease-out), border-color var(--t-fast);
+    }
+
+    body.cur-link .cursor-dot { width:6px; height:6px; }
+    body.cur-link .cursor-ring { width:32px; height:32px; }
+
+    @media(hover:none){ .cursor{ display:none !important; } }
+
+    /* ══════════════════════════════════════════════
+       BG SVG LOOPS (subtle, same as main site)
+    ══════════════════════════════════════════════ */
+    .bg-loops {
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+
+    .bg-loops svg {
+      width:100%; height:100%;
+      opacity:.05;
+    }
+
+    .loop-path {
+      fill:none;
+      stroke:var(--sage);
+      stroke-width:1.5;
+      vector-effect:non-scaling-stroke;
+      stroke-linecap:round;
+      animation:loopDrift 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes loopDrift {
+      from { transform:translateX(-10px); }
+      to   { transform:translateX(10px) scale(1.02); }
+    }
+
+    /* ══════════════════════════════════════════════
+       TOP BAR
+    ══════════════════════════════════════════════ */
+    .top-bar {
+      position:fixed;
+      top:0; left:0; right:0;
+      z-index:100;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:16px clamp(16px,4vw,48px);
+      background:rgba(26,58,18,0.45);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border-2);
+    }
+
+    [data-theme="light"] .top-bar { background:rgba(240,245,232,0.65); }
+
+    .back-link {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-family:var(--font-mono);
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--fg-2);
+      transition:color var(--t-fast), transform var(--t-fast) var(--ease-out);
+    }
+
+    .back-link:hover { color:var(--accent); transform:translateX(-3px); }
+    [data-lang="ar"] .back-link:hover { transform:translateX(3px); }
+
+    .back-arrow { font-size:14px; transition:transform var(--t-fast) var(--ease-out); }
+
+    .top-controls {
+      display:flex;
+      align-items:center;
+      gap:0;
+      border:1px solid var(--border);
+      border-radius:var(--r-full);
+      overflow:hidden;
+      height:32px;
+    }
+
+    .ctrl-btn {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:0 14px;
+      height:100%;
+      font-family:var(--font-mono);
+      font-size:11px;
+      letter-spacing:.1em;
+      color:var(--fg-2);
+      transition:background var(--t-fast), color var(--t-fast);
+    }
+
+    .ctrl-btn:hover { background:var(--surface-2); color:var(--fg); }
+    .ctrl-divider { width:1px; height:14px; background:var(--border); }
+
+    /* ══════════════════════════════════════════════
+       AUTH CARD
+    ══════════════════════════════════════════════ */
+    .auth-card {
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:440px;
+      margin-top:80px;
+      padding:clamp(28px,5vw,48px);
+      border-radius:var(--r-xl);
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      backdrop-filter:blur(20px) saturate(1.5);
+      -webkit-backdrop-filter:blur(20px) saturate(1.5);
+      box-shadow:0 40px 80px rgba(0,0,0,.45);
+      animation:cardIn .55s var(--ease-out) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity:0; transform:translateY(24px) scale(.97); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    /* Brand mark at top */
+    .auth-brand {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:28px;
+    }
+
+    .auth-logo-mark {
+      width:34px; height:34px;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:var(--r-sm);
+      background:var(--accent);
+      color:#000;
+      font-family:var(--font-display);
+      font-weight:700;
+      font-size:12px;
+      flex-shrink:0;
+    }
+
+    [data-theme="light"] .auth-logo-mark { color:#fff; }
+
+    .auth-logo-text {
+      font-family:var(--font-mono);
+      font-size:12px;
+      letter-spacing:.1em;
+      color:var(--fg-2);
+    }
+
+    /* ── Mode toggle (Sign In / Sign Up sliding pill) ── */
+    .mode-toggle {
+      display:flex;
+      align-items:center;
+      position:relative;
+      background:var(--surface);
+      border:1px solid var(--border-2);
+      border-radius:var(--r-full);
+      padding:3px;
+      margin-bottom:32px;
+      gap:0;
+    }
+
+    .mode-pill {
+      position:absolute;
+      top:3px;
+      left:3px;
+      height:calc(100% - 6px);
+      width:calc(50% - 3px);
+      background:var(--accent);
+      border-radius:var(--r-full);
+      transition:transform var(--t-med) var(--ease-out);
+      pointer-events:none;
+    }
+
+    /* When Sign Up is active, slide pill to right */
+    .mode-toggle.signup .mode-pill {
+      transform:translateX(calc(100% + 6px));
+    }
+
+    [data-lang="ar"] .mode-toggle.signup .mode-pill {
+      transform:translateX(calc(-100% - 6px));
+    }
+
+    .mode-btn {
+      flex:1;
+      padding:9px 0;
+      text-align:center;
+      font-family:var(--font-body);
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.04em;
+      color:var(--fg-2);
+      border-radius:var(--r-full);
+      position:relative;
+      z-index:1;
+      transition:color var(--t-med);
+    }
+
+    .mode-btn.active { color:#000; }
+    [data-theme="light"] .mode-btn.active { color:#fff; }
+
+    /* ── Heading ── */
+    .auth-heading {
+      font-family:var(--font-display);
+      font-size:clamp(1.4rem,4vw,1.9rem);
+      font-weight:700;
+      letter-spacing:-.03em;
+      line-height:1.15;
+      margin-bottom:6px;
+    }
+
+    .auth-sub {
+      font-size:13px;
+      color:var(--fg-2);
+      margin-bottom:28px;
+      line-height:1.6;
+    }
+
+    /* ── Form panels ── */
+    .auth-panels {
+      position:relative;
+      overflow:hidden;
+    }
+
+    .auth-panel {
+      transition:opacity var(--t-med) var(--ease-out), transform var(--t-med) var(--ease-out);
+    }
+
+    .auth-panel.hidden {
+      position:absolute;
+      top:0; left:0; right:0;
+      opacity:0;
+      pointer-events:none;
+      transform:translateX(24px);
+    }
+
+    [data-lang="ar"] .auth-panel.hidden { transform:translateX(-24px); }
+
+    /* ── Floating label input ── */
+    .field {
+      position:relative;
+      margin-bottom:24px;
+    }
+
+    .field input {
+      width:100%;
+      padding:18px 0 8px;
+      background:transparent;
+      border:none;
+      border-bottom:1px solid var(--border);
+      color:var(--fg);
+      font-size:14px;
+      outline:none;
+      transition:border-color var(--t-fast);
+    }
+
+    .field input:focus { border-bottom-color:var(--accent); }
+
+    .field input::placeholder { opacity:0; }
+
+    .field label {
+      position:absolute;
+      top:14px;
+      left:0;
+      font-family:var(--font-mono);
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--fg-3);
+      pointer-events:none;
+      transition:top var(--t-fast) var(--ease-out),
+                 font-size var(--t-fast) var(--ease-out),
+                 color var(--t-fast);
+    }
+
+    [data-lang="ar"] .field label { left:auto; right:0; }
+
+    /* Float up on focus or when filled */
+    .field input:focus ~ label,
+    .field input:not(:placeholder-shown) ~ label {
+      top:0;
+      font-size:9px;
+      color:var(--accent);
+    }
+
+    /* ── Password toggle ── */
+    .field-pw { position:relative; }
+
+    .pw-toggle {
+      position:absolute;
+      right:0; bottom:10px;
+      font-size:11px;
+      color:var(--fg-3);
+      letter-spacing:.06em;
+      font-family:var(--font-mono);
+      transition:color var(--t-fast);
+    }
+
+    [data-lang="ar"] .pw-toggle { right:auto; left:0; }
+    .pw-toggle:hover { color:var(--accent); }
+
+    /* ── Submit button ── */
+    .auth-submit {
+      width:100%;
+      padding:14px;
+      margin-top:8px;
+      border-radius:var(--r-full);
+      background:var(--accent);
+      color:#000;
+      font-family:var(--font-body);
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:.03em;
+      position:relative;
+      overflow:hidden;
+      transition:box-shadow var(--t-fast), transform var(--t-fast);
+    }
+
+    [data-theme="light"] .auth-submit { color:#fff; }
+
+    .auth-submit:hover {
+      box-shadow:0 0 0 3px var(--accent-dim), 0 8px 24px rgba(46,90,34,.2);
+    }
+
+    .auth-submit:active { transform:scale(0.96); }
+
+    /* Liquid fill */
+    .auth-submit::after {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:rgba(255,255,255,.14);
+      transform:scaleX(0);
+      transform-origin:left;
+      transition:transform .5s var(--ease-out);
+    }
+
+    .auth-submit:hover::after { transform:scaleX(1); }
+
+    /* ── Divider ── */
+    .auth-divider {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin:20px 0;
+      color:var(--fg-3);
+      font-family:var(--font-mono);
+      font-size:10px;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content:'';
+      flex:1;
+      height:1px;
+      background:var(--border);
+    }
+
+    /* ── Google button ── */
+    .google-btn {
+      width:100%;
+      padding:12px;
+      border-radius:var(--r-full);
+      border:1px solid var(--border);
+      background:transparent;
+      color:var(--fg);
+      font-family:var(--font-body);
+      font-size:13px;
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition:background var(--t-fast), border-color var(--t-fast),
+                 box-shadow var(--t-fast), transform var(--t-fast);
+    }
+
+    .google-btn:hover {
+      background:var(--surface-2);
+      border-color:var(--border);
+      box-shadow:0 0 0 3px var(--accent-dim);
+      transform:translateY(-1px);
+    }
+
+    .google-btn svg { width:18px; height:18px; flex-shrink:0; }
+
+    /* ── Switch prompt ── */
+    .auth-switch {
+      text-align:center;
+      margin-top:20px;
+      font-size:12px;
+      color:var(--fg-3);
+    }
+
+    .auth-switch button {
+      color:var(--accent);
+      font-family:var(--font-body);
+      font-size:12px;
+      font-weight:700;
+      margin-left:4px;
+      transition:opacity var(--t-fast);
+    }
+
+    [data-lang="ar"] .auth-switch button { margin-left:0; margin-right:4px; }
+    .auth-switch button:hover { opacity:.75; }
+
+    /* ── Error / success messages ── */
+    .auth-msg {
+      font-family:var(--font-mono);
+      font-size:11px;
+      letter-spacing:.06em;
+      padding:10px 14px;
+      border-radius:var(--r-md);
+      margin-bottom:16px;
+      display:none;
+    }
+
+    .auth-msg.error   { background:rgba(232,92,80,.12); color:#E85C50; border:1px solid rgba(232,92,80,.25); display:block; }
+    .auth-msg.success { background:rgba(212,232,165,.12); color:var(--accent); border:1px solid var(--border); display:block; }
+
+    /* ══════════════════════════════════════════════
+       FOOTER NOTE
+    ══════════════════════════════════════════════ */
+    .auth-footer {
+      position:relative;
+      z-index:1;
+      margin-top:24px;
+      font-family:var(--font-mono);
+      font-size:10px;
+      letter-spacing:.08em;
+      color:var(--fg-3);
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Grain -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+</div>
+
+<!-- BG loops -->
+<div class="bg-loops" aria-hidden="true">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <path class="loop-path"
+      d="M720,450 C720,450 540,200 360,200 C180,200 80,350 80,450 C80,550 180,700 360,700
+         C540,700 720,450 720,450 C720,450 900,200 1080,200 C1260,200 1360,350 1360,450
+         C1360,550 1260,700 1080,700 C900,700 720,450 720,450 Z"/>
+  </svg>
+</div>
+
+<!-- Top bar -->
+<header class="top-bar" role="banner">
+  <a href="../index.html" class="back-link" id="backLink">
+    <span class="back-arrow">←</span>
+    <span data-en="Back to Home" data-ar="العودة للرئيسية">Back to Home</span>
+  </a>
+  <div class="top-controls">
+    <button class="ctrl-btn" id="langToggle" aria-label="Switch language">
+      <span id="langLabel">EN</span>
+    </button>
+    <div class="ctrl-divider" aria-hidden="true"></div>
+    <button class="ctrl-btn" id="themeToggle" aria-label="Switch theme">
+      <span id="themeIcon">◐</span>
+    </button>
+  </div>
+</header>
+
+<!-- Auth Card -->
+<main>
+  <div class="auth-card" role="main">
+
+    <!-- Brand -->
+    <div class="auth-brand">
+      <div class="auth-logo-mark">YA</div>
+      <span class="auth-logo-text">yamanalie</span>
+    </div>
+
+    <!-- Mode toggle pill -->
+    <div class="mode-toggle" id="modeToggle" role="tablist">
+      <div class="mode-pill" aria-hidden="true"></div>
+      <button class="mode-btn active" id="signinBtn" role="tab" aria-selected="true"
+              data-en="Sign In" data-ar="تسجيل الدخول">Sign In</button>
+      <button class="mode-btn" id="signupBtn" role="tab" aria-selected="false"
+              data-en="Create Account" data-ar="إنشاء حساب">Create Account</button>
+    </div>
+
+    <!-- Heading -->
+    <h1 class="auth-heading" id="authHeading"
+        data-en="Welcome back." data-ar="أهلاً بعودتك.">Welcome back.</h1>
+    <p class="auth-sub" id="authSub"
+       data-en="Sign in to track your projects and stay connected."
+       data-ar="سجّل دخولك لمتابعة مشاريعك والبقاء على تواصل.">
+      Sign in to track your projects and stay connected.
+    </p>
+
+    <!-- Status message -->
+    <div class="auth-msg" id="authMsg" role="alert"></div>
+
+    <!-- ── Panels wrapper ── -->
+    <div class="auth-panels">
+
+      <!-- SIGN IN panel -->
+      <div class="auth-panel" id="panelSignin">
+
+        <form id="formSignin" novalidate>
+          <div class="field">
+            <input type="email" id="si-email" placeholder=" " required autocomplete="email"/>
+            <label for="si-email" data-en="Email address" data-ar="البريد الإلكتروني">Email address</label>
+          </div>
+          <div class="field field-pw">
+            <input type="password" id="si-password" placeholder=" " required autocomplete="current-password"/>
+            <label for="si-password" data-en="Password" data-ar="كلمة المرور">Password</label>
+            <button type="button" class="pw-toggle" data-target="si-password"
+                    data-en="Show" data-ar="إظهار">Show</button>
+          </div>
+          <button type="submit" class="auth-submit">
+            <span data-en="Sign In →" data-ar="تسجيل الدخول ←">Sign In →</span>
+          </button>
+        </form>
+
+        <div class="auth-divider">
+          <span data-en="or" data-ar="أو">or</span>
+        </div>
+
+        <button class="google-btn" id="googleSignin">
+          <!-- Google G icon -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          <span data-en="Continue with Google" data-ar="المتابعة مع Google">Continue with Google</span>
+        </button>
+
+        <p class="auth-switch">
+          <span data-en="Don't have an account?" data-ar="ليس لديك حساب؟">Don't have an account?</span>
+          <button type="button" id="toSignup"
+                  data-en="Create one" data-ar="أنشئ حساباً">Create one</button>
+        </p>
+      </div><!-- /panelSignin -->
+
+
+      <!-- SIGN UP panel -->
+      <div class="auth-panel hidden" id="panelSignup">
+
+        <form id="formSignup" novalidate>
+          <div class="field">
+            <input type="text" id="su-name" placeholder=" " required autocomplete="name"/>
+            <label for="su-name" data-en="Full name" data-ar="الاسم الكامل">Full name</label>
+          </div>
+          <div class="field">
+            <input type="email" id="su-email" placeholder=" " required autocomplete="email"/>
+            <label for="su-email" data-en="Email address" data-ar="البريد الإلكتروني">Email address</label>
+          </div>
+          <div class="field">
+            <input type="text" id="su-instagram" placeholder=" " autocomplete="off"/>
+            <label for="su-instagram" data-en="Instagram handle (optional)" data-ar="حساب إنستقرام (اختياري)">Instagram handle (optional)</label>
+          </div>
+          <div class="field field-pw">
+            <input type="password" id="su-password" placeholder=" " required autocomplete="new-password"/>
+            <label for="su-password" data-en="Create a password" data-ar="أنشئ كلمة مرور">Create a password</label>
+            <button type="button" class="pw-toggle" data-target="su-password"
+                    data-en="Show" data-ar="إظهار">Show</button>
+          </div>
+          <button type="submit" class="auth-submit">
+            <span data-en="Create Account →" data-ar="إنشاء الحساب ←">Create Account →</span>
+          </button>
+        </form>
+
+        <div class="auth-divider">
+          <span data-en="or" data-ar="أو">or</span>
+        </div>
+
+        <button class="google-btn" id="googleSignup">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          <span data-en="Continue with Google" data-ar="المتابعة مع Google">Continue with Google</span>
+        </button>
+
+        <p class="auth-switch">
+          <span data-en="Already have an account?" data-ar="لديك حساب بالفعل؟">Already have an account?</span>
+          <button type="button" id="toSignin"
+                  data-en="Sign in" data-ar="سجّل دخولك">Sign in</button>
+        </p>
+      </div><!-- /panelSignup -->
+
+    </div><!-- /auth-panels -->
+  </div><!-- /auth-card -->
+
+  <p class="auth-footer">
+    © 2025 Yaman Ali · yamanalie
+  </p>
+</main>
+
+
+<!-- Scripts -->
+<script src="../js/auth-inf.js"></script>
+<script>
+/* ══════════════════════════════════════════════
+   AUTH PAGE LOGIC (inline — no Babel needed, pure ES6)
+══════════════════════════════════════════════ */
+
+/* ── Cursor ── */
+(function() {
+  if (window.matchMedia('(hover: none)').matches) return;
+  const cur = document.getElementById('cursor');
+  if (!cur) return;
+  const dot  = cur.querySelector('.cursor-dot');
+  const ring = cur.querySelector('.cursor-ring');
+  let mx=-300,my=-300,dx=-300,dy=-300,rx=-300,ry=-300;
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function tick(){
+    dx=lerp(dx,mx,0.55); dy=lerp(dy,my,0.55);
+    rx=lerp(rx,mx,0.28); ry=lerp(ry,my,0.28);
+    cur.style.transform=`translate(${dx}px,${dy}px) translate(-50%,-50%)`;
+    if(ring) ring.style.transform=`translate(calc(-50% + ${rx-dx}px),calc(-50% + ${ry-dy}px))`;
+    requestAnimationFrame(tick);
+  }
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  document.addEventListener('mouseleave',()=>{mx=-300;my=-300;});
+  document.querySelectorAll('a,button,input').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('cur-link'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-link'));
+  });
+  tick();
+})();
+
+/* ── Theme ── */
+(function(){
+  const saved = localStorage.getItem('ya-theme') || 'dark';
+  apply(saved);
+  document.getElementById('themeToggle').addEventListener('click',()=>{
+    apply(document.documentElement.dataset.theme==='dark'?'light':'dark');
+  });
+  function apply(t){
+    document.documentElement.dataset.theme=t;
+    localStorage.setItem('ya-theme',t);
+    document.getElementById('themeIcon').textContent=t==='dark'?'◑':'◐';
+  }
+})();
+
+/* ── Language ── */
+(function(){
+  const saved = localStorage.getItem('ya-lang') || 'en';
+  applyLang(saved);
+  document.getElementById('langToggle').addEventListener('click',()=>{
+    applyLang(document.documentElement.dataset.lang==='en'?'ar':'en');
+  });
+  function applyLang(lang){
+    document.documentElement.dataset.lang=lang;
+    document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+    document.documentElement.lang=lang;
+    localStorage.setItem('ya-lang',lang);
+    document.getElementById('langLabel').textContent=lang==='en'?'EN':'AR';
+    document.querySelectorAll('[data-en],[data-ar]').forEach(el=>{
+      const val=el.getAttribute(`data-${lang}`);
+      if(val===null) return;
+      if(el.tagName==='INPUT'||el.tagName==='TEXTAREA') return;
+      if(el.children.length===0) el.textContent=val;
+    });
+    /* Back arrow direction */
+    const arrow = document.querySelector('.back-arrow');
+    if(arrow) arrow.textContent = lang==='ar'?'→':'←';
+  }
+})();
+
+/* ── Mode toggle (Sign In ↔ Sign Up) ── */
+const modeToggle  = document.getElementById('modeToggle');
+const signinBtn   = document.getElementById('signinBtn');
+const signupBtn   = document.getElementById('signupBtn');
+const panelSignin = document.getElementById('panelSignin');
+const panelSignup = document.getElementById('panelSignup');
+const authHeading = document.getElementById('authHeading');
+const authSub     = document.getElementById('authSub');
+const authMsg     = document.getElementById('authMsg');
+
+function setMode(mode){
+  const isSignup = mode === 'signup';
+  const lang = document.documentElement.dataset.lang || 'en';
+
+  modeToggle.classList.toggle('signup', isSignup);
+
+  signinBtn.classList.toggle('active', !isSignup);
+  signupBtn.classList.toggle('active',  isSignup);
+  signinBtn.setAttribute('aria-selected', String(!isSignup));
+  signupBtn.setAttribute('aria-selected', String(isSignup));
+
+  panelSignin.classList.toggle('hidden',  isSignup);
+  panelSignup.classList.toggle('hidden', !isSignup);
+
+  if(isSignup){
+    authHeading.textContent = lang==='ar' ? 'ابدأ رحلتك.' : 'Start your journey.';
+    authSub.textContent     = lang==='ar'
+      ? 'أنشئ حساباً مجانياً وابدأ مشروعك مع يمان.'
+      : 'Create a free account and start your project with Yaman.';
+  } else {
+    authHeading.textContent = lang==='ar' ? 'أهلاً بعودتك.' : 'Welcome back.';
+    authSub.textContent     = lang==='ar'
+      ? 'سجّل دخولك لمتابعة مشاريعك والبقاء على تواصل.'
+      : 'Sign in to track your projects and stay connected.';
+  }
+  authMsg.className = 'auth-msg';
+}
+
+signinBtn.addEventListener('click', () => setMode('signin'));
+signupBtn.addEventListener('click', () => setMode('signup'));
+document.getElementById('toSignup').addEventListener('click', () => setMode('signup'));
+document.getElementById('toSignin').addEventListener('click', () => setMode('signin'));
+
+/* ── Password show/hide ── */
+document.querySelectorAll('.pw-toggle').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const inp = document.getElementById(btn.dataset.target);
+    if(!inp) return;
+    const isText = inp.type==='text';
+    inp.type = isText ? 'password' : 'text';
+    const lang = document.documentElement.dataset.lang || 'en';
+    btn.textContent = isText
+      ? (lang==='ar'?'إظهار':'Show')
+      : (lang==='ar'?'إخفاء':'Hide');
+  });
+});
+
+/* ── Show message helper ── */
+function showMsg(text, type='error'){
+  authMsg.textContent = text;
+  authMsg.className   = `auth-msg ${type}`;
+  setTimeout(()=>{ authMsg.className='auth-msg'; }, 5000);
+}
+
+/* ── Sign In form ── */
+document.getElementById('formSignin').addEventListener('submit', e => {
+  e.preventDefault();
+  const email    = document.getElementById('si-email').value.trim();
+  const password = document.getElementById('si-password').value;
+  const lang     = document.documentElement.dataset.lang || 'en';
+
+  if(!email || !password){
+    showMsg(lang==='ar'?'يرجى ملء جميع الحقول.':'Please fill in all fields.');
+    return;
+  }
+
+  /* Save to auth-inf via the helper in auth-inf.js */
+  const result = AuthInf.signIn({ email, password });
+
+  if(result.success){
+    showMsg(lang==='ar'?'مرحباً بك!':'Welcome back!', 'success');
+    setTimeout(()=>{ window.location.href='../index.html'; }, 1200);
+  } else {
+    showMsg(result.message || (lang==='ar'?'بيانات غير صحيحة.':'Invalid credentials.'));
+  }
+});
+
+/* ── Sign Up form ── */
+document.getElementById('formSignup').addEventListener('submit', e => {
+  e.preventDefault();
+  const name      = document.getElementById('su-name').value.trim();
+  const email     = document.getElementById('su-email').value.trim();
+  const instagram = document.getElementById('su-instagram').value.trim();
+  const password  = document.getElementById('su-password').value;
+  const lang      = document.documentElement.dataset.lang || 'en';
+
+  if(!name || !email || !password){
+    showMsg(lang==='ar'?'يرجى ملء الحقول المطلوبة.':'Please fill in the required fields.');
+    return;
+  }
+
+  if(password.length < 6){
+    showMsg(lang==='ar'?'كلمة المرور يجب أن تكون 6 أحرف على الأقل.':'Password must be at least 6 characters.');
+    return;
+  }
+
+  const result = AuthInf.signUp({ name, email, instagram, password });
+
+  if(result.success){
+    showMsg(lang==='ar'?'تم إنشاء حسابك بنجاح!':'Account created successfully!', 'success');
+    setTimeout(()=>{ window.location.href='../index.html'; }, 1200);
+  } else {
+    showMsg(result.message || (lang==='ar'?'حدث خطأ ما.':'Something went wrong.'));
+  }
+});
+
+/* ── Google buttons (placeholder — connect to Firebase later) ── */
+['googleSignin','googleSignup'].forEach(id=>{
+  document.getElementById(id)?.addEventListener('click',()=>{
+    const lang = document.documentElement.dataset.lang||'en';
+    showMsg(
+      lang==='ar'
+        ? 'تسجيل Google سيكون متاحاً قريباً — سيتم الربط بـ Firebase.'
+        : 'Google auth coming soon — will connect to Firebase.',
+      'success'
+    );
+  });
+});
+</script>
+
+</body>
+</html>

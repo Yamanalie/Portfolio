@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark" data-lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yamanalie — Web Design</title>
+
+  <style>
+    @font-face { font-family:'MikhakBold';    src:url('../fonts/MikhakBold.ttf') format('truetype');            font-weight:700; font-display:swap; }
+    @font-face { font-family:'ThmanyahSerif'; src:url('../fonts/thmanyahseriftext-Bold.otf') format('opentype');font-weight:700; font-display:swap; }
+    @font-face { font-family:'SimplySerif';   src:url('../fonts/SimplySerif-Bold.ttf') format('truetype');      font-weight:700; font-display:swap; }
+    @font-face { font-family:'COOPBL';        src:url('../fonts/COOPBL.ttf') format('truetype');                font-weight:700; font-display:swap; }
+
+    :root {
+      --bg:#1a3a12; --bg-2:#1f4516;
+      --bg-card:rgba(26,58,18,.60);
+      --surface:rgba(212,232,165,.05); --surface-2:rgba(212,232,165,.10);
+      --border:rgba(212,232,165,.14); --border-2:rgba(212,232,165,.07);
+      --fg:#F0F5E8; --fg-2:rgba(240,245,232,.65); --fg-3:rgba(240,245,232,.35);
+      --accent:#D4E8A5; --accent-dim:rgba(212,232,165,.18);
+      --sage:#5B8C3E; --orange:#E57A34;
+      --font-d:'COOPBL','SimplySerif',Georgia,serif;
+      --font-b:'MikhakBold',system-ui,sans-serif;
+      --font-m:'Courier New',monospace;
+      --font-ar:'ThmanyahSerif','Cairo',sans-serif;
+      --ease:cubic-bezier(.22,1,.36,1);
+      --tf:.18s; --tm:.36s; --ts:.55s;
+      --r-sm:6px; --r-md:12px; --r-lg:20px; --r-xl:28px; --r-full:9999px;
+      --hh:64px; --pad:clamp(16px,5vw,80px);
+    }
+    [data-theme="light"] {
+      --bg:#F0F5E8; --bg-2:#E6EDD9;
+      --bg-card:rgba(240,245,232,.72);
+      --surface:rgba(46,90,34,.05); --surface-2:rgba(46,90,34,.10);
+      --border:rgba(46,90,34,.18); --border-2:rgba(46,90,34,.09);
+      --fg:#1a3a12; --fg-2:rgba(26,58,18,.70); --fg-3:rgba(26,58,18,.42);
+      --accent:#2E5A22; --accent-dim:rgba(46,90,34,.15); --sage:#4a7a30;
+    }
+    [data-lang="ar"] { direction:rtl; --font-d:var(--font-ar); --font-b:var(--font-ar); }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden;scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--fg);font-family:var(--font-b);overflow-x:hidden;cursor:none;transition:background var(--tm),color var(--tm)}
+    @media(hover:none){body{cursor:auto}}
+    img{max-width:100%;display:block} a{color:inherit;text-decoration:none}
+    button{cursor:none;background:none;border:none;font-family:inherit;color:inherit}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--r-sm)}
+    ::selection{background:var(--accent);color:#000}
+    [data-theme="light"] ::selection{color:#fff}
+
+    .grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:180px;mix-blend-mode:overlay}
+    .sp{position:fixed;top:0;left:0;width:0%;height:2px;background:var(--accent);z-index:10000;box-shadow:0 0 10px var(--accent);transition:width .08s linear}
+    .cursor{position:fixed;top:0;left:0;z-index:9998;pointer-events:none;transform:translate(-50%,-50%)}
+    .cursor-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:width var(--tf),height var(--tf)}
+    .cursor-ring{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(212,232,165,.4);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:width .20s var(--ease),height .20s var(--ease)}
+    body.cl .cursor-dot{width:6px;height:6px} body.cl .cursor-ring{width:30px;height:30px}
+    @media(hover:none){.cursor{display:none!important}}
+
+    .hdr{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--hh);background:rgba(26,58,18,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border-2);transition:background var(--tm)}
+    [data-theme="light"] .hdr{background:rgba(240,245,232,.72)}
+    .hdr.s{background:rgba(26,58,18,.88);border-bottom-color:var(--border)}
+    [data-theme="light"] .hdr.s{background:rgba(240,245,232,.94)}
+    .hdr-in{max-width:1280px;margin-inline:auto;padding-inline:var(--pad);height:100%;display:flex;align-items:center;gap:20px}
+    .back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2);transition:color var(--tf),transform var(--tf)}
+    .back:hover{color:var(--accent);transform:translateX(-3px)}
+    [data-lang="ar"] .back:hover{transform:translateX(3px)}
+    .lm{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--r-sm);background:var(--accent);color:#000;font-family:var(--font-d);font-weight:700;font-size:12px;flex-shrink:0}
+    [data-theme="light"] .lm{color:#fff}
+    .hdr-r{margin-inline-start:auto;display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:var(--r-full);overflow:hidden;height:32px}
+    .sw{display:flex;align-items:center;justify-content:center;padding:0 12px;height:100%;font-family:var(--font-m);font-size:11px;letter-spacing:.1em;color:var(--fg-2);transition:background var(--tf),color var(--tf)}
+    .sw:hover{background:var(--surface-2);color:var(--fg)}
+    .sd{width:1px;height:14px;background:var(--border)}
+
+    .hero{padding-top:calc(var(--hh) + 80px);padding-bottom:80px;padding-inline:var(--pad);max-width:1280px;margin-inline:auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,100px);align-items:center}
+    .hero-tag{font-family:var(--font-m);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+    .hero-h{font-family:var(--font-d);font-size:clamp(2.4rem,6vw,5.5rem);font-weight:700;letter-spacing:-.04em;line-height:.96;margin-bottom:24px;overflow:hidden}
+    .hero-h span{display:block;transform:translateY(110%);opacity:0;transition:transform var(--ts) var(--ease),opacity var(--ts) var(--ease)}
+    .hero-h span:nth-child(2){transition-delay:.12s}
+    .hero-h span:nth-child(3){transition-delay:.24s;font-family:'SimplySerif',Georgia,serif;font-style:italic}
+    .hero-h.in span{transform:translateY(0);opacity:1}
+    .hero-sub{color:var(--fg-2);font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.8;margin-bottom:32px;max-width:460px}
+    .cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+
+    .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 26px;border-radius:var(--r-full);font-family:var(--font-b);font-size:13px;font-weight:700;letter-spacing:.03em;overflow:hidden;text-decoration:none;transition:box-shadow var(--tf),transform var(--tf);cursor:none;z-index:0}
+    .btn:active{transform:scale(.95)}
+    .btn-p{background:var(--accent);color:#000}
+    [data-theme="light"] .btn-p{color:#fff}
+    .btn-p:hover{box-shadow:0 0 0 3px var(--accent-dim),0 8px 24px rgba(212,232,165,.2)}
+    .btn-fill{position:absolute;inset:0;border-radius:inherit;background:rgba(255,255,255,.15);transform:scaleX(0) translateX(-100%);transform-origin:left;transition:transform .5s var(--ease);z-index:-1;pointer-events:none}
+    .btn-p:hover .btn-fill{transform:scaleX(1) translateX(0)}
+    .btn-g{background:transparent;color:var(--fg);border:1px solid var(--border)}
+    .btn-g:hover{background:var(--surface-2)}
+
+    /* Browser mockup */
+    .browser-mock{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);background:var(--bg-card);backdrop-filter:blur(8px)}
+    .browser-bar{height:36px;background:var(--surface-2);border-bottom:1px solid var(--border-2);display:flex;align-items:center;padding:0 12px;gap:8px}
+    .browser-dot{width:10px;height:10px;border-radius:50%;background:var(--border)}
+    .browser-dot:nth-child(1){background:#E85C50} .browser-dot:nth-child(2){background:#E57A34} .browser-dot:nth-child(3){background:var(--accent)}
+    .browser-url{flex:1;height:18px;border-radius:var(--r-full);background:var(--surface);margin-inline:8px}
+    .browser-screen{aspect-ratio:16/9;overflow:hidden;background:var(--surface-2)}
+    .browser-screen img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+    .browser-mock:hover .browser-screen img{transform:scale(1.03)}
+
+    .section{padding-block:clamp(64px,9vw,120px);padding-inline:var(--pad);max-width:1280px;margin-inline:auto}
+    .sec-tag{font-family:var(--font-m);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:block}
+    .sec-h{font-family:var(--font-d);font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin-bottom:20px}
+    .sec-sub{color:var(--fg-2);font-size:clamp(.9rem,1.3vw,1rem);line-height:1.8;max-width:560px}
+
+    .ri{opacity:0;transform:translateY(26px);transition:opacity var(--ts) var(--ease),transform var(--ts) var(--ease)}
+    .ri.in{opacity:1;transform:translateY(0)}
+    .ri:nth-child(1){transition-delay:0s} .ri:nth-child(2){transition-delay:.08s}
+    .ri:nth-child(3){transition-delay:.16s} .ri:nth-child(4){transition-delay:.24s}
+    .ri:nth-child(5){transition-delay:.32s} .ri:nth-child(6){transition-delay:.40s}
+
+    .included-section{background:var(--bg-2);padding-block:clamp(64px,9vw,120px)}
+    .included-inner{max-width:1280px;margin-inline:auto;padding-inline:var(--pad)}
+    .deliverables-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+    .del-card{padding:28px 24px;border-radius:var(--r-lg);background:var(--bg-card);border:1px solid var(--border-2);backdrop-filter:blur(8px);transition:border-color var(--tm),transform var(--tm),box-shadow var(--tm)}
+    .del-card:hover{border-color:var(--border);transform:translateY(-5px);box-shadow:0 20px 48px rgba(0,0,0,.28)}
+    [data-theme="light"] .del-card:hover{box-shadow:0 20px 48px rgba(46,90,34,.1)}
+    .del-icon{font-size:1.8rem;margin-bottom:16px;color:var(--accent);opacity:.8}
+    .del-title{font-family:var(--font-d);font-size:1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+    .del-desc{font-size:12.5px;color:var(--fg-2);line-height:1.75}
+
+    /* Features row */
+    .features-row{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:center;margin-top:80px}
+    .features-list{display:flex;flex-direction:column;gap:24px}
+    .feature-item{display:flex;gap:16px;align-items:flex-start}
+    .feature-num{font-family:var(--font-m);font-size:10px;letter-spacing:.1em;color:var(--accent);padding-top:3px;flex-shrink:0;width:28px}
+    .feature-body h3{font-family:var(--font-d);font-size:.95rem;font-weight:700;margin-bottom:4px}
+    .feature-body p{font-size:12.5px;color:var(--fg-2);line-height:1.7}
+
+    .steps{display:flex;flex-direction:column;gap:0;margin-top:56px;position:relative}
+    .steps::before{content:'';position:absolute;top:0;bottom:0;left:19px;width:1px;background:var(--border-2)}
+    [data-lang="ar"] .steps::before{left:auto;right:19px}
+    .step{display:grid;grid-template-columns:40px 1fr;gap:24px;padding-bottom:48px;position:relative}
+    .step:last-child{padding-bottom:0}
+    .step-num{width:40px;height:40px;border-radius:50%;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;color:var(--accent);flex-shrink:0;position:relative;z-index:1;transition:background var(--tm),border-color var(--tm)}
+    .step:hover .step-num{background:var(--accent);color:#000;border-color:transparent}
+    .step-body{padding-top:8px}
+    .step-title{font-family:var(--font-d);font-size:1.1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:8px;transition:color var(--tf)}
+    .step:hover .step-title{color:var(--accent)}
+    .step-desc{font-size:13px;color:var(--fg-2);line-height:1.8}
+
+    .gallery-section{background:var(--bg-2);padding-block:clamp(64px,9vw,120px)}
+    .gallery-inner{max-width:1280px;margin-inline:auto;padding-inline:var(--pad)}
+    .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:48px}
+    .gallery-item{border-radius:var(--r-lg);overflow:hidden;background:var(--surface-2);border:1px solid var(--border-2);position:relative;cursor:none}
+    .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+    .gallery-item:hover img{transform:scale(1.04)}
+    .gallery-item-label{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);font-family:var(--font-m);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,245,232,.8);opacity:0;transition:opacity var(--tm)}
+    .gallery-item:hover .gallery-item-label{opacity:1}
+
+    .pricing-section{padding-block:clamp(64px,9vw,120px);padding-inline:var(--pad);max-width:1280px;margin-inline:auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:center}
+    .price-card{padding:40px;border-radius:var(--r-xl);background:var(--bg-card);border:1px solid var(--border);backdrop-filter:blur(12px);position:relative;overflow:hidden}
+    .price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
+    .price-label{font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+    .price-amount{font-family:var(--font-d);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:8px}
+    .price-note{font-family:var(--font-m);font-size:11px;color:var(--fg-3);letter-spacing:.06em;margin-bottom:28px}
+    .price-list{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+    .price-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--fg-2);line-height:1.5}
+    .price-item::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0;margin-top:1px}
+
+    .faq-section{background:var(--bg-2);padding-block:clamp(64px,9vw,120px)}
+    .faq-inner{max-width:800px;margin-inline:auto;padding-inline:var(--pad)}
+    .faq-list{display:flex;flex-direction:column;gap:0;margin-top:48px}
+    .faq-item{border-bottom:1px solid var(--border-2)}
+    .faq-q{width:100%;padding:20px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--font-d);font-size:clamp(.95rem,1.5vw,1.05rem);font-weight:700;letter-spacing:-.01em;text-align:start;cursor:none;transition:color var(--tf)}
+    .faq-q:hover{color:var(--accent)}
+    .faq-icon{font-size:18px;color:var(--accent);transition:transform var(--tm) var(--ease);flex-shrink:0}
+    .faq-item.open .faq-icon{transform:rotate(45deg)}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--ease)}
+    .faq-a-inner{padding-bottom:20px;font-size:13px;color:var(--fg-2);line-height:1.8}
+    .faq-item.open .faq-a{max-height:300px}
+
+    .cta-band{padding-block:clamp(80px,12vw,160px);padding-inline:var(--pad);text-align:center}
+    .cta-band h2{font-family:var(--font-d);font-size:clamp(2.2rem,6vw,5.5rem);font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:32px}
+    .cta-band h2 em{font-family:'SimplySerif',Georgia,serif;font-style:italic;color:var(--accent)}
+
+    .foot{border-top:1px solid var(--border-2);padding:24px var(--pad);background:var(--bg-2)}
+    .foot-in{max-width:1280px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .foot-logo{display:flex;align-items:center;gap:8px}
+    .foot-name{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;color:var(--fg-3)}
+    .foot-copy{font-family:var(--font-m);font-size:10px;letter-spacing:.06em;color:var(--fg-3)}
+    .foot-back{font-family:var(--font-m);font-size:11px;letter-spacing:.08em;color:var(--fg-3);transition:color var(--tf)}
+    .foot-back:hover{color:var(--accent)}
+
+    @media(max-width:900px){
+      .hero,.pricing-section,.features-row{grid-template-columns:1fr}
+      .deliverables-grid{grid-template-columns:repeat(2,1fr)}
+      .gallery-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:540px){.deliverables-grid{grid-template-columns:1fr}}
+    @media(hover:none){.cursor{display:none!important}body{cursor:auto!important}button,a{cursor:pointer!important}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="sp" id="sp" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+</div>
+
+<header class="hdr" id="hdr" role="banner">
+  <div class="hdr-in">
+    <a href="../index.html" class="back">
+      <span class="lm">YA</span>
+      <span data-en="← Back" data-ar="رجوع →">← Back</span>
+    </a>
+    <div class="hdr-r">
+      <button class="sw" id="langToggle"><span id="langLabel">EN</span></button>
+      <div class="sd"></div>
+      <button class="sw" id="themeToggle"><span id="themeIcon">◐</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <span class="hero-tag ri" data-en="Service · Web Design" data-ar="خدمة · تصميم ويب">Service · Web Design</span>
+    <h1 class="hero-h" id="heroH">
+      <span data-en="Web Design" data-ar="تصميم">Web Design</span>
+      <span data-en="That Converts" data-ar="ويب">That Converts</span>
+      <span data-en="& Inspires." data-ar="يُحوّل.">& Inspires.</span>
+    </h1>
+    <p class="hero-sub ri"
+       data-en="A website is your most powerful brand asset. I design web experiences that look exceptional, feel effortless, and are built to perform — from first impression to final click."
+       data-ar="الموقع الإلكتروني هو أقوى أصول علامتك. أصمم تجارب ويب تبدو استثنائية وتشعر بأنها سلسة ومبنية للأداء — من الانطباع الأول إلى النقرة الأخيرة.">
+      A website is your most powerful brand asset. I design web experiences that look exceptional, feel effortless, and are built to perform — from first impression to final click.
+    </p>
+    <div class="cta-row ri">
+      <a href="../index.html#contact" class="btn btn-p">
+        <span data-en="Start this Project →" data-ar="ابدأ هذا المشروع ←">Start this Project →</span>
+        <span class="btn-fill"></span>
+      </a>
+      <a href="../subhtml/projects.html" class="btn btn-g">
+        <span data-en="See Examples" data-ar="شاهد الأمثلة">See Examples</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Browser mockup -->
+  <div class="browser-mock ri">
+    <div class="browser-bar">
+      <div class="browser-dot"></div>
+      <div class="browser-dot"></div>
+      <div class="browser-dot"></div>
+      <div class="browser-url"></div>
+    </div>
+    <div class="browser-screen">
+      <img src="../images/examples/web-hero.jpg" alt="Web design example" loading="eager"/>
+    </div>
+  </div>
+</div>
+
+
+<!-- INCLUDED -->
+<div class="included-section">
+  <div class="included-inner">
+    <span class="sec-tag ri" data-en="What you get" data-ar="ما ستحصل عليه">What you get</span>
+    <h2 class="sec-h ri" data-en="Design, not just aesthetics." data-ar="تصميم، وليس مجرد جماليات.">Design, not just aesthetics.</h2>
+    <p class="sec-sub ri"
+       data-en="Every deliverable is intentional — designed to communicate clearly, convert visitors, and represent your brand at its best."
+       data-ar="كل تسليم مقصود — مصمم للتواصل بوضوح وتحويل الزوار وتمثيل علامتك في أفضل حالاتها.">
+      Every deliverable is intentional — designed to communicate clearly, convert visitors, and represent your brand at its best.
+    </p>
+    <div class="deliverables-grid">
+
+      <div class="del-card ri">
+        <div class="del-icon">⊡</div>
+        <h3 class="del-title" data-en="Full Page Design (Figma)" data-ar="تصميم الصفحة الكاملة (فيغما)">Full Page Design (Figma)</h3>
+        <p class="del-desc" data-en="Every screen designed in Figma at pixel precision — desktop and mobile views included. Handed off ready for any developer to build." data-ar="كل شاشة مصممة في فيغما بدقة بكسل — تشمل طرق العرض على سطح المكتب والجوال. مسلمة جاهزة لأي مطور للبناء.">Every screen designed in Figma at pixel precision — desktop and mobile views included. Handed off ready for any developer to build.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">◱</div>
+        <h3 class="del-title" data-en="Responsive Layouts" data-ar="تخطيطات متجاوبة">Responsive Layouts</h3>
+        <p class="del-desc" data-en="Every design includes both desktop (1440px) and mobile (375px) breakpoints — so the site looks intentional on every screen, not just squeezed." data-ar="كل تصميم يتضمن نقاط تقسيم سطح المكتب (1440 بكسل) والجوال (375 بكسل) — حتى يبدو الموقع مقصوداً على كل شاشة وليس مضغوطاً فقط.">Every design includes both desktop (1440px) and mobile (375px) breakpoints — so the site looks intentional on every screen, not just squeezed.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">◈</div>
+        <h3 class="del-title" data-en="Brand-Integrated Visuals" data-ar="مرئيات متكاملة مع العلامة">Brand-Integrated Visuals</h3>
+        <p class="del-desc" data-en="The website is built as an extension of your brand identity — colours, typography, photography direction, and graphic language all working together." data-ar="الموقع مبني كامتداد لهويتك البصرية — الألوان والطباعة واتجاه التصوير واللغة الجرافيكية تعمل معاً.">The website is built as an extension of your brand identity — colours, typography, photography direction, and graphic language all working together.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">▷</div>
+        <h3 class="del-title" data-en="Micro-Interaction Specs" data-ar="مواصفات التفاعلات الدقيقة">Micro-Interaction Specs</h3>
+        <p class="del-desc" data-en="Hover states, transitions, animations, and loading behaviours documented and spec'd — so the final site feels alive, not static." data-ar="حالات الهوفر والانتقالات والرسوم المتحركة وسلوكيات التحميل موثقة ومحددة — حتى يشعر الموقع النهائي بالحياة وليس ساكناً.">Hover states, transitions, animations, and loading behaviours documented and spec'd — so the final site feels alive, not static.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">◎</div>
+        <h3 class="del-title" data-en="UX Flow & Wireframes" data-ar="تدفق تجربة المستخدم والإطارات السلكية">UX Flow &amp; Wireframes</h3>
+        <p class="del-desc" data-en="Before any visual work, I map the user journey and page structure — so the site leads visitors exactly where you want them to go." data-ar="قبل أي عمل بصري، أرسم خريطة رحلة المستخدم وهيكل الصفحة — حتى يقود الموقع الزوار بالضبط إلى حيث تريدهم أن يذهبوا.">Before any visual work, I map the user journey and page structure — so the site leads visitors exactly where you want them to go.</p>
+      </div>
+
+      <div class="del-card ri">
+        <div class="del-icon">⊞</div>
+        <h3 class="del-title" data-en="Developer-Ready Handoff" data-ar="تسليم جاهز للمطور">Developer-Ready Handoff</h3>
+        <p class="del-desc" data-en="Clean, annotated Figma files with components, spacing notes, and style guides — making the build phase faster and cheaper for any development team." data-ar="ملفات فيغما نظيفة ومشروحة مع مكونات وملاحظات التباعد وأدلة الأسلوب — مما يجعل مرحلة البناء أسرع وأقل تكلفة لأي فريق تطوير.">Clean, annotated Figma files with components, spacing notes, and style guides — making the build phase faster and cheaper for any development team.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- FEATURES -->
+<div class="section">
+  <span class="sec-tag ri" data-en="Why it matters" data-ar="لماذا يهم">Why it matters</span>
+  <h2 class="sec-h ri" data-en="Design that earns trust." data-ar="تصميم يكسب الثقة.">Design that earns trust.</h2>
+  <div class="features-row">
+    <div class="features-list">
+      <div class="feature-item ri">
+        <div class="feature-num">01</div>
+        <div class="feature-body">
+          <h3 data-en="First impressions are permanent" data-ar="الانطباعات الأولى دائمة">First impressions are permanent</h3>
+          <p data-en="Visitors form an opinion about your site in under 50ms. A well-designed website signals quality before a single word is read." data-ar="يكوّن الزوار رأياً حول موقعك في أقل من 50 مللي ثانية. الموقع المصمم جيداً يشير إلى الجودة قبل قراءة كلمة واحدة.">Visitors form an opinion about your site in under 50ms. A well-designed website signals quality before a single word is read.</p>
+        </div>
+      </div>
+      <div class="feature-item ri">
+        <div class="feature-num">02</div>
+        <div class="feature-body">
+          <h3 data-en="Clarity converts" data-ar="الوضوح يحوّل">Clarity converts</h3>
+          <p data-en="Good UX removes friction. When visitors know exactly what to do next, they do it. Every layout decision is made with the conversion goal in mind." data-ar="تجربة المستخدم الجيدة تزيل الاحتكاك. عندما يعرف الزوار بالضبط ماذا يفعلون بعد ذلك، يفعلونه. كل قرار تخطيط يُتخذ مع هدف التحويل في الاعتبار.">Good UX removes friction. When visitors know exactly what to do next, they do it. Every layout decision is made with the conversion goal in mind.</p>
+        </div>
+      </div>
+      <div class="feature-item ri">
+        <div class="feature-num">03</div>
+        <div class="feature-body">
+          <h3 data-en="Brand consistency builds loyalty" data-ar="اتساق العلامة يبني الولاء">Brand consistency builds loyalty</h3>
+          <p data-en="A website that looks and feels like your brand — not a generic template — builds trust and makes your business memorable." data-ar="موقع يبدو ويشعر بعلامتك — وليس قالباً عاماً — يبني الثقة ويجعل عملك لا يُنسى.">A website that looks and feels like your brand — not a generic template — builds trust and makes your business memorable.</p>
+        </div>
+      </div>
+    </div>
+    <div class="browser-mock ri">
+      <div class="browser-bar">
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+        <div class="browser-url"></div>
+      </div>
+      <div class="browser-screen">
+        <img src="../images/examples/web-feature.jpg" alt="Web design feature example" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- PROCESS -->
+<div class="included-section">
+  <div class="included-inner">
+    <span class="sec-tag ri" data-en="How it works" data-ar="كيف يعمل">How it works</span>
+    <h2 class="sec-h ri" data-en="From strategy to Figma file." data-ar="من الاستراتيجية إلى ملف فيغما.">From strategy to Figma file.</h2>
+    <div class="steps">
+      <div class="step ri">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h3 class="step-title" data-en="Discovery & Goals" data-ar="الاكتشاف والأهداف">Discovery &amp; Goals</h3>
+          <p class="step-desc" data-en="We define the site's purpose, primary audience, conversion goals, and any pages required. This prevents scope creep and keeps the design focused." data-ar="نحدد هدف الموقع والجمهور الأساسي وأهداف التحويل وأي صفحات مطلوبة. هذا يمنع توسع النطاق ويبقي التصميم مركزاً.">We define the site's purpose, primary audience, conversion goals, and any pages required. This prevents scope creep and keeps the design focused.</p>
+        </div>
+      </div>
+      <div class="step ri">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h3 class="step-title" data-en="Wireframes & UX Flow" data-ar="الإطارات السلكية وتدفق UX">Wireframes &amp; UX Flow</h3>
+          <p class="step-desc" data-en="Low-fidelity wireframes map out every page structure and user journey before any visual design begins. You approve the structure first." data-ar="الإطارات السلكية منخفضة الدقة ترسم خريطة لكل هيكل صفحة ورحلة مستخدم قبل بدء أي تصميم بصري. تعتمد الهيكل أولاً.">Low-fidelity wireframes map out every page structure and user journey before any visual design begins. You approve the structure first.</p>
+        </div>
+      </div>
+      <div class="step ri">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h3 class="step-title" data-en="Visual Design" data-ar="التصميم البصري">Visual Design</h3>
+          <p class="step-desc" data-en="High-fidelity designs for every page — desktop and mobile — with all interactions, animations, and states specified. This is where the site comes to life visually." data-ar="تصاميم عالية الدقة لكل صفحة — سطح مكتب وجوال — مع تحديد جميع التفاعلات والرسوم المتحركة والحالات. هنا يحيا الموقع بصرياً.">High-fidelity designs for every page — desktop and mobile — with all interactions, animations, and states specified. This is where the site comes to life visually.</p>
+        </div>
+      </div>
+      <div class="step ri">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <h3 class="step-title" data-en="Revision & Handoff" data-ar="المراجعة والتسليم">Revision &amp; Handoff</h3>
+          <p class="step-desc" data-en="After revision rounds, I package and deliver the final Figma file with a developer handoff document — so the build team has everything they need to execute perfectly." data-ar="بعد جولات المراجعة، أحزم وأسلم ملف فيغما النهائي مع وثيقة تسليم المطور — حتى يمتلك فريق البناء كل ما يحتاجه للتنفيذ بشكل مثالي.">After revision rounds, I package and deliver the final Figma file with a developer handoff document — so the build team has everything they need to execute perfectly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="gallery-inner">
+    <span class="sec-tag ri" data-en="Example Work" data-ar="أعمال مثال">Example Work</span>
+    <h2 class="sec-h ri" data-en="Designed to perform." data-ar="مصمم للأداء.">Designed to perform.</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item ri" style="aspect-ratio:16/9">
+        <img src="../images/examples/web-ex-1.jpg" alt="Web design example 1" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Landing Page" data-ar="صفحة هبوط">Landing Page</div>
+      </div>
+      <div class="gallery-item ri" style="aspect-ratio:16/9">
+        <img src="../images/examples/web-ex-2.jpg" alt="Web design example 2" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Portfolio Site" data-ar="موقع محفظة">Portfolio Site</div>
+      </div>
+      <div class="gallery-item ri" style="aspect-ratio:16/9">
+        <img src="../images/examples/web-ex-3.jpg" alt="Web design example 3" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Mobile View" data-ar="عرض الجوال">Mobile View</div>
+      </div>
+      <div class="gallery-item ri" style="aspect-ratio:16/9">
+        <img src="../images/examples/web-ex-4.jpg" alt="Web design example 4" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Agency Site" data-ar="موقع وكالة">Agency Site</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- PRICING -->
+<div class="pricing-section">
+  <div class="ri">
+    <span class="sec-tag" data-en="Investment" data-ar="الاستثمار">Investment</span>
+    <h2 class="sec-h" data-en="Design-only. No dev surprises." data-ar="تصميم فقط. لا مفاجآت تطوير.">Design-only. No dev surprises.</h2>
+    <p class="sec-sub"
+       data-en="I deliver the design. You choose your developer or platform. No hidden costs, no bloated retainers — just clean, beautiful, conversion-ready design."
+       data-ar="أسلم التصميم. أنت تختار مطورك أو منصتك. لا تكاليف مخفية ولا عقود منتفخة — فقط تصميم نظيف وجميل وجاهز للتحويل.">
+      I deliver the design. You choose your developer or platform. No hidden costs, no bloated retainers — just clean, beautiful, conversion-ready design.
+    </p>
+  </div>
+  <div class="price-card ri">
+    <p class="price-label" data-en="Web Design Package" data-ar="حزمة تصميم الويب">Web Design Package</p>
+    <p class="price-amount">$800+</p>
+    <p class="price-note" data-en="Starting price — based on number of pages" data-ar="سعر ابتداءً — بناءً على عدد الصفحات">Starting price — based on number of pages</p>
+    <ul class="price-list">
+      <li class="price-item" data-en="UX wireframes for all pages" data-ar="إطارات سلكية UX لجميع الصفحات">UX wireframes for all pages</li>
+      <li class="price-item" data-en="Full Figma design (desktop + mobile)" data-ar="تصميم فيغما كامل (سطح مكتب + جوال)">Full Figma design (desktop + mobile)</li>
+      <li class="price-item" data-en="Micro-interaction specs" data-ar="مواصفات التفاعلات الدقيقة">Micro-interaction specs</li>
+      <li class="price-item" data-en="Component library in Figma" data-ar="مكتبة مكونات في فيغما">Component library in Figma</li>
+      <li class="price-item" data-en="Developer handoff document" data-ar="وثيقة تسليم المطور">Developer handoff document</li>
+      <li class="price-item" data-en="2 revision rounds included" data-ar="جولتا مراجعة مضمنتان">2 revision rounds included</li>
+    </ul>
+    <a href="../index.html#contact" class="btn btn-p" style="width:100%;justify-content:center;">
+      <span data-en="Start a Project →" data-ar="ابدأ مشروعاً ←">Start a Project →</span>
+      <span class="btn-fill"></span>
+    </a>
+  </div>
+</div>
+
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="faq-inner">
+    <span class="sec-tag ri" data-en="Questions" data-ar="أسئلة">Questions</span>
+    <h2 class="sec-h ri" data-en="Frequently asked." data-ar="الأسئلة الأكثر شيوعاً.">Frequently asked.</h2>
+    <div class="faq-list">
+      <div class="faq-item ri">
+        <button class="faq-q" aria-expanded="false">
+          <span data-en="Do you build the website too, or just design it?" data-ar="هل تبني الموقع أيضاً أم تصممه فقط؟">Do you build the website too, or just design it?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner" data-en="This is a design-only service. I deliver pixel-perfect Figma files that any developer can build from. If you need a developer recommendation, I can point you in the right direction." data-ar="هذه خدمة تصميم فقط. أسلم ملفات فيغما مثالية البكسل يمكن لأي مطور البناء منها. إذا كنت تحتاج توصية مطور، يمكنني توجيهك في الاتجاه الصحيح.">This is a design-only service. I deliver pixel-perfect Figma files that any developer can build from. If you need a developer recommendation, I can point you in the right direction.</div></div>
+      </div>
+      <div class="faq-item ri">
+        <button class="faq-q" aria-expanded="false">
+          <span data-en="How many pages are included?" data-ar="كم صفحة مضمنة؟">How many pages are included?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner" data-en="The base package covers up to 5 pages (e.g. Home, About, Services, Portfolio, Contact). Additional pages can be added at an agreed per-page rate." data-ar="الحزمة الأساسية تغطي حتى 5 صفحات (مثل الرئيسية ومن نحن والخدمات والمحفظة والتواصل). يمكن إضافة صفحات إضافية بسعر متفق عليه لكل صفحة.">The base package covers up to 5 pages (e.g. Home, About, Services, Portfolio, Contact). Additional pages can be added at an agreed per-page rate.</div></div>
+      </div>
+      <div class="faq-item ri">
+        <button class="faq-q" aria-expanded="false">
+          <span data-en="Can I get both web design and brand identity together?" data-ar="هل يمكنني الحصول على تصميم ويب وهوية بصرية معاً؟">Can I get both web design and brand identity together?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner" data-en="Yes — and it's the recommended approach. When your brand identity and website are designed together, they're perfectly unified. Mention both in your project brief and I'll send a combined package quote." data-ar="نعم — وهو النهج الموصى به. عندما تُصمم هويتك البصرية وموقعك معاً، فإنهما موحدان تماماً. اذكر كليهما في موجز مشروعك وسأرسل عرض سعر حزمة مجمعة.">Yes — and it's the recommended approach. When your brand identity and website are designed together, they're perfectly unified. Mention both in your project brief and I'll send a combined package quote.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- CTA BAND -->
+<div class="cta-band ri">
+  <h2>
+    <span data-en="Ready for a site" data-ar="مستعد لموقع">Ready for a site</span><br>
+    <em data-en="worth sharing?" data-ar="يستحق المشاركة؟">worth sharing?</em>
+  </h2>
+  <a href="../index.html#contact" class="btn btn-p" style="font-size:15px;padding:16px 40px;">
+    <span data-en="Start a Project →" data-ar="ابدأ مشروعاً ←">Start a Project →</span>
+    <span class="btn-fill"></span>
+  </a>
+</div>
+
+<footer class="foot" role="contentinfo">
+  <div class="foot-in">
+    <div class="foot-logo"><span class="lm">YA</span><span class="foot-name">yamanalie</span></div>
+    <p class="foot-copy" data-en="© 2025 Yaman Ali." data-ar="© 2025 يمان علي.">© 2025 Yaman Ali.</p>
+    <a href="../index.html" class="foot-back" data-en="← Back to Home" data-ar="العودة للرئيسية →">← Back to Home</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const sp=document.getElementById('sp');
+  window.addEventListener('scroll',()=>{const max=document.documentElement.scrollHeight-window.innerHeight;if(sp)sp.style.width=(max>0?(window.scrollY/max)*100:0)+'%';},{passive:true});
+  const hdr=document.getElementById('hdr');
+  window.addEventListener('scroll',()=>{if(hdr)hdr.classList.toggle('s',window.scrollY>30);},{passive:true});
+  if(!window.matchMedia('(hover: none)').matches){
+    const cur=document.getElementById('cursor'),ring=cur?.querySelector('.cursor-ring');
+    let mx=-300,my=-300,dx=-300,dy=-300,rx=-300,ry=-300;
+    const lerp=(a,b,t)=>a+(b-a)*t;
+    const tick=()=>{dx=lerp(dx,mx,.55);dy=lerp(dy,my,.55);rx=lerp(rx,mx,.28);ry=lerp(ry,my,.28);if(cur)cur.style.transform=`translate(${dx}px,${dy}px) translate(-50%,-50%)`;if(ring)ring.style.transform=`translate(calc(-50% + ${rx-dx}px),calc(-50% + ${ry-dy}px))`;requestAnimationFrame(tick);};
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+    document.addEventListener('mouseleave',()=>{mx=-300;my=-300;});
+    document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cl'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cl'));});
+    tick();
+  }
+  const applyTheme=t=>{document.documentElement.dataset.theme=t;localStorage.setItem('ya-theme',t);const i=document.getElementById('themeIcon');if(i)i.textContent=t==='dark'?'◑':'◐';};
+  applyTheme(localStorage.getItem('ya-theme')||'dark');
+  document.getElementById('themeToggle')?.addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+  const applyLang=lang=>{document.documentElement.dataset.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.documentElement.lang=lang;localStorage.setItem('ya-lang',lang);const l=document.getElementById('langLabel');if(l)l.textContent=lang==='en'?'EN':'AR';document.querySelectorAll('[data-en],[data-ar]').forEach(el=>{const val=el.getAttribute(`data-${lang}`);if(val===null)return;if(el.children.length===0)el.textContent=val;});};
+  applyLang(localStorage.getItem('ya-lang')||'en');
+  document.getElementById('langToggle')?.addEventListener('click',()=>applyLang(document.documentElement.dataset.lang==='en'?'ar':'en'));
+  setTimeout(()=>document.getElementById('heroH')?.classList.add('in'),120);
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.ri').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',()=>{const item=btn.closest('.faq-item');const isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));if(!isOpen)item.classList.add('open');btn.setAttribute('aria-expanded',String(!isOpen));});});
+  document.querySelectorAll('.btn,button').forEach(btn=>{btn.addEventListener('click',()=>{btn.style.transition='transform .08s ease';btn.style.transform='scale(.95)';setTimeout(()=>{btn.style.transition='transform .4s cubic-bezier(.34,1.56,.64,1)';btn.style.transform='scale(1)';},80);setTimeout(()=>{btn.style.transition='';btn.style.transform='';},500);});});
+})();
+</script>
+</body>
+</html>

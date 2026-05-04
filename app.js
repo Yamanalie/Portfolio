@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initLangToggle();
   initHamburger();
   initModals();
-  initInquiryForm();
   initBlurUpImages();
   initSmoothScroll();
 });
@@ -82,7 +81,7 @@ function initCustomCursor() {
   document.addEventListener('mouseleave', () => { mx = -300; my = -300; });
 
   /* State classes */
-  document.querySelectorAll('.project-card, .process-card, .resource-card')
+  document.querySelectorAll('.project-card, .resource-card')
     .forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-on-card'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-on-card'));
@@ -420,7 +419,6 @@ function initHamburger() {
    15 · MODALS
 ═══════════════════════════════════════════════════════════════ */
 function initModals() {
-
   function openModal(id) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -428,6 +426,69 @@ function initModals() {
     document.body.style.overflow = 'hidden';
     setTimeout(() => el.querySelector('button, a, input')?.focus(), 100);
   }
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.hidden = true;
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.modal-close').forEach(btn => {
+    btn.addEventListener('click', () => closeModal(btn.dataset.modal));
+  });
+  document.querySelectorAll('.modal-overlay').forEach(ov => {
+    ov.addEventListener('click', e => { if (e.target === ov) closeModal(ov.id); });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.modal-overlay:not([hidden])').forEach(ov => closeModal(ov.id));
+  });
+  /* Resource download buttons */
+  document.querySelectorAll('.resource-download-btn').forEach(btn => {
+    btn.addEventListener('click', () => openModal('downloadModal'));
+  });
+  /* Download form submit */
+  document.getElementById('downloadForm')?.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('downloadEmail')?.value;
+    if (!email) return;
+    document.getElementById('downloadForm').innerHTML = `
+      <div style="text-align:center;padding:24px 0;">
+        <div style="font-size:2.5rem;color:var(--accent);margin-bottom:14px;">✓</div>
+        <p style="font-weight:700;margin-bottom:8px;">You're on the list!</p>
+        <p style="color:var(--fg-2);font-size:13px;line-height:1.6;">
+          Check <strong>${email}</strong> — the pack is on its way.
+        </p>
+      </div>`;
+  });
+}
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.hidden = true;
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.modal-close').forEach(btn => {
+    btn.addEventListener('click', () => closeModal(btn.dataset.modal));
+  });
+  document.querySelectorAll('.modal-overlay').forEach(ov => {
+    ov.addEventListener('click', e => { if (e.target === ov) closeModal(ov.id); });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.modal-overlay:not([hidden])').forEach(ov => closeModal(ov.id));
+  });
+  /* Resource download buttons */
+  document.querySelectorAll('.resource-download-btn').forEach(btn => {
+    btn.addEventListener('click', () => openModal('downloadModal'));
+  });
+  /* Download form submit */
+  document.getElementById('downloadForm')?.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('downloadEmail')?.value;
+    if (!email) return;
+    document.getElementById('downloadForm').innerHTML = ;
+  });
+}
 
   function closeModal(id) {
     const el = document.getElementById(id);
@@ -487,313 +548,7 @@ function initModals() {
 }
 
 
-/* ═══════════════════════════════════════════════════════════════
-   16 · INQUIRY FORM — 10 steps
-═══════════════════════════════════════════════════════════════ */
-function initInquiryForm() {
-  const stepsEl   = document.getElementById('inquirySteps');
-  const progBar   = document.getElementById('inquiryProgressBar');
-  const progLabel = document.getElementById('inquiryProgressLabel');
-  const prevBtn   = document.getElementById('inquiryPrev');
-  const nextBtn   = document.getElementById('inquiryNext');
-  const overlay   = document.getElementById('inquiryModal');
-  if (!stepsEl) return;
-
-  const QUESTIONS = [
-    {
-      id: 'brandName',
-      q:  { en: 'What is the name of your brand or business?', ar: 'ما اسم علامتك التجارية أو مشروعك؟' },
-      type: 'text',
-      ph:  { en: 'e.g. Livil Studio', ar: 'مثال: استوديو ليفيل' }
-    },
-    {
-      id: 'brandDesc',
-      q:  { en: 'Tell me more about your project.', ar: 'أخبرني أكثر عن مشروعك.' },
-      type: 'textarea',
-      ph:  { en: 'Share as much detail as you like — goals, challenges, context…', ar: 'شارك أي تفاصيل — الأهداف، التحديات، السياق…' }
-    },
-    {
-      id: 'brandValues',
-      q:  { en: 'What are the 3 main values you want your brand to communicate?', ar: 'ما القيم الثلاث الرئيسية التي تريد أن تعكسها علامتك؟' },
-      type: 'textarea',
-      ph:  { en: 'e.g. Trust, Simplicity, Growth', ar: 'مثال: الثقة، البساطة، النمو' }
-    },
-    {
-      id: 'audience',
-      q:  { en: 'Who is your primary target audience?', ar: 'من هو جمهورك المستهدف الرئيسي؟' },
-      type: 'text',
-      ph:  { en: 'e.g. Entrepreneurs aged 25–35', ar: 'مثال: رواد أعمال بين 25 و35 عامًا' }
-    },
-    {
-      id: 'existing',
-      q:  { en: 'Do you have an existing visual identity, or are we starting from scratch?', ar: 'هل لديك هوية بصرية حالية أم نبدأ من الصفر؟' },
-      type: 'select',
-      options: [
-        { value: '',          label: { en: '— Select one —',                ar: '— اختر —' } },
-        { value: 'scratch',   label: { en: 'Starting from scratch',         ar: 'من الصفر' } },
-        { value: 'refresh',   label: { en: 'Refreshing an existing identity', ar: 'تحديث هوية حالية' } },
-        { value: 'expansion', label: { en: 'Expanding an existing system',  ar: 'توسيع نظام قائم' } }
-      ]
-    },
-    {
-      id: 'services',
-      q:  { en: 'Which services do you need?', ar: 'ما الخدمات التي تحتاجها؟' },
-      type: 'checkbox',
-      options: [
-        { value: 'brand',      label: { en: 'Full Brand Identity',      ar: 'هوية بصرية كاملة' },    more: { en: '→ more details', ar: '← تفاصيل أكثر' }, link: 'subhtml/brand-identity-details.html' },
-        { value: 'social',     label: { en: 'Social Media Templates',   ar: 'قوالب سوشيال ميديا' },  more: { en: '→ more details', ar: '← تفاصيل أكثر' }, link: 'subhtml/social-media-details.html' },
-        { value: 'web',        label: { en: 'Web Design',               ar: 'تصميم ويب' },            more: { en: '→ more details', ar: '← تفاصيل أكثر' }, link: 'subhtml/web-design-details.html' },
-        { value: 'essentials', label: { en: 'Brand Essentials Only',    ar: 'أساسيات الهوية فقط' },  more: { en: '→ more details', ar: '← تفاصيل أكثر' }, link: 'subhtml/brand-essentials-details.html' }
-      ]
-    },
-    {
-      id: 'vibe',
-      q:  { en: 'What is your preferred visual vibe?', ar: 'ما الأسلوب البصري المفضل لديك؟' },
-      type: 'text',
-      ph:  { en: 'e.g. Minimalist, Bold, Traditional, Modern, Earthy…', ar: 'مثال: بسيط، جريء، تقليدي، عصري، طبيعي…' }
-    },
-    {
-      id: 'timeline',
-      q:  { en: 'What is your estimated timeline for completion?', ar: 'ما الجدول الزمني المتوقع للإنجاز؟' },
-      type: 'select',
-      options: [
-        { value: '',         label: { en: '— Select one —',              ar: '— اختر —' } },
-        { value: '1w',       label: { en: '1 week (Rush)',               ar: 'أسبوع واحد (عاجل)' } },
-        { value: '2-3w',     label: { en: '2–3 weeks (Fast)',            ar: '2–3 أسابيع (سريع)' } },
-        { value: '1m',       label: { en: '1 month',                    ar: 'شهر واحد' } },
-        { value: '2-3m',     label: { en: '2–3 months',                 ar: '2–3 أشهر' } },
-        { value: 'flexible', label: { en: 'Flexible (no timeline)',      ar: 'مرن (بدون موعد محدد)' } },
-        { value: 'custom',   label: { en: 'Custom Deadline',            ar: 'موعد مخصص' } }
-      ],
-      hasCustom: true
-    },
-    {
-      id: 'budget',
-      q:  { en: 'What is your approximate budget range?', ar: 'ما النطاق التقريبي لميزانيتك؟' },
-      type: 'select',
-      options: [
-        { value: '',       label: { en: '— Select one —',       ar: '— اختر —' } },
-        { value: 'u500',   label: { en: 'Under $500',           ar: 'أقل من $500' } },
-        { value: '500-1k', label: { en: '$500 – $1,000',        ar: '$500 – $1,000' } },
-        { value: '1-3k',   label: { en: '$1,000 – $3,000',      ar: '$1,000 – $3,000' } },
-        { value: '3k+',    label: { en: '$3,000+',              ar: '$3,000+' } },
-        { value: 'custom', label: { en: "Custom / Let's talk",  ar: 'مخصص / لنتحدث' } }
-      ],
-      hasCustom: true
-    },
-    {
-      id: 'contact',
-      q:  { en: 'How can I contact you?', ar: 'كيف يمكنني التواصل معك؟' },
-      type: 'contact-block'
-    }
-  ];
-
-  let step   = 0;
-  const data = {};
-  const lang = () => document.documentElement.dataset.lang || 'en';
-
-  /* ── Render step ── */
-  function render(idx) {
-    stepsEl.innerHTML = '';
-    const q   = QUESTIONS[idx];
-    const div = document.createElement('div');
-    div.className = 'inquiry-step';
-
-    const qText = typeof q.q === 'object' ? q.q[lang()] : q.q;
-    div.innerHTML = `<p class="step-question">${qText}</p>`;
-
-    if (q.type === 'text') {
-      const ph = q.ph ? (q.ph[lang()] || '') : '';
-      div.innerHTML += `
-        <div class="form-field">
-          <input type="text" id="q-${q.id}" class="form-input"
-                 placeholder="${ph}" value="${data[q.id] || ''}" autocomplete="off"/>
-        </div>`;
-
-    } else if (q.type === 'textarea') {
-      const ph = q.ph ? (q.ph[lang()] || '') : '';
-      div.innerHTML += `
-        <div class="form-field">
-          <textarea id="q-${q.id}" class="form-textarea" rows="4"
-                    placeholder="${ph}">${data[q.id] || ''}</textarea>
-        </div>`;
-
-    } else if (q.type === 'select') {
-      const opts = q.options.map(o => {
-        const label = typeof o.label === 'object' ? o.label[lang()] : o.label;
-        const sel   = data[q.id] === o.value ? 'selected' : '';
-        return `<option value="${o.value}" ${sel}>${label}</option>`;
-      }).join('');
-
-      div.innerHTML += `
-        <div class="form-field">
-          <div class="form-select-wrap">
-            <select id="q-${q.id}" class="form-select">${opts}</select>
-            <span class="form-select-arrow">▾</span>
-          </div>
-        </div>`;
-
-      if (q.hasCustom) {
-        const show = data[q.id] === 'custom' ? 'block' : 'none';
-        div.innerHTML += `
-          <div class="form-field" id="custom-field-${q.id}" style="display:${show}">
-            <input type="text" id="q-${q.id}-custom" class="form-input"
-                   placeholder="${lang() === 'ar' ? 'اكتب هنا…' : 'Type here…'}"
-                   value="${data[`${q.id}_custom`] || ''}"/>
-          </div>`;
-
-        setTimeout(() => {
-          document.getElementById(`q-${q.id}`)?.addEventListener('change', function () {
-            const cf = document.getElementById(`custom-field-${q.id}`);
-            if (cf) cf.style.display = this.value === 'custom' ? 'block' : 'none';
-          });
-        }, 0);
-      }
-
-    } else if (q.type === 'checkbox') {
-      const saved = data[q.id] || [];
-      const items = q.options.map(o => {
-        const label   = typeof o.label === 'object' ? o.label[lang()] : o.label;
-        const more    = o.more ? (o.more[lang()] || '') : '';
-        const checked = saved.includes(o.value) ? 'checked' : '';
-        return `
-          <div class="checkbox-item">
-            <input type="checkbox" id="cb-${o.value}" name="${q.id}"
-                   value="${o.value}" ${checked}/>
-            <label for="cb-${o.value}">
-              ${label}
-              ${o.link ? `<a href="${o.link}" target="_blank" class="checkbox-more" tabindex="-1">${more}</a>` : ''}
-            </label>
-          </div>`;
-      }).join('');
-      div.innerHTML += `<div class="checkbox-group">${items}</div>`;
-
-    } else if (q.type === 'contact-block') {
-      const isAr = lang() === 'ar';
-      div.innerHTML += `
-        <div class="form-field">
-          <label class="form-label">${isAr ? 'الواتساب' : 'WhatsApp'}</label>
-          <input type="tel" id="q-whatsapp" class="form-input"
-                 placeholder="${isAr ? '+966 5xx xxx xxxx' : '+1 234 567 8900'}"
-                 value="${data['whatsapp'] || ''}"/>
-        </div>
-        <div class="form-field">
-          <label class="form-label">${isAr ? 'إنستقرام' : 'Instagram'}</label>
-          <input type="text" id="q-instagram" class="form-input"
-                 placeholder="@${isAr ? 'حسابك' : 'yourhandle'}"
-                 value="${data['instagram'] || ''}"/>
-        </div>
-        <div class="form-field">
-          <label class="form-label">${isAr ? 'البريد الإلكتروني' : 'Email'}</label>
-          <input type="email" id="q-email" class="form-input"
-                 placeholder="you@example.com"
-                 value="${data['email'] || ''}"/>
-        </div>`;
-    }
-
-    stepsEl.appendChild(div);
-
-    /* Progress */
-    const pct = ((idx + 1) / QUESTIONS.length) * 100;
-    if (progBar)   progBar.style.width = pct + '%';
-    if (progLabel) progLabel.textContent = `${idx + 1} / ${QUESTIONS.length}`;
-    const progEl = overlay?.querySelector('.inquiry-progress');
-    if (progEl)    progEl.setAttribute('aria-valuenow', idx + 1);
-
-    /* Buttons */
-    if (prevBtn) prevBtn.hidden = idx === 0;
-    const nextLabel = nextBtn?.querySelector('.btn-text');
-    if (nextLabel) {
-      const isLast = idx === QUESTIONS.length - 1;
-      nextLabel.textContent = isLast
-        ? (lang() === 'ar' ? 'إرسال ✓' : 'Submit ✓')
-        : (lang() === 'ar' ? '← التالي' : 'Next →');
-    }
-
-    setTimeout(() => stepsEl.querySelector('input, textarea, select')?.focus(), 80);
-  }
-
-  /* ── Save answer ── */
-  function save() {
-    const q = QUESTIONS[step];
-    if (q.type === 'checkbox') {
-      data[q.id] = Array.from(
-        stepsEl.querySelectorAll(`input[name="${q.id}"]:checked`)
-      ).map(c => c.value);
-    } else if (q.type === 'contact-block') {
-      data['whatsapp']  = document.getElementById('q-whatsapp')?.value.trim()  || '';
-      data['instagram'] = document.getElementById('q-instagram')?.value.trim() || '';
-      data['email']     = document.getElementById('q-email')?.value.trim()     || '';
-    } else {
-      const el = stepsEl.querySelector(`#q-${q.id}`);
-      if (el) data[q.id] = el.value.trim();
-      if (q.hasCustom) {
-        const custom = stepsEl.querySelector(`#q-${q.id}-custom`);
-        if (custom) data[`${q.id}_custom`] = custom.value.trim();
-      }
-    }
-  }
-
-  nextBtn?.addEventListener('click', () => {
-    save();
-    if (step < QUESTIONS.length - 1) { step++; render(step); }
-    else submit();
-  });
-
-  prevBtn?.addEventListener('click', () => {
-    save();
-    if (step > 0) { step--; render(step); }
-  });
-
-  stepsEl.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-      e.preventDefault();
-      nextBtn?.click();
-    }
-  });
-
-  /* ── Submit ── */
-  function submit() {
-    console.log('📋 Inquiry submitted:', data);
-
-    const modal = overlay?.querySelector('.modal--inquiry');
-    if (!modal) return;
-    modal.innerHTML = `
-      <div style="padding:var(--space-8);text-align:center;min-height:320px;
-                  display:flex;flex-direction:column;align-items:center;
-                  justify-content:center;gap:var(--space-5);">
-        <div style="font-size:3rem;color:var(--accent);">◈</div>
-        <h2 style="font-family:var(--font-en-display);font-size:clamp(1.3rem,3vw,1.7rem);
-                   font-weight:700;letter-spacing:-.03em;">
-          ${data.brandName ? `Let's build ${data.brandName}.` : 'Message received.'}
-        </h2>
-        <p style="color:var(--fg-2);font-size:13px;line-height:1.75;max-width:360px;">
-          I'll review your brief and reach out within 24–48 hours.
-        </p>
-        <a href="#work" class="btn btn-primary"
-           onclick="document.getElementById('inquiryModal').hidden=true;
-                    document.body.style.overflow='';"
-           style="margin-top:8px;">
-          <span class="btn-text">Explore the Work</span>
-          <span class="btn-fill"></span>
-        </a>
-      </div>`;
-  }
-
-  /* Reset on modal close */
-  overlay?.addEventListener('transitionend', () => {
-    if (overlay.hidden) {
-      step = 0;
-      Object.keys(data).forEach(k => delete data[k]);
-      render(0);
-    }
-  });
-
-  render(0);
-}
-
-
-/* ═══════════════════════════════════════════════════════════════
+ /* ═══════════════════════════════════════════════════════════════
    17 · BLUR-UP IMAGE LOADING
 ═══════════════════════════════════════════════════════════════ */
 function initBlurUpImages() {

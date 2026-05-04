@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark" data-lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yamanalie — Brand Essentials</title>
+
+  <style>
+    @font-face { font-family:'MikhakBold';    src:url('../fonts/MikhakBold.ttf') format('truetype');            font-weight:700; font-display:swap; }
+    @font-face { font-family:'ThmanyahSerif'; src:url('../fonts/thmanyahseriftext-Bold.otf') format('opentype');font-weight:700; font-display:swap; }
+    @font-face { font-family:'SimplySerif';   src:url('../fonts/SimplySerif-Bold.ttf') format('truetype');      font-weight:700; font-display:swap; }
+    @font-face { font-family:'COOPBL';        src:url('../fonts/COOPBL.ttf') format('truetype');                font-weight:700; font-display:swap; }
+
+    :root {
+      --bg:#1a3a12; --bg-2:#1f4516;
+      --bg-card:rgba(26,58,18,.60);
+      --surface:rgba(212,232,165,.05); --surface-2:rgba(212,232,165,.10);
+      --border:rgba(212,232,165,.14); --border-2:rgba(212,232,165,.07);
+      --fg:#F0F5E8; --fg-2:rgba(240,245,232,.65); --fg-3:rgba(240,245,232,.35);
+      --accent:#D4E8A5; --accent-dim:rgba(212,232,165,.18);
+      --sage:#5B8C3E; --orange:#E57A34;
+      --font-d:'COOPBL','SimplySerif',Georgia,serif;
+      --font-b:'MikhakBold',system-ui,sans-serif;
+      --font-m:'Courier New',monospace;
+      --font-ar:'ThmanyahSerif','Cairo',sans-serif;
+      --ease:cubic-bezier(.22,1,.36,1);
+      --tf:.18s; --tm:.36s; --ts:.55s;
+      --r-sm:6px; --r-md:12px; --r-lg:20px; --r-xl:28px; --r-full:9999px;
+      --hh:64px; --pad:clamp(16px,5vw,80px);
+    }
+    [data-theme="light"] {
+      --bg:#F0F5E8; --bg-2:#E6EDD9;
+      --bg-card:rgba(240,245,232,.72);
+      --surface:rgba(46,90,34,.05); --surface-2:rgba(46,90,34,.10);
+      --border:rgba(46,90,34,.18); --border-2:rgba(46,90,34,.09);
+      --fg:#1a3a12; --fg-2:rgba(26,58,18,.70); --fg-3:rgba(26,58,18,.42);
+      --accent:#2E5A22; --accent-dim:rgba(46,90,34,.15); --sage:#4a7a30;
+    }
+    [data-lang="ar"] { direction:rtl; --font-d:var(--font-ar); --font-b:var(--font-ar); }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden;scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--fg);font-family:var(--font-b);overflow-x:hidden;cursor:none;transition:background var(--tm),color var(--tm)}
+    @media(hover:none){body{cursor:auto}}
+    img{max-width:100%;display:block} a{color:inherit;text-decoration:none}
+    button{cursor:none;background:none;border:none;font-family:inherit;color:inherit}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--r-sm)}
+    ::selection{background:var(--accent);color:#000}
+    [data-theme="light"] ::selection{color:#fff}
+
+    .grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:180px;mix-blend-mode:overlay}
+    .sp{position:fixed;top:0;left:0;width:0%;height:2px;background:var(--accent);z-index:10000;box-shadow:0 0 10px var(--accent);transition:width .08s linear}
+    .cursor{position:fixed;top:0;left:0;z-index:9998;pointer-events:none;transform:translate(-50%,-50%)}
+    .cursor-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:width var(--tf),height var(--tf)}
+    .cursor-ring{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(212,232,165,.4);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:width .20s var(--ease),height .20s var(--ease)}
+    body.cl .cursor-dot{width:6px;height:6px} body.cl .cursor-ring{width:30px;height:30px}
+    @media(hover:none){.cursor{display:none!important}}
+
+    .hdr{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--hh);background:rgba(26,58,18,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border-2);transition:background var(--tm)}
+    [data-theme="light"] .hdr{background:rgba(240,245,232,.72)}
+    .hdr.s{background:rgba(26,58,18,.88);border-bottom-color:var(--border)}
+    [data-theme="light"] .hdr.s{background:rgba(240,245,232,.94)}
+    .hdr-in{max-width:1280px;margin-inline:auto;padding-inline:var(--pad);height:100%;display:flex;align-items:center;gap:20px}
+    .back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2);transition:color var(--tf),transform var(--tf)}
+    .back:hover{color:var(--accent);transform:translateX(-3px)}
+    [data-lang="ar"] .back:hover{transform:translateX(3px)}
+    .lm{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--r-sm);background:var(--accent);color:#000;font-family:var(--font-d);font-weight:700;font-size:12px;flex-shrink:0}
+    [data-theme="light"] .lm{color:#fff}
+    .hdr-r{margin-inline-start:auto;display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:var(--r-full);overflow:hidden;height:32px}
+    .sw{display:flex;align-items:center;justify-content:center;padding:0 12px;height:100%;font-family:var(--font-m);font-size:11px;letter-spacing:.1em;color:var(--fg-2);transition:background var(--tf),color var(--tf)}
+    .sw:hover{background:var(--surface-2);color:var(--fg)}
+    .sd{width:1px;height:14px;background:var(--border)}
+
+    /* HERO */
+    .hero{padding-top:calc(var(--hh) + 80px);padding-bottom:80px;padding-inline:var(--pad);max-width:1280px;margin-inline:auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,100px);align-items:center}
+    .hero-tag{font-family:var(--font-m);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+    .hero-h{font-family:var(--font-d);font-size:clamp(2.4rem,6vw,5.5rem);font-weight:700;letter-spacing:-.04em;line-height:.96;margin-bottom:24px;overflow:hidden}
+    .hero-h span{display:block;transform:translateY(110%);opacity:0;transition:transform var(--ts) var(--ease),opacity var(--ts) var(--ease)}
+    .hero-h span:nth-child(2){transition-delay:.12s}
+    .hero-h span:nth-child(3){transition-delay:.24s;font-family:'SimplySerif',Georgia,serif;font-style:italic}
+    .hero-h.in span{transform:translateY(0);opacity:1}
+    .hero-sub{color:var(--fg-2);font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.8;margin-bottom:32px;max-width:460px}
+    .cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+
+    .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 26px;border-radius:var(--r-full);font-family:var(--font-b);font-size:13px;font-weight:700;letter-spacing:.03em;overflow:hidden;text-decoration:none;transition:box-shadow var(--tf),transform var(--tf);cursor:none;z-index:0}
+    .btn:active{transform:scale(.95)}
+    .btn-p{background:var(--accent);color:#000}
+    [data-theme="light"] .btn-p{color:#fff}
+    .btn-p:hover{box-shadow:0 0 0 3px var(--accent-dim),0 8px 24px rgba(212,232,165,.2)}
+    .btn-fill{position:absolute;inset:0;border-radius:inherit;background:rgba(255,255,255,.15);transform:scaleX(0) translateX(-100%);transform-origin:left;transition:transform .5s var(--ease);z-index:-1;pointer-events:none}
+    .btn-p:hover .btn-fill{transform:scaleX(1) translateX(0)}
+    .btn-g{background:transparent;color:var(--fg);border:1px solid var(--border)}
+    .btn-g:hover{background:var(--surface-2)}
+
+    /* HERO RIGHT — stacked deliverable preview */
+    .essentials-preview{display:flex;flex-direction:column;gap:12px}
+    .preview-item{padding:16px 20px;border-radius:var(--r-lg);background:var(--bg-card);border:1px solid var(--border-2);backdrop-filter:blur(8px);display:flex;align-items:center;gap:16px;transition:border-color var(--tm),transform var(--tm)}
+    .preview-item:hover{border-color:var(--accent);transform:translateX(6px)}
+    [data-lang="ar"] .preview-item:hover{transform:translateX(-6px)}
+    .preview-icon{font-size:1.4rem;color:var(--accent);flex-shrink:0;width:36px;text-align:center}
+    .preview-label{font-family:var(--font-d);font-size:.9rem;font-weight:700;letter-spacing:-.01em}
+    .preview-sub{font-family:var(--font-m);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);margin-top:2px}
+
+    /* BADGE — "Best for starters" */
+    .hero-badge-strip{display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border-radius:var(--r-full);background:var(--accent-dim);border:1px solid var(--border);font-family:var(--font-m);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+    .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2.4s ease-in-out infinite}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(212,232,165,.6)}50%{box-shadow:0 0 0 6px rgba(212,232,165,0)}}
+    [data-theme="light"] .badge-dot{animation:pulseLight 2.4s ease-in-out infinite}
+    @keyframes pulseLight{0%,100%{box-shadow:0 0 0 0 rgba(46,90,34,.5)}50%{box-shadow:0 0 0 6px rgba(46,90,34,0)}}
+
+    /* SECTIONS */
+    .section{padding-block:clamp(64px,9vw,120px);padding-inline:var(--pad);max-width:1280px;margin-inline:auto}
+    .sec-tag{font-family:var(--font-m);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:block}
+    .sec-h{font-family:var(--font-d);font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin-bottom:20px}
+    .sec-sub{color:var(--fg-2);font-size:clamp(.9rem,1.3vw,1rem);line-height:1.8;max-width:560px}
+
+    .ri{opacity:0;transform:translateY(26px);transition:opacity var(--ts) var(--ease),transform var(--ts) var(--ease)}
+    .ri.in{opacity:1;transform:translateY(0)}
+    .ri:nth-child(1){transition-delay:0s} .ri:nth-child(2){transition-delay:.08s}
+    .ri:nth-child(3){transition-delay:.16s} .ri:nth-child(4){transition-delay:.24s}
+    .ri:nth-child(5){transition-delay:.32s} .ri:nth-child(6){transition-delay:.40s}
+
+    /* WHAT'S INCLUDED — big detailed cards */
+    .included-section{background:var(--bg-2);padding-block:clamp(64px,9vw,120px)}
+    .included-inner{max-width:1280px;margin-inline:auto;padding-inline:var(--pad)}
+
+    .deliverable-big{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,64px);align-items:center;padding-block:clamp(48px,7vw,80px);border-bottom:1px solid var(--border-2)}
+    .deliverable-big:last-child{border-bottom:none}
+    .deliverable-big:nth-child(even){direction:ltr} /* keep LTR for layout alternation */
+    .deliverable-big__img{border-radius:var(--r-xl);overflow:hidden;aspect-ratio:4/3;background:var(--surface-2);border:1px solid var(--border-2)}
+    .deliverable-big__img img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+    .deliverable-big__img:hover img{transform:scale(1.04)}
+    .deliverable-big__num{font-family:var(--font-m);font-size:10px;letter-spacing:.15em;color:var(--accent);margin-bottom:12px}
+    .deliverable-big__title{font-family:var(--font-d);font-size:clamp(1.3rem,3vw,2rem);font-weight:700;letter-spacing:-.03em;margin-bottom:14px;line-height:1.1}
+    .deliverable-big__desc{color:var(--fg-2);font-size:13.5px;line-height:1.85;margin-bottom:20px}
+    .deliverable-big__specs{display:flex;flex-direction:column;gap:8px}
+    .spec-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--fg-2)}
+    .spec-item::before{content:'—';color:var(--accent);flex-shrink:0;font-weight:700}
+
+    /* COMPARISON TABLE */
+    .comparison-section{padding-block:clamp(64px,9vw,120px);padding-inline:var(--pad);max-width:1280px;margin-inline:auto}
+    .comparison-table{width:100%;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--border-2);margin-top:48px}
+    .ct-header{display:grid;grid-template-columns:2fr 1fr 1fr;background:var(--surface-2);border-bottom:1px solid var(--border-2)}
+    .ct-header-cell{padding:16px 20px;font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-3)}
+    .ct-header-cell.highlight{color:var(--accent);background:var(--accent-dim)}
+    .ct-row{display:grid;grid-template-columns:2fr 1fr 1fr;border-bottom:1px solid var(--border-2)}
+    .ct-row:last-child{border-bottom:none}
+    .ct-row:hover{background:var(--surface)}
+    .ct-cell{padding:14px 20px;font-size:13px;color:var(--fg-2);display:flex;align-items:center}
+    .ct-cell.highlight{background:rgba(212,232,165,.04)}
+    .ct-check{color:var(--accent);font-size:14px;font-weight:700}
+    .ct-dash{color:var(--fg-3);font-size:18px}
+
+    /* PROCESS STEPS */
+    .steps{display:flex;flex-direction:column;gap:0;margin-top:56px;position:relative}
+    .steps::before{content:'';position:absolute;top:0;bottom:0;left:19px;width:1px;background:var(--border-2)}
+    [data-lang="ar"] .steps::before{left:auto;right:19px}
+    .step{display:grid;grid-template-columns:40px 1fr;gap:24px;padding-bottom:48px;position:relative}
+    .step:last-child{padding-bottom:0}
+    .step-num{width:40px;height:40px;border-radius:50%;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;color:var(--accent);flex-shrink:0;position:relative;z-index:1;transition:background var(--tm),border-color var(--tm)}
+    .step:hover .step-num{background:var(--accent);color:#000;border-color:transparent}
+    .step-body{padding-top:8px}
+    .step-title{font-family:var(--font-d);font-size:1.1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:8px;transition:color var(--tf)}
+    .step:hover .step-title{color:var(--accent)}
+    .step-desc{font-size:13px;color:var(--fg-2);line-height:1.8}
+
+    /* GALLERY */
+    .gallery-section{background:var(--bg-2);padding-block:clamp(64px,9vw,120px)}
+    .gallery-inner{max-width:1280px;margin-inline:auto;padding-inline:var(--pad)}
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+    .gallery-item{border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;background:var(--surface-2);border:1px solid var(--border-2);position:relative;cursor:none}
+    .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+    .gallery-item:hover img{transform:scale(1.06)}
+    .gallery-item-label{position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);font-family:var(--font-m);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,245,232,.8);opacity:0;transition:opacity var(--tm)}
+    .gallery-item:hover .gallery-item-label{opacity:1}
+
+    /* PRICING */
+    .pricing-section{padding-block:clamp(64px,9vw,120px);padding-inline:var(--pad);max-width:1280px;margin-inline:auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:start}
+    .price-card{padding:40px;border-radius:var(--r-xl);background:var(--bg-card);border:1px solid var(--border);backdrop-filter:blur(12px);position:relative;overflow:hidden}
+    .price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
+    .price-label{font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+    .price-amount{font-family:var(--font-d);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:8px}
+    .price-note{font-family:var(--font-m);font-size:11px;color:var(--fg-3);letter-spacing:.06em;margin-bottom:28px}
+    .price-list{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+    .price-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--fg-2);line-height:1.5}
+    .price-item::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0;margin-top:1px}
+    .upgrade-note{padding:16px;border-radius:var(--r-md);background:var(--accent-dim);border:1px solid var(--border);font-size:12px;color:var(--fg-2);line-height:1.7;margin-top:20px}
+    .upgrade-note strong{color:var(--accent)}
+
+    /* FAQ */
+    .faq-section{background:var(--bg-2);padding-block:clamp(64px,9vw,120px)}
+    .faq-inner{max-width:800px;margin-inline:auto;padding-inline:var(--pad)}
+    .faq-list{display:flex;flex-direction:column;gap:0;margin-top:48px}
+    .faq-item{border-bottom:1px solid var(--border-2)}
+    .faq-q{width:100%;padding:20px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--font-d);font-size:clamp(.95rem,1.5vw,1.05rem);font-weight:700;letter-spacing:-.01em;text-align:start;cursor:none;transition:color var(--tf)}
+    .faq-q:hover{color:var(--accent)}
+    .faq-icon{font-size:18px;color:var(--accent);transition:transform var(--tm) var(--ease);flex-shrink:0}
+    .faq-item.open .faq-icon{transform:rotate(45deg)}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--ease)}
+    .faq-a-inner{padding-bottom:20px;font-size:13px;color:var(--fg-2);line-height:1.8}
+    .faq-item.open .faq-a{max-height:400px}
+
+    /* CTA BAND */
+    .cta-band{padding-block:clamp(80px,12vw,160px);padding-inline:var(--pad);text-align:center}
+    .cta-band h2{font-family:var(--font-d);font-size:clamp(2.2rem,6vw,5.5rem);font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:32px}
+    .cta-band h2 em{font-family:'SimplySerif',Georgia,serif;font-style:italic;color:var(--accent)}
+
+    /* FOOTER */
+    .foot{border-top:1px solid var(--border-2);padding:24px var(--pad);background:var(--bg-2)}
+    .foot-in{max-width:1280px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .foot-logo{display:flex;align-items:center;gap:8px}
+    .foot-name{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;color:var(--fg-3)}
+    .foot-copy{font-family:var(--font-m);font-size:10px;letter-spacing:.06em;color:var(--fg-3)}
+    .foot-back{font-family:var(--font-m);font-size:11px;letter-spacing:.08em;color:var(--fg-3);transition:color var(--tf)}
+    .foot-back:hover{color:var(--accent)}
+
+    @media(max-width:960px){
+      .hero,.pricing-section,.deliverable-big{grid-template-columns:1fr}
+      .gallery-grid{grid-template-columns:repeat(2,1fr)}
+      .ct-header,.ct-row{grid-template-columns:2fr 1fr 1fr}
+    }
+    @media(max-width:600px){
+      .gallery-grid{grid-template-columns:1fr}
+      .ct-header,.ct-row{grid-template-columns:1.5fr 1fr 1fr}
+      .ct-cell,.ct-header-cell{padding:10px 12px;font-size:11px}
+    }
+    @media(hover:none){.cursor{display:none!important}body{cursor:auto!important}button,a{cursor:pointer!important}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="sp" id="sp" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+</div>
+
+<header class="hdr" id="hdr" role="banner">
+  <div class="hdr-in">
+    <a href="../index.html" class="back">
+      <span class="lm">YA</span>
+      <span data-en="← Back" data-ar="رجوع →">← Back</span>
+    </a>
+    <div class="hdr-r">
+      <button class="sw" id="langToggle"><span id="langLabel">EN</span></button>
+      <div class="sd"></div>
+      <button class="sw" id="themeToggle"><span id="themeIcon">◐</span></button>
+    </div>
+  </div>
+</header>
+
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-badge-strip ri">
+      <span class="badge-dot" aria-hidden="true"></span>
+      <span data-en="Perfect starting point" data-ar="نقطة البداية المثالية">Perfect starting point</span>
+    </div>
+    <span class="hero-tag" data-en="Service · Brand Essentials" data-ar="خدمة · أساسيات العلامة">Service · Brand Essentials</span>
+    <h1 class="hero-h" id="heroH">
+      <span data-en="Brand" data-ar="أساسيات">Brand</span>
+      <span data-en="Essentials" data-ar="العلامة">Essentials</span>
+      <span data-en="Only." data-ar="فقط.">Only.</span>
+    </h1>
+    <p class="hero-sub ri"
+       data-en="Everything you need to launch with confidence. A complete core identity — logo in all formats, typography, colour palette, mockups — without the full system overhead. Built to grow with you."
+       data-ar="كل ما تحتاجه للانطلاق بثقة. هوية أساسية متكاملة — شعار بجميع الصيغ وطباعة ولوحة ألوان ونماذج — دون التعقيد الكامل للنظام. مبني لينمو معك.">
+      Everything you need to launch with confidence. A complete core identity — logo in all formats, typography, colour palette, mockups — without the full system overhead. Built to grow with you.
+    </p>
+    <div class="cta-row ri">
+      <a href="../index.html#contact" class="btn btn-p">
+        <span data-en="Start this Project →" data-ar="ابدأ هذا المشروع ←">Start this Project →</span>
+        <span class="btn-fill"></span>
+      </a>
+      <a href="../subhtml/projects.html" class="btn btn-g">
+        <span data-en="See Examples" data-ar="شاهد الأمثلة">See Examples</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Stacked preview list -->
+  <div class="essentials-preview ri">
+    <div class="preview-item">
+      <div class="preview-icon">◈</div>
+      <div>
+        <div class="preview-label" data-en="Logo Files" data-ar="ملفات الشعار">Logo Files</div>
+        <div class="preview-sub" data-en="PNG · JPG · SVG · PDF" data-ar="PNG · JPG · SVG · PDF">PNG · JPG · SVG · PDF</div>
+      </div>
+    </div>
+    <div class="preview-item">
+      <div class="preview-icon">Aa</div>
+      <div>
+        <div class="preview-label" data-en="Typography" data-ar="الطباعة">Typography</div>
+        <div class="preview-sub" data-en="Primary + secondary typefaces" data-ar="خطوط أساسية وثانوية">Primary + secondary typefaces</div>
+      </div>
+    </div>
+    <div class="preview-item">
+      <div class="preview-icon">◉</div>
+      <div>
+        <div class="preview-label" data-en="Colour Palette" data-ar="لوحة الألوان">Colour Palette</div>
+        <div class="preview-sub" data-en="HEX · RGB · CMYK codes" data-ar="رموز HEX · RGB · CMYK">HEX · RGB · CMYK codes</div>
+      </div>
+    </div>
+    <div class="preview-item">
+      <div class="preview-icon">◻</div>
+      <div>
+        <div class="preview-label" data-en="Mockups" data-ar="النماذج التطبيقية">Mockups</div>
+        <div class="preview-sub" data-en="3 photorealistic applications" data-ar="3 تطبيقات واقعية">3 photorealistic applications</div>
+      </div>
+    </div>
+    <div class="preview-item">
+      <div class="preview-icon">↺</div>
+      <div>
+        <div class="preview-label" data-en="2 Revision Rounds" data-ar="جولتا مراجعة">2 Revision Rounds</div>
+        <div class="preview-sub" data-en="Structured feedback cycles" data-ar="دورات تغذية راجعة منظمة">Structured feedback cycles</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- WHAT'S INCLUDED — detailed breakdown -->
+<div class="included-section">
+  <div class="included-inner">
+    <span class="sec-tag ri" data-en="What's included" data-ar="ما هو مضمّن">What's included</span>
+    <h2 class="sec-h ri" data-en="Five essentials. Nothing missing." data-ar="خمسة أساسيات. لا شيء ناقص.">Five essentials. Nothing missing.</h2>
+    <p class="sec-sub ri"
+       data-en="This package is designed to give you a professional, complete foundation — not a stripped-down starter. Everything included is essential. Everything excluded is optional."
+       data-ar="هذه الحزمة مصممة لتمنحك أساساً مهنياً متكاملاً — وليس مجرد بداية مجردة. كل ما هو مضمن ضروري. كل ما هو مستبعد اختياري.">
+      This package is designed to give you a professional, complete foundation — not a stripped-down starter. Everything included is essential. Everything excluded is optional.
+    </p>
+
+    <!-- 01 LOGO -->
+    <div class="deliverable-big">
+      <div class="ri">
+        <div class="deliverable-big__num">01</div>
+        <h3 class="deliverable-big__title"
+            data-en="Logo — All Formats" data-ar="الشعار — جميع الصيغ">Logo — All Formats</h3>
+        <p class="deliverable-big__desc"
+           data-en="Your logo is the face of your brand. It's delivered in every format you'll ever need — so you're never scrambling when someone asks for 'the logo file.'"
+           data-ar="شعارك هو وجه علامتك. يُسلَّم بكل صيغة ستحتاجها على الإطلاق — حتى لا تتعثر عندما يطلب منك أحد 'ملف الشعار'.">
+          Your logo is the face of your brand. It's delivered in every format you'll ever need — so you're never scrambling when someone asks for 'the logo file.'
+        </p>
+        <div class="deliverable-big__specs">
+          <div class="spec-item" data-en="PNG (transparent background) — for digital use, presentations, documents" data-ar="PNG (خلفية شفافة) — للاستخدام الرقمي والعروض والمستندات">PNG (transparent background) — for digital use, presentations, documents</div>
+          <div class="spec-item" data-en="JPG (white & dark backgrounds) — for social media, email signatures" data-ar="JPG (خلفيات بيضاء وداكنة) — لوسائل التواصل الاجتماعي وتوقيعات البريد">JPG (white &amp; dark backgrounds) — for social media, email signatures</div>
+          <div class="spec-item" data-en="SVG — infinitely scalable vector for web developers" data-ar="SVG — متجه قابل للتوسع بلا حدود لمطوري الويب">SVG — infinitely scalable vector for web developers</div>
+          <div class="spec-item" data-en="PDF — print-ready, high resolution for signage, packaging, print" data-ar="PDF — جاهز للطباعة وعالي الدقة للافتات والتغليف والطباعة">PDF — print-ready, high resolution for signage, packaging, print</div>
+          <div class="spec-item" data-en="Full colour, reversed, and single-colour variations included" data-ar="تنويعات اللون الكامل والمعكوس والتون الواحد مضمنة">Full colour, reversed, and single-colour variations included</div>
+        </div>
+      </div>
+      <div class="deliverable-big__img ri">
+        <img src="../images/examples/essentials-logo.jpg" alt="Logo files example" loading="lazy"/>
+      </div>
+    </div>
+
+    <!-- 02 TYPOGRAPHY -->
+    <div class="deliverable-big">
+      <div class="deliverable-big__img ri">
+        <img src="../images/examples/essentials-type.jpg" alt="Typography example" loading="lazy"/>
+      </div>
+      <div class="ri">
+        <div class="deliverable-big__num">02</div>
+        <h3 class="deliverable-big__title"
+            data-en="Typography" data-ar="الطباعة">Typography</h3>
+        <p class="deliverable-big__desc"
+           data-en="The right typefaces transform your brand from generic to distinctive. I select and pair fonts that match your brand personality — and give you the rules for using them consistently."
+           data-ar="الخطوط الصحيحة تحول علامتك من عامة إلى مميزة. أختار وأقترن الخطوط التي تتناسب مع شخصية علامتك — وأمنحك قواعد استخدامها باتساق.">
+          The right typefaces transform your brand from generic to distinctive. I select and pair fonts that match your brand personality — and give you the rules for using them consistently.
+        </p>
+        <div class="deliverable-big__specs">
+          <div class="spec-item" data-en="Primary display typeface — for headlines, logos, key messaging" data-ar="الخط الأساسي — للعناوين والشعارات والرسائل الرئيسية">Primary display typeface — for headlines, logos, key messaging</div>
+          <div class="spec-item" data-en="Secondary body typeface — for paragraphs, captions, supporting text" data-ar="الخط الثانوي — للفقرات والتسميات التوضيحية والنص الداعم">Secondary body typeface — for paragraphs, captions, supporting text</div>
+          <div class="spec-item" data-en="Usage rules — size hierarchy, spacing, dos and don'ts" data-ar="قواعد الاستخدام — تسلسل الأحجام والتباعد والصحيح والخاطئ">Usage rules — size hierarchy, spacing, dos and don'ts</div>
+          <div class="spec-item" data-en="Free font alternatives included where applicable" data-ar="بدائل الخطوط المجانية مضمنة حيثما ينطبق">Free font alternatives included where applicable</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 COLOUR PALETTE -->
+    <div class="deliverable-big">
+      <div class="ri">
+        <div class="deliverable-big__num">03</div>
+        <h3 class="deliverable-big__title"
+            data-en="Colour Palette" data-ar="لوحة الألوان">Colour Palette</h3>
+        <p class="deliverable-big__desc"
+           data-en="Colour is the most immediately recognisable element of any brand. A well-built palette gives your team the exact colours to use — every time, on every platform."
+           data-ar="اللون هو العنصر الأكثر قابلية للتعرف الفوري في أي علامة. لوحة مبنية جيداً تمنح فريقك الألوان الدقيقة للاستخدام — في كل مرة وعلى كل منصة.">
+          Colour is the most immediately recognisable element of any brand. A well-built palette gives your team the exact colours to use — every time, on every platform.
+        </p>
+        <div class="deliverable-big__specs">
+          <div class="spec-item" data-en="Primary brand colour with full code set (HEX, RGB, CMYK, Pantone reference)" data-ar="لون العلامة الأساسي مع مجموعة رموز كاملة (HEX وRGB وCMYK ومرجع بانتون)">Primary brand colour with full code set (HEX, RGB, CMYK, Pantone reference)</div>
+          <div class="spec-item" data-en="Secondary and accent colours with the same code sets" data-ar="الألوان الثانوية والبارزة مع نفس مجموعات الرموز">Secondary and accent colours with the same code sets</div>
+          <div class="spec-item" data-en="Neutral / background colours for both light and dark use" data-ar="الألوان المحايدة / خلفية للاستخدام الفاتح والداكن">Neutral / background colours for both light and dark use</div>
+          <div class="spec-item" data-en="Contrast ratio notes — accessibility compliance guidance" data-ar="ملاحظات نسبة التباين — إرشادات الامتثال لإمكانية الوصول">Contrast ratio notes — accessibility compliance guidance</div>
+        </div>
+      </div>
+      <div class="deliverable-big__img ri">
+        <img src="../images/examples/essentials-colour.jpg" alt="Colour palette example" loading="lazy"/>
+      </div>
+    </div>
+
+    <!-- 04 MOCKUPS -->
+    <div class="deliverable-big">
+      <div class="deliverable-big__img ri">
+        <img src="../images/examples/essentials-mockup.jpg" alt="Mockup examples" loading="lazy"/>
+      </div>
+      <div class="ri">
+        <div class="deliverable-big__num">04</div>
+        <h3 class="deliverable-big__title"
+            data-en="Mockups" data-ar="النماذج التطبيقية">Mockups</h3>
+        <p class="deliverable-big__desc"
+           data-en="Seeing your logo on a business card, a phone screen, or a tote bag transforms how you and your clients feel about the brand. Mockups make it real before anything is printed."
+           data-ar="رؤية شعارك على بطاقة عمل أو شاشة هاتف أو حقيبة قماشية يحول طريقة شعورك وشعور عملائك تجاه العلامة. النماذج تجعلها حقيقية قبل طباعة أي شيء.">
+          Seeing your logo on a business card, a phone screen, or a tote bag transforms how you and your clients feel about the brand. Mockups make it real before anything is printed.
+        </p>
+        <div class="deliverable-big__specs">
+          <div class="spec-item" data-en="3 photorealistic mockup scenes — selected based on your industry" data-ar="3 مشاهد نماذج واقعية — مختارة بناءً على صناعتك">3 photorealistic mockup scenes — selected based on your industry</div>
+          <div class="spec-item" data-en="Options include: business card, packaging, apparel, phone screen, signage, stationery" data-ar="الخيارات تشمل: بطاقة عمل وتغليف وملابس وشاشة هاتف ولافتات وقرطاسية">Options include: business card, packaging, apparel, phone screen, signage, stationery</div>
+          <div class="spec-item" data-en="High resolution (min. 3000px) — print and presentation ready" data-ar="دقة عالية (3000 بكسل كحد أدنى) — جاهز للطباعة والعروض">High resolution (min. 3000px) — print and presentation ready</div>
+          <div class="spec-item" data-en="Delivered as JPG and PNG — ready to share on social or in proposals" data-ar="مسلمة بصيغ JPG وPNG — جاهزة للمشاركة على السوشيال أو في العروض">Delivered as JPG and PNG — ready to share on social or in proposals</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 REVISION ROUNDS -->
+    <div class="deliverable-big">
+      <div class="ri">
+        <div class="deliverable-big__num">05</div>
+        <h3 class="deliverable-big__title"
+            data-en="2 Revision Rounds" data-ar="جولتا مراجعة">2 Revision Rounds</h3>
+        <p class="deliverable-big__desc"
+           data-en="Good design is a conversation, not a one-shot delivery. Two structured revision rounds mean you get a result that actually feels right — not just 'good enough.'"
+           data-ar="التصميم الجيد هو محادثة وليس تسليمة واحدة. جولتا مراجعة منظمتان تعنيان أنك تحصل على نتيجة تشعر أنها صحيحة فعلاً — وليس فقط 'مقبولة'.">
+          Good design is a conversation, not a one-shot delivery. Two structured revision rounds mean you get a result that actually feels right — not just 'good enough.'
+        </p>
+        <div class="deliverable-big__specs">
+          <div class="spec-item" data-en="Round 1: After initial concept presentation — directional feedback" data-ar="الجولة 1: بعد تقديم المفهوم الأولي — تغذية راجعة اتجاهية">Round 1: After initial concept presentation — directional feedback</div>
+          <div class="spec-item" data-en="Round 2: After refinement — detail and polish feedback" data-ar="الجولة 2: بعد التنقيح — تغذية راجعة للتفاصيل واللمسات النهائية">Round 2: After refinement — detail and polish feedback</div>
+          <div class="spec-item" data-en="Clear feedback process — no vague 'make it pop' requests" data-ar="عملية تغذية راجعة واضحة — لا طلبات 'اجعله يبرز' الغامضة">Clear feedback process — no vague 'make it pop' requests</div>
+          <div class="spec-item" data-en="Additional rounds available if needed at an agreed rate" data-ar="جولات إضافية متاحة إذا لزم الأمر بسعر متفق عليه">Additional rounds available if needed at an agreed rate</div>
+        </div>
+      </div>
+      <div class="deliverable-big__img ri">
+        <img src="../images/examples/essentials-revision.jpg" alt="Revision process example" loading="lazy"/>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- COMPARISON TABLE -->
+<div class="comparison-section">
+  <span class="sec-tag ri" data-en="Package comparison" data-ar="مقارنة الحزم">Package comparison</span>
+  <h2 class="sec-h ri" data-en="Essentials vs Full Identity." data-ar="الأساسيات مقابل الهوية الكاملة.">Essentials vs Full Identity.</h2>
+  <p class="sec-sub ri"
+     data-en="Not sure which is right for you? Here's the honest breakdown."
+     data-ar="لست متأكداً أيهما مناسب لك؟ إليك المقارنة الصريحة.">
+    Not sure which is right for you? Here's the honest breakdown.
+  </p>
+
+  <div class="comparison-table ri">
+    <div class="ct-header">
+      <div class="ct-header-cell" data-en="What's included" data-ar="ما هو مضمن">What's included</div>
+      <div class="ct-header-cell highlight" data-en="Essentials" data-ar="الأساسيات">Essentials</div>
+      <div class="ct-header-cell" data-en="Full Brand" data-ar="الهوية الكاملة">Full Brand</div>
+    </div>
+
+    <div class="ct-row">
+      <div class="ct-cell" data-en="Logo suite (PNG, JPG, SVG, PDF)" data-ar="مجموعة شعارات (PNG, JPG, SVG, PDF)">Logo suite (PNG, JPG, SVG, PDF)</div>
+      <div class="ct-cell highlight"><span class="ct-check">✓</span></div>
+      <div class="ct-cell"><span class="ct-check">✓</span></div>
+    </div>
+    <div class="ct-row">
+      <div class="ct-cell" data-en="Typography system" data-ar="نظام الطباعة">Typography system</div>
+      <div class="ct-cell highlight"><span class="ct-check">✓</span></div>
+      <div class="ct-cell"><span class="ct-check">✓</span></div>
+    </div>
+    <div class="ct-row">
+      <div class="ct-cell" data-en="Colour palette with codes" data-ar="لوحة ألوان مع رموز">Colour palette with codes</div>
+      <div class="ct-cell highlight"><span class="ct-check">✓</span></div>
+      <div class="ct-cell"><span class="ct-check">✓</span></div>
+    </div>
+    <div class="ct-row">
+      <div class="ct-cell" data-en="Photorealistic mockups" data-ar="نماذج واقعية">Photorealistic mockups</div>
+      <div class="ct-cell highlight" data-en="3 scenes" data-ar="3 مشاهد">3 scenes</div>
+      <div class="ct-cell" data-en="5+ scenes" data-ar="5+ مشاهد">5+ scenes</div>
+    </div>
+    <div class="ct-row">
+      <div class="ct-cell" data-en="Revision rounds" data-ar="جولات المراجعة">Revision rounds</div>
+      <div class="ct-cell highlight" data-en="2 rounds" data-ar="جولتان">2 rounds</div>
+      <div class="ct-cell" data-en="3 rounds" data-ar="3 جولات">3 rounds</div>
+    </div>
+    <div class="ct-row">
+      <div class="ct-cell" data-en="Brand patterns & graphic elements" data-ar="أنماط العلامة والعناصر الجرافيكية">Brand patterns &amp; graphic elements</div>
+      <div class="ct-cell highlight"><span class="ct-dash">—</span></div>
+      <div class="ct-cell"><span class="ct-check">✓</span></div>
+    </div>
+    <div class="ct-row">
+      <div class="ct-cell" data-en="Brand guidelines PDF" data-ar="وثيقة دليل الهوية PDF">Brand guidelines PDF</div>
+      <div class="ct-cell highlight"><span class="ct-dash">—</span></div>
+      <div class="ct-cell"><span class="ct-check">✓</span></div>
+    </div>
+    <div class="ct-row">
+      <div class="ct-cell" data-en="Starting price" data-ar="السعر الابتدائي">Starting price</div>
+      <div class="ct-cell highlight" style="color:var(--accent);font-weight:700">$500</div>
+      <div class="ct-cell" style="color:var(--fg-2)">$1,200</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- PROCESS -->
+<div class="included-section">
+  <div class="included-inner">
+    <span class="sec-tag ri" data-en="How it works" data-ar="كيف يعمل">How it works</span>
+    <h2 class="sec-h ri" data-en="Simple. Fast. Professional." data-ar="بسيط. سريع. احترافي.">Simple. Fast. Professional.</h2>
+    <div class="steps">
+      <div class="step ri">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h3 class="step-title" data-en="Brief & Intake" data-ar="الإيجاز والاستيعاب">Brief &amp; Intake</h3>
+          <p class="step-desc" data-en="You fill in a short project brief — your business, your audience, your vibe preferences, and any references. No lengthy calls required at this stage." data-ar="تملأ موجزاً مختصراً للمشروع — عملك وجمهورك وتفضيلاتك في الأسلوب وأي مراجع. لا حاجة لمكالمات مطولة في هذه المرحلة.">You fill in a short project brief — your business, your audience, your vibe preferences, and any references. No lengthy calls required at this stage.</p>
+        </div>
+      </div>
+      <div class="step ri">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h3 class="step-title" data-en="Concept Presentation" data-ar="تقديم المفهوم">Concept Presentation</h3>
+          <p class="step-desc" data-en="Within the agreed timeline, I present 1–2 logo concepts with typography and colour direction. Each concept comes with a clear rationale — not just 'here are some options.'" data-ar="ضمن الجدول الزمني المتفق عليه، أقدم 1-2 مفاهيم شعار مع اتجاه الطباعة والألوان. كل مفهوم يأتي مع مبرر واضح — ليس فقط 'إليك بعض الخيارات'.">Within the agreed timeline, I present 1–2 logo concepts with typography and colour direction. Each concept comes with a clear rationale — not just 'here are some options.'</p>
+        </div>
+      </div>
+      <div class="step ri">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h3 class="step-title" data-en="Revision Rounds" data-ar="جولات المراجعة">Revision Rounds</h3>
+          <p class="step-desc" data-en="You choose a direction and share structured feedback. I refine through 2 rounds until it feels exactly right. The feedback process is guided — no vague feedback loops." data-ar="تختار اتجاهاً وتشارك تغذية راجعة منظمة. أنقح من خلال جولتين حتى يشعر بالصحة تماماً. عملية التغذية الراجعة موجهة — لا حلقات تغذية راجعة غامضة.">You choose a direction and share structured feedback. I refine through 2 rounds until it feels exactly right. The feedback process is guided — no vague feedback loops.</p>
+        </div>
+      </div>
+      <div class="step ri">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <h3 class="step-title" data-en="Final Delivery" data-ar="التسليم النهائي">Final Delivery</h3>
+          <p class="step-desc" data-en="All files packaged and delivered via a shared folder — logo in every format, colour codes, typography guide, and mockups. Ready to use immediately." data-ar="جميع الملفات معبأة ومسلمة عبر مجلد مشترك — الشعار بكل صيغة ورموز الألوان ودليل الطباعة والنماذج. جاهز للاستخدام فوراً.">All files packaged and delivered via a shared folder — logo in every format, colour codes, typography guide, and mockups. Ready to use immediately.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="gallery-inner">
+    <span class="sec-tag ri" data-en="Example Work" data-ar="أعمال مثال">Example Work</span>
+    <h2 class="sec-h ri" data-en="Essentials done right." data-ar="أساسيات منجزة بشكل صحيح.">Essentials done right.</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item ri">
+        <img src="../images/examples/ess-ex-1.jpg" alt="Logo example" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Logo Suite" data-ar="مجموعة الشعارات">Logo Suite</div>
+      </div>
+      <div class="gallery-item ri">
+        <img src="../images/examples/ess-ex-2.jpg" alt="Typography example" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Typography" data-ar="الطباعة">Typography</div>
+      </div>
+      <div class="gallery-item ri">
+        <img src="../images/examples/ess-ex-3.jpg" alt="Colour palette" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Colour Palette" data-ar="لوحة الألوان">Colour Palette</div>
+      </div>
+      <div class="gallery-item ri">
+        <img src="../images/examples/ess-ex-4.jpg" alt="Business card mockup" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Business Card Mockup" data-ar="نموذج بطاقة عمل">Business Card Mockup</div>
+      </div>
+      <div class="gallery-item ri">
+        <img src="../images/examples/ess-ex-5.jpg" alt="Packaging mockup" loading="lazy"/>
+        <div class="gallery-item-label" data-en="Packaging Mockup" data-ar="نموذج تغليف">Packaging Mockup</div>
+      </div>
+      <div class="gallery-item ri">
+        <img src="../images/examples/ess-ex-6.jpg" alt="Final file delivery" loading="lazy"/>
+        <div class="gallery-item-label" data-en="File Delivery" data-ar="تسليم الملفات">File Delivery</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- PRICING -->
+<div class="pricing-section">
+  <div class="ri">
+    <span class="sec-tag" data-en="Investment" data-ar="الاستثمار">Investment</span>
+    <h2 class="sec-h" data-en="Professional start. Honest price." data-ar="بداية احترافية. سعر صريح.">Professional start. Honest price.</h2>
+    <p class="sec-sub"
+       data-en="You don't need a massive budget to have a brand that looks professional. Brand Essentials gives you everything that matters — built to the same standard as the full package."
+       data-ar="لا تحتاج ميزانية ضخمة لامتلاك علامة تبدو احترافية. أساسيات العلامة تمنحك كل ما يهم — مبني بنفس معيار الحزمة الكاملة.">
+      You don't need a massive budget to have a brand that looks professional. Brand Essentials gives you everything that matters — built to the same standard as the full package.
+    </p>
+  </div>
+  <div class="price-card ri">
+    <p class="price-label" data-en="Brand Essentials Package" data-ar="حزمة أساسيات العلامة">Brand Essentials Package</p>
+    <p class="price-amount">$500+</p>
+    <p class="price-note" data-en="Starting price — final quote based on complexity" data-ar="سعر ابتداءً — السعر النهائي بناءً على التعقيد">Starting price — final quote based on complexity</p>
+    <ul class="price-list">
+      <li class="price-item" data-en="Logo in PNG, JPG, SVG & PDF" data-ar="شعار بصيغ PNG وJPG وSVG وPDF">Logo in PNG, JPG, SVG &amp; PDF</li>
+      <li class="price-item" data-en="All colour variations (full, reversed, mono)" data-ar="جميع تنويعات الألوان (كامل ومعكوس وأحادي)">All colour variations (full, reversed, mono)</li>
+      <li class="price-item" data-en="Typography system with usage guide" data-ar="نظام طباعة مع دليل الاستخدام">Typography system with usage guide</li>
+      <li class="price-item" data-en="Colour palette with HEX, RGB & CMYK" data-ar="لوحة ألوان مع HEX وRGB وCMYK">Colour palette with HEX, RGB &amp; CMYK</li>
+      <li class="price-item" data-en="3 photorealistic mockup scenes" data-ar="3 مشاهد نماذج واقعية">3 photorealistic mockup scenes</li>
+      <li class="price-item" data-en="2 structured revision rounds" data-ar="جولتا مراجعة منظمتان">2 structured revision rounds</li>
+      <li class="price-item" data-en="All files packaged & organised on delivery" data-ar="جميع الملفات معبأة ومنظمة عند التسليم">All files packaged &amp; organised on delivery</li>
+    </ul>
+    <a href="../index.html#contact" class="btn btn-p" style="width:100%;justify-content:center;">
+      <span data-en="Start a Project →" data-ar="ابدأ مشروعاً ←">Start a Project →</span>
+      <span class="btn-fill"></span>
+    </a>
+    <div class="upgrade-note">
+      <strong data-en="Want more?" data-ar="تريد المزيد؟">Want more?</strong>
+      <span data-en=" The full Brand Identity package adds patterns, brand guidelines, 5+ mockups, and 3 revision rounds — starting at $1,200." data-ar=" حزمة الهوية البصرية الكاملة تضيف أنماطاً ودليل هوية و5+ نماذج و3 جولات مراجعة — ابتداءً من $1,200.">
+        &nbsp;The full Brand Identity package adds patterns, brand guidelines, 5+ mockups, and 3 revision rounds — starting at $1,200.
+      </span>
+    </div>
+  </div>
+</div>
+
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="faq-inner">
+    <span class="sec-tag ri" data-en="Questions" data-ar="أسئلة">Questions</span>
+    <h2 class="sec-h ri" data-en="Frequently asked." data-ar="الأسئلة الأكثر شيوعاً.">Frequently asked.</h2>
+    <div class="faq-list">
+      <div class="faq-item ri">
+        <button class="faq-q" aria-expanded="false">
+          <span data-en="Is this good enough to launch my business with?" data-ar="هل هذا كافٍ لإطلاق أعمالي؟">Is this good enough to launch my business with?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner" data-en="Absolutely. Many established brands operate with exactly what's in this package. The Essentials are called that because they're essential — not because they're compromised. You'll have a professional, complete visual identity ready to use across every surface." data-ar="بالتأكيد. كثير من العلامات الراسخة تعمل بالضبط مع ما في هذه الحزمة. الأساسيات تسمى كذلك لأنها ضرورية — وليس لأنها منقوصة. ستمتلك هوية بصرية احترافية ومتكاملة جاهزة للاستخدام على كل سطح.">Absolutely. Many established brands operate with exactly what's in this package. The Essentials are called that because they're essential — not because they're compromised. You'll have a professional, complete visual identity ready to use across every surface.</div></div>
+      </div>
+      <div class="faq-item ri">
+        <button class="faq-q" aria-expanded="false">
+          <span data-en="Can I upgrade to the Full Brand Identity later?" data-ar="هل يمكنني الترقية إلى الهوية البصرية الكاملة لاحقاً؟">Can I upgrade to the Full Brand Identity later?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner" data-en="Yes. If you start with Essentials and want to expand into a full system later — patterns, brand guidelines, more mockups — we can build on top of what's already been created. You won't be starting from scratch." data-ar="نعم. إذا بدأت بالأساسيات وأردت التوسع إلى نظام كامل لاحقاً — أنماط ودليل هوية ونماذج إضافية — يمكننا البناء على ما تم إنشاؤه بالفعل. لن تبدأ من الصفر.">Yes. If you start with Essentials and want to expand into a full system later — patterns, brand guidelines, more mockups — we can build on top of what's already been created. You won't be starting from scratch.</div></div>
+      </div>
+      <div class="faq-item ri">
+        <button class="faq-q" aria-expanded="false">
+          <span data-en="How long does it take?" data-ar="كم من الوقت يستغرق؟">How long does it take?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner" data-en="Typically 1–2 weeks from the project start date to final delivery. This depends on brief clarity and feedback turnaround time. Rush delivery is available — mention it when you reach out." data-ar="عادةً من 1 إلى 2 أسبوع من تاريخ بدء المشروع إلى التسليم النهائي. يعتمد هذا على وضوح الموجز وسرعة استجابة التغذية الراجعة. التسليم العاجل متاح — اذكره عند التواصل.">Typically 1–2 weeks from the project start date to final delivery. This depends on brief clarity and feedback turnaround time. Rush delivery is available — mention it when you reach out.</div></div>
+      </div>
+      <div class="faq-item ri">
+        <button class="faq-q" aria-expanded="false">
+          <span data-en="What if I need more than 2 revision rounds?" data-ar="ماذا لو احتجت أكثر من جولتي مراجعة؟">What if I need more than 2 revision rounds?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner" data-en="Additional revision rounds can be added at an agreed rate. In practice, a thorough discovery brief usually means 2 rounds is more than enough. The process is structured to get it right without endless back and forth." data-ar="يمكن إضافة جولات مراجعة إضافية بسعر متفق عليه. من الناحية العملية، موجز الاكتشاف الشامل عادةً ما يعني أن جولتين أكثر من كافيتين. العملية منظمة للوصول إلى النتيجة الصحيحة دون ذهاب وإياب لا نهاية له.">Additional revision rounds can be added at an agreed rate. In practice, a thorough discovery brief usually means 2 rounds is more than enough. The process is structured to get it right without endless back and forth.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- CTA BAND -->
+<div class="cta-band ri">
+  <h2>
+    <span data-en="Start strong." data-ar="ابدأ بقوة.">Start strong.</span><br>
+    <em data-en="Launch with confidence." data-ar="انطلق بثقة.">Launch with confidence.</em>
+  </h2>
+  <a href="../index.html#contact" class="btn btn-p" style="font-size:15px;padding:16px 40px;">
+    <span data-en="Start a Project →" data-ar="ابدأ مشروعاً ←">Start a Project →</span>
+    <span class="btn-fill"></span>
+  </a>
+</div>
+
+
+<footer class="foot" role="contentinfo">
+  <div class="foot-in">
+    <div class="foot-logo"><span class="lm">YA</span><span class="foot-name">yamanalie</span></div>
+    <p class="foot-copy" data-en="© 2025 Yaman Ali." data-ar="© 2025 يمان علي.">© 2025 Yaman Ali.</p>
+    <a href="../index.html" class="foot-back" data-en="← Back to Home" data-ar="العودة للرئيسية →">← Back to Home</a>
+  </div>
+</footer>
+
+
+<script>
+(function(){
+  const sp=document.getElementById('sp');
+  window.addEventListener('scroll',()=>{const max=document.documentElement.scrollHeight-window.innerHeight;if(sp)sp.style.width=(max>0?(window.scrollY/max)*100:0)+'%';},{passive:true});
+  const hdr=document.getElementById('hdr');
+  window.addEventListener('scroll',()=>{if(hdr)hdr.classList.toggle('s',window.scrollY>30);},{passive:true});
+  if(!window.matchMedia('(hover: none)').matches){
+    const cur=document.getElementById('cursor'),ring=cur?.querySelector('.cursor-ring');
+    let mx=-300,my=-300,dx=-300,dy=-300,rx=-300,ry=-300;
+    const lerp=(a,b,t)=>a+(b-a)*t;
+    const tick=()=>{dx=lerp(dx,mx,.55);dy=lerp(dy,my,.55);rx=lerp(rx,mx,.28);ry=lerp(ry,my,.28);if(cur)cur.style.transform=`translate(${dx}px,${dy}px) translate(-50%,-50%)`;if(ring)ring.style.transform=`translate(calc(-50% + ${rx-dx}px),calc(-50% + ${ry-dy}px))`;requestAnimationFrame(tick);};
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+    document.addEventListener('mouseleave',()=>{mx=-300;my=-300;});
+    document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cl'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cl'));});
+    tick();
+  }
+  const applyTheme=t=>{document.documentElement.dataset.theme=t;localStorage.setItem('ya-theme',t);const i=document.getElementById('themeIcon');if(i)i.textContent=t==='dark'?'◑':'◐';};
+  applyTheme(localStorage.getItem('ya-theme')||'dark');
+  document.getElementById('themeToggle')?.addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+  const applyLang=lang=>{document.documentElement.dataset.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.documentElement.lang=lang;localStorage.setItem('ya-lang',lang);const l=document.getElementById('langLabel');if(l)l.textContent=lang==='en'?'EN':'AR';document.querySelectorAll('[data-en],[data-ar]').forEach(el=>{const val=el.getAttribute(`data-${lang}`);if(val===null)return;if(el.children.length===0)el.textContent=val;});};
+  applyLang(localStorage.getItem('ya-lang')||'en');
+  document.getElementById('langToggle')?.addEventListener('click',()=>applyLang(document.documentElement.dataset.lang==='en'?'ar':'en'));
+  setTimeout(()=>document.getElementById('heroH')?.classList.add('in'),120);
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.ri').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',()=>{const item=btn.closest('.faq-item');const isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));if(!isOpen)item.classList.add('open');btn.setAttribute('aria-expanded',String(!isOpen));});});
+  document.querySelectorAll('.btn,button').forEach(btn=>{btn.addEventListener('click',()=>{btn.style.transition='transform .08s ease';btn.style.transform='scale(.95)';setTimeout(()=>{btn.style.transition='transform .4s cubic-bezier(.34,1.56,.64,1)';btn.style.transform='scale(1)';},80);setTimeout(()=>{btn.style.transition='';btn.style.transform='';},500);});});
+})();
+</script>
+
+</body>
+</html>

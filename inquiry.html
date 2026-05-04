@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-en="Yamanalie - Let's Work Together!" data-ar="ياماناليه - لنعمل معاً!">Yamanalie - Let's Work Together!</title>
+  <link rel="icon" href="WebIcon.ico" type="image/x-icon">
+  
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       yamanalie · inquiry.html  v1
+       Palette: #D4E8A5 · #5B8C3E · #2E5A22 · #E57A34 · #555555
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* ── 1 · TOKENS ── */
+    :root {
+      /* Brand Palette */
+      --lime:      #D4E8A5;
+      --green-mid: #5B8C3E;
+      --green-deep:#2E5A22;
+      --orange:    #E57A34;
+      --grey:      #555555;
+
+      /* ── DARK THEME (default) ── */
+      --bg:        #1a3a12;
+      --bg-2:      #1f4516;
+      --bg-card:   rgba(26,58,18,0.60);
+      --surface:   rgba(212,232,165,0.05);
+      --surface-2: rgba(212,232,165,0.09);
+      --border:    rgba(212,232,165,0.14);
+      --border-2:  rgba(212,232,165,0.07);
+
+      --fg:        #F0F5E8;
+      --fg-2:      rgba(240,245,232,0.65);
+      --fg-3:      rgba(240,245,232,0.35);
+
+      --accent:     var(--lime);
+      --accent-dim: rgba(212,232,165,0.18);
+      --accent-pop: var(--orange);
+      --sage:       var(--green-mid);
+      --sage-dim:   rgba(91,140,62,0.20);
+
+      /* Typography */
+      --font-en-display:  'COOPBL', 'SimplySerif', Georgia, serif;
+      --font-en-body:     'MikhakBold', system-ui, sans-serif;
+      --font-en-mono:     'Courier New', monospace;
+      --font-ar-display:  'ThmanyahSerif', 'Amin', 'Cairo', sans-serif;
+      --font-ar-body:     'ThmanyahSerif', 'Amin', 'Cairo', sans-serif;
+      --font-serif-italic:'SimplySerif', Georgia, serif;
+
+      /* Spacing */
+      --space-1:4px;  --space-2:8px;   --space-3:12px;
+      --space-4:16px; --space-5:24px;  --space-6:32px;
+      --space-7:48px; --space-8:64px;  --space-9:96px;
+
+      /* Radius */
+      --r-sm:6px; --r-md:12px; --r-lg:20px; --r-xl:32px; --r-full:9999px;
+
+      /* Motion */
+      --ease-out:    cubic-bezier(0.22,1,0.36,1);
+      --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+      --t-fast:.18s; --t-med:.36s; --t-slow:.60s;
+
+      --container:     1280px;
+      --container-pad: clamp(16px,5vw,80px);
+      --header-h:      68px;
+    }
+
+    /* ── LIGHT THEME ── */
+    [data-theme="light"] {
+      --bg:        #F0F5E8;
+      --bg-2:      #E6EDD9;
+      --bg-card:   rgba(240,245,232,0.72);
+      --surface:   rgba(46,90,34,0.05);
+      --surface-2: rgba(46,90,34,0.10);
+      --border:    rgba(46,90,34,0.18);
+      --border-2:  rgba(46,90,34,0.09);
+
+      --fg:        #1a3a12;
+      --fg-2:      rgba(26,58,18,0.70);
+      --fg-3:      rgba(26,58,18,0.45);
+
+      --accent:     #2E5A22;
+      --accent-dim: rgba(46,90,34,0.15);
+      --sage:       #4a7a30;
+      --sage-dim:   rgba(74,122,48,0.18);
+    }
+
+    /* Arabic font overrides */
+    [data-lang="ar"] {
+      direction: rtl;
+      --font-en-display: var(--font-ar-display);
+      --font-en-body:    var(--font-ar-body);
+    }
+
+    /* ── 2 · RESET ── */
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+    html {
+      scroll-behavior:smooth;
+      font-size:16px;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+
+    body {
+      background:var(--bg);
+      color:var(--fg);
+      font-family:var(--font-en-body);
+      font-size:clamp(14px,1.05vw,16px);
+      line-height:1.65;
+      overflow-x:hidden;
+      cursor:none;
+      transition:background var(--t-med) var(--ease-out), color var(--t-med) var(--ease-out);
+    }
+
+    @media(hover:none){ body{ cursor:auto; } }
+    img,video{ max-width:100%; display:block; }
+    a{ color:inherit; text-decoration:none; }
+    ul,ol{ list-style:none; }
+    button{ cursor:none; background:none; border:none; font-family:inherit; font-size:inherit; color:inherit; }
+    :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:var(--r-sm); }
+    ::selection{ background:var(--accent); color:#fff; }
+
+    /* ── 3 · LAYOUT ── */
+    .container {
+      width:100%;
+      max-width:var(--container);
+      margin-inline:auto;
+      padding-inline:var(--container-pad);
+    }
+
+    .section {
+      padding-block:clamp(72px,10vw,160px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .section-tag {
+      display:inline-block;
+      font-family:var(--font-en-mono);
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:var(--space-4);
+    }
+
+    .section-header{ margin-bottom:clamp(40px,6vw,80px); }
+
+    .section-title {
+      font-family:var(--font-en-display);
+      font-size:clamp(2rem,5vw,4rem);
+      font-weight:700;
+      line-height:1.05;
+      letter-spacing:-.03em;
+    }
+
+    /* ── 4 · GRAIN ── */
+    .grain-overlay {
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      pointer-events:none;
+      opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:180px;
+      mix-blend-mode:overlay;
+    }
+
+    /* ── 5 · SCROLL PROGRESS ── */
+    .scroll-progress {
+      position:fixed;
+      top:0; left:0;
+      width:0%;
+      height:2px;
+      background:var(--accent);
+      z-index:10000;
+      box-shadow:0 0 10px var(--accent);
+      transition:width .08s linear;
+    }
+
+    /* ── 6 · CUSTOM CURSOR ── */
+    .cursor {
+      position:fixed;
+      top:0; left:0;
+      z-index:9998;
+      pointer-events:none;
+      transform:translate(-50%,-50%);
+    }
+
+    .cursor-dot {
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--accent);
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      transition:
+        width var(--t-fast) var(--ease-out),
+        height var(--t-fast) var(--ease-out),
+        background var(--t-fast);
+    }
+
+    .cursor-ring {
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      border:1.5px solid rgba(212,232,165,0.45);
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      transition:
+        width .20s var(--ease-out),
+        height .20s var(--ease-out),
+        border-color var(--t-fast),
+        opacity var(--t-fast);
+    }
+
+    body.cursor-on-link .cursor-dot {
+      width:6px; height:6px;
+    }
+    body.cursor-on-link .cursor-ring {
+      width:32px; height:32px;
+      border-color:var(--fg);
+    }
+
+    @media(hover:none){ .cursor{ display:none !important; } }
+
+    /* ── 7 · HEADER ── */
+    .site-header {
+      position:fixed;
+      top:0; left:0; right:0;
+      z-index:1000;
+      height:var(--header-h);
+      background:rgba(26,58,18,0.55);
+      backdrop-filter:blur(10px) saturate(1.4);
+      -webkit-backdrop-filter:blur(10px) saturate(1.4);
+      border-bottom:1px solid var(--border-2);
+      transition:background var(--t-med), border-color var(--t-med);
+    }
+
+    [data-theme="light"] .site-header {
+      background:rgba(240,245,232,0.75);
+    }
+    .site-header.scrolled {
+      background:rgba(26,58,18,.84);
+      border-bottom-color:var(--border);
+    }
+    [data-theme="light"] .site-header.scrolled {
+      background:rgba(240,245,232,.94);
+    }
+
+    .nav-inner {
+      max-width:var(--container);
+      margin-inline:auto;
+      padding-inline:var(--container-pad);
+      height:100%;
+      display:flex;
+      align-items:center;
+      gap:var(--space-5);
+    }
+
+    .nav-logo {
+      display:flex; align-items:center; gap:var(--space-3); flex-shrink:0;
+    }
+
+    .logo-mark {
+      width:36px; height:36px;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:var(--r-sm);
+      background:var(--accent);
+      color:#000;
+      font-family:var(--font-en-display);
+      font-weight:700;
+      font-size:13px;
+      letter-spacing:.04em;
+      flex-shrink:0;
+      transition:transform var(--t-fast) var(--ease-out);
+    }
+
+    [data-theme="light"] .logo-mark { color:#fff; }
+
+    .nav-logo:hover .logo-mark { transform:rotate(-6deg) scale(1.06); }
+
+    .logo-text {
+      font-family:var(--font-en-mono);
+      font-size:12px;
+      letter-spacing:.1em;
+      color:var(--fg-2);
+      transition:color var(--t-fast);
+    }
+
+    .nav-logo:hover .logo-text { color:var(--fg); }
+
+    .nav-actions {
+      display:flex; align-items:center; gap:var(--space-3); flex-shrink:0;
+      margin-inline-start:auto;
+    }
+
+    .dual-switcher {
+      display:flex; align-items:center;
+      border:1px solid var(--border);
+      border-radius:var(--r-full);
+      overflow:hidden;
+      height:34px;
+    }
+
+    .switcher-btn {
+      display:flex; align-items:center; justify-content:center;
+      padding:0 var(--space-3);
+      height:100%;
+      font-family:var(--font-en-mono);
+      font-size:11px;
+      letter-spacing:.1em;
+      color:var(--fg-2);
+      transition:background var(--t-fast), color var(--t-fast);
+      white-space:nowrap;
+    }
+
+    .switcher-btn:hover { background:var(--surface-2); color:var(--fg); }
+    .switcher-divider { width:1px; height:16px; background:var(--border); }
+
+    /* ── 8 · BUTTONS ── */
+    .btn {
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:var(--space-2);
+      padding:12px 26px;
+      border-radius:var(--r-full);
+      font-family:var(--font-en-body);
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.03em;
+      overflow:hidden;
+      text-decoration:none;
+      transition:color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+      white-space:nowrap;
+      cursor:none;
+      z-index:0;
+    }
+
+    .btn:active { transform:scale(0.95); }
+
+    .btn-primary {
+      background:var(--accent);
+      color:#000;
+    }
+
+    [data-theme="light"] .btn-primary { color:#fff; }
+
+    .btn-primary:hover {
+      box-shadow:0 0 0 3px var(--accent-dim), 0 8px 24px rgba(46,90,34,.2);
+    }
+
+    .btn-fill {
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      background:rgba(255,255,255,.15);
+      transform:scaleX(0) translateX(-100%);
+      transform-origin:left center;
+      transition:transform .5s var(--ease-out);
+      z-index:-1;
+      pointer-events:none;
+    }
+
+    .btn-primary:hover .btn-fill { transform:scaleX(1) translateX(0); }
+
+    .btn-ghost {
+      background:transparent;
+      color:var(--fg);
+      border:1px solid var(--border);
+    }
+
+    .btn-ghost:hover { background:var(--surface-2); border-color:var(--fg-3); }
+
+    /* ── 9 · REVEAL ANIMATIONS ── */
+    .reveal-item {
+      opacity:0;
+      transform:translateY(28px);
+      transition:opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out);
+    }
+
+    .reveal-item.in { opacity:1; transform:translateY(0); }
+
+    .reveal-item:nth-child(1){ transition-delay:0s; }
+    .reveal-item:nth-child(2){ transition-delay:.08s; }
+    .reveal-item:nth-child(3){ transition-delay:.16s; }
+    .reveal-item:nth-child(4){ transition-delay:.24s; }
+    .reveal-item:nth-child(5){ transition-delay:.32s; }
+
+    /* ── 10 · INQUIRY PAGE ── */
+    .inquiry-hero {
+      min-height:60svh;
+      display:flex;
+      align-items:center;
+      padding-top:calc(var(--header-h) + 32px);
+      padding-bottom:60px;
+    }
+
+    .inquiry-hero .container {
+      position:relative;
+      z-index:1;
+    }
+
+    .inquiry-headline {
+      font-family:var(--font-en-display);
+      font-size:clamp(2.4rem,6vw,5rem);
+      font-weight:700;
+      line-height:.96;
+      letter-spacing:-.04em;
+      margin-bottom:var(--space-6);
+    }
+
+    .inquiry-sub {
+      max-width:600px;
+      color:var(--fg-2);
+      font-size:clamp(.95rem,1.3vw,1.1rem);
+      line-height:1.75;
+      margin-bottom:var(--space-5);
+    }
+
+    .inquiry-form-wrapper {
+      background:var(--bg-2);
+      padding-block:clamp(72px,10vw,120px);
+    }
+
+    .inquiry-form {
+      max-width:900px;
+      margin-inline:auto;
+    }
+
+    .form-section {
+      margin-bottom:clamp(60px,8vw,100px);
+    }
+
+    .form-section-header {
+      margin-bottom:var(--space-7);
+    }
+
+    .form-section-title {
+      font-family:var(--font-en-display);
+      font-size:clamp(1.4rem,3vw,2rem);
+      font-weight:700;
+      letter-spacing:-.02em;
+      margin-bottom:var(--space-3);
+    }
+
+    .form-section-desc {
+      color:var(--fg-2);
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .form-field {
+      position:relative;
+      margin-bottom:var(--space-6);
+    }
+
+    .form-label {
+      display:block;
+      font-family:var(--font-en-mono);
+      font-size:14px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--fg-3);
+      margin-bottom:var(--space-3);
+      transition:color var(--t-fast);
+      font-weight:700;
+    }
+
+    .form-input, .form-textarea {
+      width:100%;
+      padding:11px 0;
+      background:transparent;
+      border:none;
+      border-bottom:1px solid var(--border);
+      color:var(--fg);
+      font-family:var(--font-en-body);
+      font-size:14px;
+      outline:none;
+      transition:border-color var(--t-fast);
+    }
+
+    .form-input:focus, .form-textarea:focus { border-bottom-color:var(--accent); }
+    .form-textarea { resize:vertical; min-height:100px; }
+
+    .form-select-wrap { position:relative; }
+
+    .form-select {
+      width:100%;
+      padding:11px 40px 11px 14px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--r-md);
+      color:var(--fg);
+      font-family:var(--font-en-body);
+      font-size:13px;
+      outline:none;
+      -webkit-appearance:none;
+      appearance:none;
+      cursor:none;
+      transition:border-color var(--t-fast), background var(--t-fast);
+    }
+
+    .form-select:focus { border-color:var(--accent); background:var(--surface-2); }
+    .form-select option { background:var(--bg); color:var(--fg); }
+
+    .form-select-arrow {
+      position:absolute;
+      right:14px; top:50%;
+      transform:translateY(-50%);
+      pointer-events:none;
+      color:var(--fg-3);
+      font-size:10px;
+      transition:transform var(--t-fast);
+    }
+
+    .form-select:focus ~ .form-select-arrow { transform:translateY(-50%) rotate(180deg); }
+
+    .checkbox-group { display:flex; flex-direction:column; gap:var(--space-3); }
+
+    .checkbox-item { display:flex; align-items:flex-start; gap:var(--space-3); cursor:none; }
+
+    .checkbox-item input[type="checkbox"] {
+      width:17px; height:17px;
+      accent-color:var(--accent);
+      margin-top:2px;
+      flex-shrink:0;
+      cursor:none;
+    }
+
+    .checkbox-item label { font-size:13px; color:var(--fg-2); cursor:none; }
+
+    .form-nav {
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:var(--space-4);
+      margin-top:var(--space-7);
+      padding-top:var(--space-5);
+      border-top:1px solid var(--border-2);
+    }
+
+    /* ── 11 · FOOTER ── */
+    .site-footer {
+      background:var(--bg-2);
+      border-top:1px solid var(--border-2);
+      padding-top:var(--space-9);
+      padding-bottom:var(--space-6);
+    }
+
+    .footer-inner {
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:start;
+      gap:var(--space-8);
+      margin-bottom:var(--space-7);
+    }
+
+    .footer-brand { display:flex; flex-direction:column; gap:var(--space-4); }
+    .footer-logo  { display:inline-flex; }
+
+    .footer-tagline {
+      font-family:var(--font-en-mono);
+      font-size:11px;
+      letter-spacing:.08em;
+      color:var(--fg-2);
+      max-width:220px;
+    }
+
+    .footer-nav ul {
+      display:flex; flex-direction:column; gap:var(--space-3); text-align:center;
+    }
+
+    .footer-nav a {
+      font-size:13px;
+      color:var(--fg-2);
+      transition:color var(--t-fast);
+    }
+
+    .footer-nav a:hover { color:var(--accent); }
+
+    .footer-social {
+      display:flex; align-items:center; gap:var(--space-4); justify-content:flex-end;
+    }
+
+    .social-link {
+      width:38px; height:38px;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:var(--r-sm);
+      border:1px solid var(--border);
+      color:var(--fg-2);
+      transition:color var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+    }
+
+    .social-link svg { width:17px; height:17px; }
+    .social-link:hover { color:var(--accent); border-color:var(--accent-dim); transform:translateY(-3px); }
+
+    .footer-bottom {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding-top:var(--space-5);
+      border-top:1px solid var(--border-2);
+    }
+
+    .footer-copy, .footer-craft {
+      font-family:var(--font-en-mono);
+      font-size:10px;
+      letter-spacing:.08em;
+      color:var(--fg-2);
+    }
+
+    /* ── 12 · RESPONSIVE ── */
+    @media(max-width:768px) {
+      .nav-logo { display:none; }
+      .nav-actions { margin-inline-start:auto; }
+      .footer-inner { grid-template-columns:1fr; gap:var(--space-6); }
+      .footer-nav ul { text-align:left; }
+      .footer-social { justify-content:flex-start; }
+      .footer-bottom { flex-direction:column; gap:var(--space-4); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div id="cursor" class="cursor" aria-hidden="true">
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+</div>
+
+<!-- SCROLL PROGRESS -->
+<div id="scrollProgress" class="scroll-progress" aria-hidden="true"></div>
+
+<!-- GRAIN OVERLAY -->
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<!-- ══════ HEADER ══════ -->
+<header class="site-header" id="siteHeader" role="banner">
+  <nav class="nav-inner" role="navigation" aria-label="Primary navigation">
+    <a href="index.html" class="nav-logo" aria-label="Yamanalie — Home">
+      <span class="logo-mark">YA</span>
+      <span class="logo-text">yamanalie</span>
+    </a>
+
+    <div class="nav-actions">
+      <div class="dual-switcher" role="group">
+        <button class="switcher-btn" id="langToggle" aria-label="Switch language">
+          <span id="langLabel">EN</span>
+        </button>
+        <div class="switcher-divider" aria-hidden="true"></div>
+        <button class="switcher-btn" id="themeToggle" aria-label="Switch theme">
+          <span id="themeIcon">◐</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- ══════ MAIN ══════ -->
+<main id="main" role="main">
+
+  <!-- ── INQUIRY HERO ── -->
+  <section class="section inquiry-hero" id="hero" aria-labelledby="heroHeadline">
+    <div class="container">
+      <h1 class="inquiry-headline reveal-item" id="heroHeadline"
+          data-en="Let's Work Together!" data-ar="لنعمل معاً!">
+        Let's Work Together!
+      </h1>
+      <p class="inquiry-sub reveal-item"
+         data-en="Ready to bring your vision to life? Fill out the form below to tell me about your project. The more details you provide, the better I can understand your needs and prepare for our initial conversation."
+         data-ar="هل أنت مستعد لتحويل رؤيتك إلى واقع؟ املأ النموذج أدناه لتخبرني عن مشروعك. كلما قدمت تفاصيل أكثر، تمكنت من فهم احتياجاتك بشكل أفضل والتحضير لمحادثتنا الأولية.">
+        Ready to bring your vision to life? Fill out the form below to tell me about your project. The more details you provide, the better I can understand your needs and prepare for our initial conversation.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── INQUIRY FORM ── -->
+  <section class="inquiry-form-wrapper">
+    <div class="container">
+      <form class="inquiry-form" id="inquiryForm">
+
+        <!-- Section 1: The Foundations -->
+        <div class="form-section reveal-item">
+          <div class="form-section-header">
+            <h2 class="form-section-title" data-en="Section 1: The Foundations" data-ar="القسم 1: الأساسيات">Section 1: The Foundations</h2>
+            <p class="form-section-desc" data-en="Let's start with the core of your business." data-ar="لنبدأ بجوهر عملك.">Let's start with the core of your business.</p>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Company Name" data-ar="اسم الشركة">Company Name</label>
+            <input type="text" id="q-companyName" class="form-input" placeholder="e.g. Livil Studio" data-placeholder-ar="مثال: استوديو ليفيل" required>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Mission Statement" data-ar="بيان المهمة">Mission Statement</label>
+            <textarea id="q-missionStatement" class="form-textarea" placeholder="In one or two sentences, what is the core purpose of your business?" data-placeholder-ar="في جملة أو جملتين، ما الغرض الأساسي من عملك؟" required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Values" data-ar="القيم">Values</label>
+            <textarea id="q-values" class="form-textarea" placeholder="e.g. Integrity, Innovation, Sustainability" data-placeholder-ar="مثال: النزاهة، الابتكار، الاستدامة" required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Target Audience" data-ar="الجمهور المستهدف">Target Audience</label>
+            <textarea id="q-targetAudience" class="form-textarea" placeholder="Include demographics like age, location, interests, and pain points." data-placeholder-ar="أدرج معلومات ديموغرافية مثل العمر والموقع والاهتمامات ونقاط الألم." required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Unique Selling Proposition (USP)" data-ar="الميزة الفريدة">Unique Selling Proposition (USP)</label>
+            <textarea id="q-usp" class="form-textarea" placeholder="What makes your brand different from your competitors?" data-placeholder-ar="ما الذي يجعل علامتك التجارية مختلفة عن منافسيك؟" required></textarea>
+          </div>
+        </div>
+
+        <!-- Section 2: Brand Personality -->
+        <div class="form-section reveal-item">
+          <div class="form-section-header">
+            <h2 class="form-section-title" data-en="Section 2: Brand Personality" data-ar="القسم 2: شخصية العلامة">Section 2: Brand Personality</h2>
+            <p class="form-section-desc" data-en="Define how your brand speaks and feels." data-ar="حدد كيفية تحدث علامتك التجارية وشعورها.">Define how your brand speaks and feels.</p>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Brand Voice" data-ar="صوت العلامة">Brand Voice</label>
+            <textarea id="q-brandVoice" class="form-textarea" placeholder="e.g. Professional, Friendly, Witty, Authoritative" data-placeholder-ar="مثال: احترافي، ودود، ذكي، سلطوي" required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Key Adjectives" data-ar="الصفات الرئيسية">Key Adjectives</label>
+            <textarea id="q-keyAdjectives" class="form-textarea" placeholder="e.g. Modern, Classic, Bold, Minimal" data-placeholder-ar="مثال: حديث، كلاسيكي، جريء، بسيط" required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Is/Is Not Exercise (1)" data-ar="تمرين هو/ليس (1)">Is/Is Not Exercise</label>
+            <input type="text" id="q-isNotExercise1" class="form-input" placeholder="Our brand is ______ but it is NOT ______" data-placeholder-ar="علامتنا التجارية هي ______ لكنها ليست ______" required>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Is/Is Not Exercise (2)" data-ar="تمرين هو/ليس (2)">Is/Is Not Exercise (2)</label>
+            <input type="text" id="q-isNotExercise2" class="form-input" placeholder="Our brand is ______ but it is NOT ______" data-placeholder-ar="علامتنا التجارية هي ______ لكنها ليست ______" required>
+          </div>
+        </div>
+
+        <!-- Section 3: Visual Identity -->
+        <div class="form-section reveal-item">
+          <div class="form-section-header">
+            <h2 class="form-section-title" data-en="Section 3: Visual Identity" data-ar="القسم 3: الهوية البصرية">Section 3: Visual Identity</h2>
+            <p class="form-section-desc" data-en="Tell me about your visual preferences." data-ar="أخبرني عن تفضيلاتك البصرية.">Tell me about your visual preferences.</p>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Current Branding" data-ar="الهوية الحالية">Current Branding</label>
+            <textarea id="q-currentBranding" class="form-textarea" placeholder="Do you have existing branding? If so, what do you like or dislike about it?" data-placeholder-ar="هل لديك هوية بصرية موجودة؟ إن وجدت، ما الذي تحب أو لا تحب فيها؟" required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Color Preferences" data-ar="تفضيلات الألوان">Color Preferences</label>
+            <textarea id="q-colorPreferences" class="form-textarea" placeholder="Are there specific colors you feel strongly about?" data-placeholder-ar="هل هناك ألوان معينة تشعر بقوة تجاهها؟" required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Typography Styles" data-ar="أنماط الخطوط">Typography Styles</label>
+            <div class="form-select-wrap">
+              <select id="q-typography" class="form-select" required>
+                <option value="">— Select one —</option>
+                <option value="serif">Serif</option>
+                <option value="sans-serif">Sans-Serif</option>
+                <option value="script">Script</option>
+                <option value="custom">Custom Lettering</option>
+                <option value="mixed">Mixed</option>
+              </select>
+              <span class="form-select-arrow">▼</span>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Imagery" data-ar="الصور">Imagery</label>
+            <textarea id="q-imagery" class="form-textarea" placeholder="e.g. Photography, Illustrations, Abstract Patterns" data-placeholder-ar="مثال: التصوير الفوتوغرافي، الرسومات التوضيحية، الأنماط المجردة" required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Logo Usage" data-ar="استخدام الشعار">Logo Usage</label>
+            <textarea id="q-logoUsage" class="form-textarea" placeholder="Where will the logo be used most?" data-placeholder-ar="أين سيتم استخدام الشعار في الغالب؟" required></textarea>
+          </div>
+        </div>
+
+        <!-- Section 4: Competitive Landscape -->
+        <div class="form-section reveal-item">
+          <div class="form-section-header">
+            <h2 class="form-section-title" data-en="Section 4: Competitive Landscape" data-ar="القسم 4: المشهد التنافسي">Section 4: Competitive Landscape</h2>
+            <p class="form-section-desc" data-en="Help me understand your market position." data-ar="ساعدني على فهم موقعك في السوق.">Help me understand your market position.</p>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Top Competitors" data-ar="أهم المنافسين">Top Competitors</label>
+            <textarea id="q-topCompetitors" class="form-textarea" placeholder="Who are your top 3 competitors?" data-placeholder-ar="من هم أهم 3 منافسين لك؟" required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Competitive Analysis" data-ar="تحليل المنافسة">Competitive Analysis</label>
+            <textarea id="q-competitiveAnalysis" class="form-textarea" placeholder="What do you like or dislike about their branding?" data-placeholder-ar="ما الذي تحب أو لا تحب في هويتهم البصرية؟" required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Market Position" data-ar="الموقع في السوق">Market Position</label>
+            <textarea id="q-marketPosition" class="form-textarea" placeholder="e.g. Luxury, Budget-Friendly, Mass-Market" data-placeholder-ar="مثال: فاخرة، اقتصادية، سوق جماهيري" required></textarea>
+          </div>
+        </div>
+
+        <!-- Section 5: Goals & Deliverables -->
+        <div class="form-section reveal-item">
+          <div class="form-section-header">
+            <h2 class="form-section-title" data-en="Section 5: Goals &amp; Deliverables" data-ar="القسم 5: الأهداف والمخرجات">Section 5: Goals &amp; Deliverables</h2>
+            <p class="form-section-desc" data-en="What do you want to achieve?" data-ar="ماذا تريد أن تحقق؟">What do you want to achieve?</p>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Project Goals" data-ar="أهداف المشروع">Project Goals</label>
+            <textarea id="q-projectGoals" class="form-textarea" placeholder="What do you hope to achieve with this branding project?" data-placeholder-ar="ما الذي تأمل تحقيقه من خلال مشروع الهوية البصرية هذا؟" required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Timeline" data-ar="الجدول الزمني">Timeline</label>
+            <input type="date" id="q-timeline" class="form-input" required>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Deliverables" data-ar="المخرجات">Deliverables</label>
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input type="checkbox" id="q-deliverable-logo" name="deliverables" value="logo">
+                <label for="q-deliverable-logo" data-en="Logo" data-ar="شعار">Logo</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="q-deliverable-cards" name="deliverables" value="business-cards">
+                <label for="q-deliverable-cards" data-en="Business Cards" data-ar="بطاقات عمل">Business Cards</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="q-deliverable-social" name="deliverables" value="social-templates">
+                <label for="q-deliverable-social" data-en="Social Media Templates" data-ar="قوالب وسائل التواصل">Social Media Templates</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="q-deliverable-guidelines" name="deliverables" value="brand-guidelines">
+                <label for="q-deliverable-guidelines" data-en="Brand Guidelines" data-ar="إرشادات العلامة">Brand Guidelines</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="q-deliverable-web" name="deliverables" value="web-design">
+                <label for="q-deliverable-web" data-en="Web Design" data-ar="تصميم ويب">Web Design</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="form-section reveal-item">
+          <div class="form-section-header">
+            <h2 class="form-section-title" data-en="How Can I Reach You?" data-ar="كيف يمكنني التواصل معك؟">How Can I Reach You?</h2>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Email" data-ar="البريد الإلكتروني">Email</label>
+            <input type="email" id="q-email" class="form-input" required>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="WhatsApp (Optional)" data-ar="واتس آب (اختياري)">WhatsApp (Optional)</label>
+            <input type="tel" id="q-whatsapp" class="form-input">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" data-en="Instagram (Optional)" data-ar="إنستجرام (اختياري)">Instagram (Optional)</label>
+            <input type="text" id="q-instagram" class="form-input">
+          </div>
+
+          <div class="form-nav">
+            <button type="submit" class="btn btn-primary magnetic" data-en="Submit" data-ar="إرسال">
+              <span class="btn-text">Submit</span>
+              <span class="btn-fill" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══════ FOOTER ══════ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <span class="logo-mark">YA</span>
+        </a>
+        <p class="footer-tagline" data-en="Brand identity, web &amp; social media design." data-ar="هوية بصرية، تصميم ويب وسوشيال ميديا.">Brand identity, web &amp; social media design.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <ul role="list">
+          <li><a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a></li>
+          <li><a href="process.html" data-en="Process" data-ar="العملية">Process</a></li>
+        </ul>
+      </nav>
+      <div class="footer-social">
+        <a href="#" class="social-link" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <circle cx="17.5" cy="6.5" r="1.5"></circle>
+          </svg>
+        </a>
+        <a href="#" class="social-link" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+            <rect x="2" y="9" width="4" height="12"></rect>
+            <circle cx="4" cy="4" r="2"></circle>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy" data-en="© 2024 Yaman Ali. All rights reserved." data-ar="© 2024 ياماناليه. جميع الحقوق محفوظة.">© 2024 Yaman Ali. All rights reserved.</p>
+      <p class="footer-craft" data-en="Crafted with care." data-ar="مصنوع بعناية.">Crafted with care.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- FONTS -->
+<link rel="preload" href="fonts/COOPBL.TTF" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/MikhakBold.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/SimplySerif-Bold.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/thmanyahseriftext-Bold.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="fonts/Amin.otf.ttf" as="font" type="font/ttf" crossorigin>
+
+<style>
+  @font-face {
+    font-family: 'COOPBL';
+    src: url('fonts/COOPBL.TTF') format('truetype');
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'MikhakBold';
+    src: url('fonts/MikhakBold.ttf') format('truetype');
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SimplySerif';
+    src: url('fonts/SimplySerif-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'ThmanyahSerif';
+    src: url('fonts/thmanyahseriftext-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Amin';
+    src: url('fonts/Amin.otf.ttf') format('truetype');
+    font-weight: 700;
+    font-display: swap;
+  }
+</style>
+
+<!-- SCRIPTS -->
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   yamanalie · inquiry.html  v1
+   Vanilla JS · Bilingual Support
+   ═══════════════════════════════════════════════════════════════ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  initScrollProgress();
+  initCustomCursor();
+  initHeader();
+  initThemeToggle();
+  initLangToggle();
+  initScrollReveal();
+  initFormSubmit();
+});
+
+/* 1 · SCROLL PROGRESS BAR */
+function initScrollProgress() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  const update = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+/* 2 · CUSTOM CURSOR */
+function initCustomCursor() {
+  if (window.matchMedia('(hover: none)').matches) return;
+  const cursor = document.getElementById('cursor');
+  if (!cursor) return;
+  const dot  = cursor.querySelector('.cursor-dot');
+  const ring = cursor.querySelector('.cursor-ring');
+  let mx = -300, my = -300;
+  let dx = -300, dy = -300;
+  let rx = -300, ry = -300;
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function tick() {
+    dx = lerp(dx, mx, 0.55);
+    dy = lerp(dy, my, 0.55);
+    rx = lerp(rx, mx, 0.28);
+    ry = lerp(ry, my, 0.28);
+    cursor.style.transform = `translate(${dx}px, ${dy}px) translate(-50%, -50%)`;
+    if (ring) {
+      ring.style.transform = `translate(calc(-50% + ${rx - dx}px), calc(-50% + ${ry - dy}px))`;
+    }
+    requestAnimationFrame(tick);
+  }
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  document.addEventListener('mouseleave', () => { mx = -300; my = -300; });
+  document.querySelectorAll('a, button, .form-input, .form-textarea, .form-select')
+    .forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-on-link'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-on-link'));
+    });
+  tick();
+}
+
+/* 3 · HEADER SCROLL EFFECT */
+function initHeader() {
+  const header = document.getElementById('siteHeader');
+  if (!header) return;
+  const update = () => {
+    header.classList.toggle('scrolled', window.scrollY > 10);
+  };
+  window.addEventListener('scroll', update, { passive: true });
+}
+
+/* 4 · THEME TOGGLE */
+function initThemeToggle() {
+  const saved = localStorage.getItem('ya-theme') || 'dark';
+  applyTheme(saved);
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+    });
+  }
+  function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('ya-theme', theme);
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.textContent = theme === 'dark' ? '◐' : '◑';
+  }
+}
+
+/* 5 · LANGUAGE TOGGLE */
+function initLangToggle() {
+  const saved = localStorage.getItem('ya-lang') || 'en';
+  applyLang(saved, false);
+  const btn = document.getElementById('langToggle');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      applyLang(document.documentElement.dataset.lang === 'en' ? 'ar' : 'en', true);
+    });
+  }
+  function applyLang(lang, animate) {
+    if (animate) {
+      document.body.style.opacity = '0.7';
+      setTimeout(() => {
+        swapLang(lang);
+        document.body.style.opacity = '1';
+      }, 130);
+    } else {
+      swapLang(lang);
+    }
+  }
+  function swapLang(lang) {
+    document.documentElement.dataset.lang = lang;
+    document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+    localStorage.setItem('ya-lang', lang);
+    const label = document.getElementById('langLabel');
+    if (label) label.textContent = lang === 'en' ? 'EN' : 'AR';
+    document.querySelectorAll('[data-en], [data-ar]').forEach(el => {
+      const attr = `data-${lang}`;
+      const val = el.getAttribute(attr);
+      if (val !== null) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = val;
+        } else if (el.tagName === 'OPTION') {
+          el.textContent = val;
+        } else {
+          el.textContent = val;
+        }
+      }
+    });
+    /* Update form input/textarea placeholders from data-placeholder-ar */
+    document.querySelectorAll('[data-placeholder-ar]').forEach(el => {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = lang === 'ar' ? el.getAttribute('data-placeholder-ar') : el.getAttribute('placeholder');
+      }
+    });
+  }
+}
+
+/* 6 · SCROLL REVEAL */
+function initScrollReveal() {
+  const items = document.querySelectorAll('.reveal-item');
+  if (!items.length) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  items.forEach(item => observer.observe(item));
+}
+
+/* 7 · FORM SUBMIT */
+function initFormSubmit() {
+  const form = document.getElementById('inquiryForm');
+  if (!form) return;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+    console.log('📋 Inquiry submitted:', data);
+    alert("Thank you! Your inquiry has been received. I'll be in touch soon.");
+    form.reset();
+  });
+}
+</script>
+
+</body>
+</html>
